@@ -123,7 +123,6 @@ r.get('/', async (req, res) => {
     FROM kelas k ORDER BY k.id`);
   const last = u.last_subbab_id ? db.get(`SELECT s.id, s.judul, b.judul AS bab, b.kelas_id FROM subbab s JOIN bab b ON b.id = s.bab_id WHERE s.id = ?`, u.last_subbab_id) : null;
   const draf = db.get(`SELECT COUNT(*) AS n FROM soal WHERE status = 'draf'`).n;
-  const nMedia = db.get('SELECT COUNT(*) AS n FROM media').n;
   const jam = new Date().getHours();
   const salam = jam < 11 ? 'Selamat pagi' : jam < 15 ? 'Selamat siang' : jam < 18 ? 'Selamat sore' : 'Selamat malam';
   const body = html`
@@ -147,39 +146,22 @@ r.get('/', async (req, res) => {
       return html`<a class="kelas-card k${k.id}" href="/kelas/${k.id}">
         <span class="kc-top"><span class="kelas-num">${k.id}</span>
           <span class="kelas-info"><b>${k.nama}</b><small>Fase ${k.fase} · ${k.bab} bab</small></span></span>
-        <span class="kc-prog"><span>${k.terbit} dari ${k.total} subbab siap ditayangkan · ${k.soal} soal</span>
+        <span class="kc-prog"><span>${k.terbit}/${k.total} subbab siap · ${k.soal} soal</span>
           <span class="kc-bar"><span style="width:${persen}%"></span></span></span>
         <span class="kc-go">Buka materi ${icon('arrow')}</span>
       </a>`;
     })}
   </section>
 
-  <div class="sec-title"><h2>Alur kerja guru</h2><p>Ikuti 4 langkah ini. Bisa dimulai dari langkah mana saja.</p></div>
-  <ol class="flow">
-    <li class="flow-step"><span class="flow-no">1</span><b>Siapkan materi</b>
-      <p>Pilih kelas → klik <span class="ui">Edit</span> pada subbab. Isi teks singkat dan pasang gambar/video di tiap layar.</p>
-      <a class="btn small" href="/kelas/${last ? last.kelas_id : 4}">Buka daftar materi</a></li>
-    <li class="flow-step"><span class="flow-no">2</span><b>Sajikan di kelas</b>
-      <p>Klik <span class="ui pri">▶ Sajikan</span> lalu <span class="ui">Layar penuh</span>. Pindah layar dengan tombol panah atau geser.</p>
-      ${last ? html`<a class="btn small" href="/sajikan/${last.id}?lanjut=1">Sajikan materi terakhir</a>` : html`<a class="btn small" href="/kelas/4">Pilih materi</a>`}</li>
-    <li class="flow-step"><span class="flow-no">3</span><b>Siapkan soal</b>
-      <p>Tulis soal sendiri atau buat dengan AI (butuh internet). Periksa, lalu klik <span class="ui">✓ Setujui</span>.</p>
-      <a class="btn small" href="/soal">Buka Bank Soal</a></li>
-    <li class="flow-step"><span class="flow-no">4</span><b>Nilai &amp; cetak</b>
-      <p>Soal yang disetujui muncul di layar <b>Penilaian</b> saat menyajikan, dan bisa dicetak atau disimpan ke Word.</p>
-      <a class="btn small" href="/soal?status=disetujui">Cetak soal</a></li>
-  </ol>
-
-  <div class="sec-title"><h2>Fitur lainnya</h2></div>
-  <section class="shortcuts">
-    <a class="sc" href="/soal?status=draf">${icon('check')}<b>Tinjau draf soal</b><small>Soal baru dari AI wajib diperiksa guru sebelum dipakai.</small>${draf ? html`<span class="badge">${draf} menunggu</span>` : ''}</a>
-    <a class="sc" href="/soal/buat">${icon('spark')}<b>Buat soal dengan AI</b><small>AI menyusun soal dari teks materi. Butuh internet.</small></a>
-    <a class="sc" href="/media">${icon('media')}<b>Pustaka media</b><small>${nMedia} gambar, video, animasi, PDF yang bisa dipakai ulang.</small></a>
-    <a class="sc" href="/panduan">${icon('help')}<b>Panduan singkat</b><small>Penjelasan setiap fitur dan arti tiap tombol.</small></a>
-  </section>
+  <nav class="quick" aria-label="Pintasan">
+    <a href="/soal?status=draf">${icon('check')}<span>Tinjau draf soal</span>${draf ? html`<span class="badge">${draf}</span>` : ''}</a>
+    <a href="/soal/buat">${icon('spark')}<span>Buat soal dengan AI</span></a>
+    <a href="/media">${icon('media')}<span>Pustaka media</span></a>
+    <a href="/panduan">${icon('help')}<span>Panduan singkat</span></a>
+  </nav>
 
   <details class="card">
-    <summary><b>${icon('wifi')}Buka LMS ini di HP, laptop lain, atau smartboard</b></summary>
+    <summary><b>${icon('wifi')}Buka di HP atau perangkat lain</b></summary>
     ${await alamatBlok(req)}
   </details>`;
   res.send(page({ title: 'Beranda', user: u, body, active: 'home', pesan: req.query.pesan }));
@@ -221,7 +203,7 @@ r.get('/panduan', (req, res) => {
       <ol style="margin-top:1rem">
         <li>Di halaman kelas, klik <span class="ui">Edit</span> pada subbab.</li>
         <li>Klik <span class="ui">Edit</span> pada setiap layar → tulis teks singkat → pilih atau unggah media → <span class="ui pri">Simpan</span>.</li>
-        <li>Ikuti kotak <b>Pemeriksaan templat</b>: tanda <b>!</b> kuning berarti masih ada yang perlu dilengkapi.</li>
+        <li>Jika muncul kotak <b>Perlu dilengkapi</b>, ikuti daftarnya sampai tertulis <b>Templat lengkap</b>.</li>
         <li>Jika sudah siap, ubah status subbab menjadi <span class="tag terbit">Terbit</span>.</li>
       </ol>
       <p class="muted">Aturan menulis: satu konsep per layar, maksimal 4 poin, kalimat pendek, mulai dari hal nyata (foto/kegiatan) baru istilah.</p>

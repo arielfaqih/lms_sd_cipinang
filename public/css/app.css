@@ -775,9 +775,6 @@ body.is-remote .wrap{max-width:560px;padding:.8rem .8rem 3rem}
 /* =====================================================================
    Penyaji ramah anak: ikon per jenis layar, maskot, kartu beranimasi
    ===================================================================== */
-.slide{background:
-  radial-gradient(circle at 4% 8%,color-mix(in srgb,var(--jc) 9%,transparent) 0 7rem,transparent 7.05rem),
-  radial-gradient(circle at 98% 96%,color-mix(in srgb,var(--jc) 8%,transparent) 0 11rem,transparent 11.05rem)}
 .sl-head{border-left:0;padding-left:0;gap:.45rem .8rem}
 .sl-ico{display:inline-grid;place-items:center;flex:0 0 auto;width:clamp(2.7rem,4.4vw,3.7rem);height:clamp(2.7rem,4.4vw,3.7rem);border-radius:32%;
   font-size:clamp(1.45rem,2.4vw,2.05rem);line-height:1;background:color-mix(in srgb,var(--jc) 16%,#fff);border:3px solid var(--jc);
@@ -878,3 +875,53 @@ body.is-remote .wrap{max-width:560px;padding:.8rem .8rem 3rem}
   .sl-media .mfig figcaption{font-size:.8rem}
   .pr-bottom{padding:.45rem .6rem calc(.45rem + env(safe-area-inset-bottom))}
 }
+
+/* =====================================================================
+   Tampilan lebih lega: sedikit teks, satu tombol utama per baris
+   ===================================================================== */
+/* Beranda: pintasan ringkas */
+.quick{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.6rem 0 1rem}
+.quick a{display:inline-flex;align-items:center;gap:.1rem;background:#fff;border:1px solid var(--line);border-radius:99px;padding:.55rem 1rem;
+  text-decoration:none;color:var(--ink);font-weight:650;font-size:.95rem;box-shadow:var(--shadow)}
+.quick a:hover{border-color:var(--pri);color:var(--pri2)}
+.quick a .ic{color:var(--pri)}
+.quick .badge{margin-left:.45rem}
+/* Daftar subbab: tombol sekunder tenang */
+.sub-act .btn.ghost{color:var(--ink2)}
+.sub-act .btn.ghost .ic{color:var(--muted)}
+.sub-meta{font-size:.86rem}
+/* Edit subbab */
+.cek-ok{display:flex;align-items:center;gap:.1rem;margin:.2rem 0;color:var(--ok);font-weight:650}
+.komp-ringkas{color:var(--muted);font-size:.86rem;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.komp{align-items:center}
+.komp-tools{gap:.25rem}
+.btn.ghost.hapus,.btn.ghost.hapus:hover{color:var(--danger)}
+.btn.ghost.hapus:hover{background:var(--danger-soft)}
+.btn.icon.ghost{min-width:2.2rem;color:var(--muted)}
+/* Bank soal */
+.soal-act{gap:.3rem}
+.soal-act .btn.ghost{color:var(--ink2)}
+.tag.ai{background:#efe7fb;color:#6b3fa0}
+/* Penyaji: keterangan media cukup satu baris */
+.slide .m-cap{padding:.4rem .7rem}
+.slide .m-cap-t b{font-weight:600;font-size:.85rem;color:var(--muted)}
+.thumb-label.t-animasi,.thumb-label.t-audio{font-size:1.05rem}
+.komp-thumb .thumb-label.t-animasi,.komp-thumb .thumb-label.t-audio,.komp-thumb .thumb-label.t-pdf,.komp-thumb .thumb-label.t-ppt{font-size:.72rem;text-align:center;line-height:1.1;padding:0 .2rem}
+.filter input[name=q]{flex:2 1 14rem}
+.filter select{flex:1 1 9rem}
+.soal.card{padding:.95rem 1.15rem}
+.soal .q{margin:.35rem 0 .45rem}
+@media (max-width:600px){
+  .quick{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1.2rem}
+  .quick a{border-radius:14px;padding:.6rem .7rem;font-size:.88rem}
+  .kelas-hero>.kelas-num{display:none}
+  .filter.card{padding:.75rem;gap:.45rem}
+  .filter input[name=q]{flex-basis:100%}
+  .filter select{flex:1 1 40%;min-width:0}
+  .filter .btn{flex:1 1 100%}
+  .bulk [data-selcount]{display:none}
+  .bulk{gap:.35rem;padding:.5rem .6rem}
+  .bulk .btn.small{font-size:.82rem;padding:.3rem .6rem;min-height:2.2rem}
+}
+.nav-fase{margin-left:auto;font-size:.74rem;font-weight:700;color:#7b8a92;background:#f1f5f6;border-radius:99px;padding:.1rem .55rem}
+.nav a.on .nav-fase{background:#fff;color:var(--pri2)}

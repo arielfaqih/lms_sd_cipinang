@@ -33,6 +33,11 @@
   $$('[data-nav-close]').forEach(function (el) { el.addEventListener('click', function () { setNav(false); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setNav(false); });
 
+  // Tautan yang membuka bagian terlipat (<details>) lalu menggulir ke sana
+  $$('[data-buka]').forEach(function (a) {
+    a.addEventListener('click', function () { var d = document.getElementById(a.getAttribute('data-buka')); if (d) d.open = true; });
+  });
+
   // Perbesar gambar (lightbox) dan layar penuh untuk video/animasi/PDF
   var lb = null;
   function lightbox(src, cap) {
@@ -140,11 +145,13 @@
     var cek = function () {
       fetch('/api/status', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (s) {
         var t = pill.querySelector('.txt');
-        if (s.siap) { pill.dataset.state = 'on'; t.textContent = 'Online · Buat soal AI siap (sisa ' + s.sisa + ')'; }
-        else if (s.online && s.kunciSalah) { pill.dataset.state = 'off'; t.textContent = 'Online · kunci API AI bermasalah, cek Pengaturan'; }
-        else if (s.online && !s.adaKunci) { pill.dataset.state = 'off'; t.textContent = 'Online · Buat soal AI belum diaktifkan'; }
-        else if (s.online) { pill.dataset.state = 'off'; t.textContent = 'Online · batas AI hari ini habis'; }
-        else { pill.dataset.state = 'off'; t.textContent = 'Offline · Buat soal AI butuh internet. Materi & bank soal tetap bisa dipakai'; }
+        var lengkap = pill.classList.contains('big');
+        function tulis(on, singkat, panjang) { pill.dataset.state = on ? 'on' : 'off'; t.textContent = lengkap ? panjang : singkat; pill.title = panjang; }
+        if (s.siap) tulis(true, 'Online · AI siap', 'Online · Buat soal AI siap (sisa ' + s.sisa + ')');
+        else if (s.online && s.kunciSalah) tulis(false, 'Online · cek kunci AI', 'Online · kunci API AI bermasalah, cek Pengaturan');
+        else if (s.online && !s.adaKunci) tulis(false, 'Online', 'Online · Buat soal AI belum diaktifkan');
+        else if (s.online) tulis(false, 'Online · batas AI habis', 'Online · batas AI hari ini habis');
+        else tulis(false, 'Offline', 'Offline · Buat soal AI butuh internet. Materi & bank soal tetap bisa dipakai');
       }).catch(function () { pill.dataset.state = 'off'; pill.querySelector('.txt').textContent = 'Status tidak diketahui'; });
     };
     cek(); setInterval(cek, 60000);

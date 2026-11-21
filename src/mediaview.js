@@ -37,7 +37,9 @@ function renderFigure(m, { caption = true } = {}) {
   if (!m) return '';
   const src = url(m.file);
   const isGif = m.jenis === 'animasi' && /\.gif$/i.test(m.file);
-  const kredit = [m.sumber && `Sumber: ${m.sumber}`, m.lisensi].filter(Boolean).join(' · ');
+  // Kredit media bawaan LMS tidak perlu ditampilkan; kredit media unggahan guru tetap tampil.
+  const bawaan = /^contoh-/.test(m.file || '');
+  const kredit = bawaan ? '' : [m.sumber && `Sumber: ${m.sumber}`, m.lisensi].filter(Boolean).join(' · ');
   const btn = (attrs, ic, label) => html`<button type="button" class="m-act" ${attrs}><span class="ic">${ic}</span>${label}</button>`;
   const IC_ZOOM = '<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
   const IC_FS = '<svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
@@ -80,7 +82,7 @@ function thumb(m) {
   if (!m) return '';
   if (m.jenis === 'gambar' || (m.jenis === 'animasi' && /\.gif$/i.test(m.file))) return html`<img src="${url(m.file)}" alt="" loading="lazy">`;
   if (m.jenis === 'video') return html`<video src="${url(m.file)}#t=1" preload="metadata" muted playsinline></video>`;
-  const label = { audio: 'AUDIO', animasi: 'HTML5', pdf: 'PDF', ppt: 'PPT' }[m.jenis] || '?';
+  const label = { audio: '♪ Audio', animasi: '✦ Interaktif', pdf: 'PDF', ppt: 'PPT' }[m.jenis] || '?';
   return html`<span class="thumb-label t-${m.jenis}">${label}</span>`;
 }
 

@@ -56,19 +56,12 @@ r.get('/kelas/:id', (req, res) => {
   <div class="kelas-hero k${kelas.id}">
     <span class="kelas-num">${kelas.id}</span>
     <div class="ph-text"><p class="crumb"><a href="/">Beranda</a> › Fase ${kelas.fase}</p><h1>Materi ${kelas.nama}</h1>
-      <p class="ph-desc">${edit ? 'Mode mengatur: tambah, ganti nama, urutkan (▲▼), atau hapus bab dan subbab.' : 'Pilih subbab yang akan diajarkan, lalu klik Sajikan untuk menampilkannya di layar kelas.'}</p></div>
+      <p class="ph-desc">${edit ? 'Tambah, ganti nama, urutkan (▲▼), atau hapus bab dan subbab.' : 'Pilih subbab, lalu klik Sajikan.'}</p></div>
     <div class="row">
       ${edit ? html`<a class="btn primary" href="/kelas/${kelas.id}">${icon('check')}Selesai mengatur</a>` : html`<a class="btn" href="/kelas/${kelas.id}?atur=1">${icon('edit')}Atur bab & subbab</a>`}
     </div>
   </div>
-  ${edit ? '' : html`<div class="legend" aria-label="Arti tombol">
-    <span><span class="chip pri">▶ Sajikan</span> tampilkan ke siswa</span>
-    <span><span class="chip">Edit</span> ubah isi &amp; media</span>
-    <span><span class="chip">Soal</span> lihat soal subbab</span>
-    <span><span class="chip">LKPD</span> cetak lembar kerja</span>
-    <span><span class="tag draf">Draf</span> belum selesai disusun</span>
-  </div>`}
-  ${faseB ? html`<div class="atp-box">
+  ${faseB && edit ? html`<div class="atp-box">
     <b>Fase B mencakup kelas 3 dan 4.</b> CP tidak membagi topik per kelas; pembagiannya ditentukan oleh <b>ATP sekolah</b>.
     ${nUlang ? html`Menurut ATP yang ditandai, <b>${nUlang} bab</b> sudah diajarkan di kelas 3 sehingga di kelas 4 menjadi <b>pengulangan/penguatan</b>.` : 'Saat ini semua bab ditandai diajarkan di kelas 4.'}
     ${edit ? html`Atur di kolom <b>Menurut ATP sekolah</b> pada setiap bab di bawah.` : html`<a href="/kelas/${kelas.id}?atur=1">Cocokkan dengan ATP sekolah</a> · <a href="https://guru.kemendikdasmen.go.id/kurikulum/referensi-penerapan/capaian-pembelajaran/sd-sma/ilmu-pengetahuan-alam-dan-sosial-ipas/fase-b/" target="_blank" rel="noopener">Contoh ATP resmi (butuh internet) ↗</a>`}
@@ -101,16 +94,16 @@ r.get('/kelas/:id', (req, res) => {
             <span class="sub-idx" aria-hidden="true">${si + 1}</span>
             <span class="sub-txt">
               <span class="sub-title">${s.judul}</span>
-              <span class="sub-meta">${s.status === 'draf' ? html`<span class="tag draf">Draf</span>` : html`<span class="tag terbit">Siap</span>`}<span>${s.soal} soal siap</span></span>
+              <span class="sub-meta">${s.status === 'draf' ? html`<span class="tag draf">Draf</span>` : ''}<span>${s.soal} soal</span></span>
             </span>
           </div>
           <div class="sub-act">
             ${edit ? html`
               <form method="post" action="/subbab/${s.id}/geser"><input type="hidden" name="arah" value="naik"><button class="btn icon" ${si === 0 ? 'disabled' : ''} title="Naikkan">▲</button></form>
               <form method="post" action="/subbab/${s.id}/geser"><input type="hidden" name="arah" value="turun"><button class="btn icon" ${si === list.length - 1 ? 'disabled' : ''} title="Turunkan">▼</button></form>` : ''}
-            <a class="btn small" href="/subbab/${s.id}/edit">${icon('edit')}Edit</a>
-            <a class="btn small" href="/soal?subbab=${s.id}">${icon('quiz')}Soal</a>
-            <a class="btn small" href="/subbab/${s.id}/lkpd" title="Cetak Lembar Kerja Peserta Didik">${icon('print')}LKPD</a>
+            <a class="btn small ghost" href="/subbab/${s.id}/edit" title="Ubah isi dan media">${icon('edit')}Edit</a>
+            <a class="btn small ghost" href="/soal?subbab=${s.id}" title="Soal subbab ini">${icon('quiz')}Soal</a>
+            <a class="btn small ghost" href="/subbab/${s.id}/lkpd" title="Cetak Lembar Kerja Peserta Didik">${icon('print')}LKPD</a>
             <a class="btn primary" href="/sajikan/${s.id}">${icon('play')}Sajikan</a>
           </div>
         </li>`)}
@@ -196,45 +189,42 @@ r.get('/subbab/:id/edit', (req, res) => {
   if (mediaIds.length) db.all(`SELECT * FROM media WHERE id IN (${mediaIds.map(() => '?').join(',')})`, ...mediaIds).forEach((m) => { mediaMap[m.id] = m; });
   const babs = db.all('SELECT * FROM bab WHERE kelas_id = ? ORDER BY urutan', s.kelas_id);
   const cek = cekTemplat(komps, mediaMap);
+  const masalah = [
+    cek.kurang.length && `Layar belum ada: ${cek.kurang.join(', ')}`,
+    cek.kosong.length && `Belum diisi: ${cek.kosong.join(', ')}`,
+    !cek.adaVisual && 'Belum ada gambar, video, atau animasi',
+    !cek.adaTeks && 'Belum ada teks',
+    cek.padat.length && `Terlalu padat: ${cek.padat.join(', ')}`,
+  ].filter(Boolean);
   const body = html`
   ${pageHead({
     crumb: html`<a href="/kelas/${s.kelas_id}">Kelas ${s.kelas_id}</a> › ${s.bab}`,
     title: html`${s.judul} ${s.status === 'draf' ? html`<span class="tag draf">Draf</span>` : html`<span class="tag terbit">Terbit</span>`}`,
-    desc: 'Susun isi subbab ini. Setiap baris di kanan adalah satu layar yang akan tampil saat menyajikan.',
+    desc: 'Klik Edit pada layar untuk mengubah teks dan medianya.',
     actions: html`<a class="btn" href="/subbab/${s.id}/lkpd">${icon('print')}Cetak LKPD</a><a class="btn primary" href="/sajikan/${s.id}?dari=edit">${icon('play')}Pratinjau / Sajikan</a>`,
   })}
-  <ol class="steps-bar" aria-label="Langkah menyusun">
-    <li>Isi info &amp; tujuan</li><li>Klik <b>Edit</b> di tiap layar</li><li>Pratinjau</li><li>Ubah status ke <b>Terbit</b></li>
-  </ol>
   <div class="grid-edit">
     <section class="card">
       <h2>Info subbab</h2>
       <form method="post" action="/subbab/${s.id}" class="stack">
         <label>Judul subbab<input name="judul" value="${s.judul}" required></label>
         <label>Bab<select name="bab_id">${babs.map((b) => html`<option value="${b.id}" ${b.id === s.bab_id ? 'selected' : ''}>${b.judul}</option>`)}</select></label>
-        <label>Tujuan pembelajaran <small class="muted">(2–3 kalimat; juga dipakai AI saat membuat soal)</small><textarea name="tujuan" rows="4">${s.tujuan}</textarea></label>
+        <label>Tujuan pembelajaran <small class="muted">(2–3 kalimat)</small><textarea name="tujuan" rows="4">${s.tujuan}</textarea></label>
         <fieldset class="seg"><legend>Status</legend>
-          <label><input type="radio" name="status" value="draf" ${s.status === 'draf' ? 'checked' : ''}> Draf <small>(hanya terlihat sebagai draf)</small></label>
+          <label><input type="radio" name="status" value="draf" ${s.status === 'draf' ? 'checked' : ''}> Draf</label>
           <label><input type="radio" name="status" value="terbit" ${s.status === 'terbit' ? 'checked' : ''}> Terbit</label>
         </fieldset>
         <button class="btn primary">Simpan info</button>
       </form>
       <hr>
-      <h3>Pemeriksaan templat</h3>
-      <ul class="checks">
-        <li class="${cek.kurang.length ? 'no' : 'yes'}">${cek.kurang.length ? `Komponen belum ada: ${cek.kurang.join(', ')}` : `Semua ${JUMLAH_TEMPLAT} layar templat ada`}</li>
-        <li class="${cek.kosong.length ? 'no' : 'yes'}">${cek.kosong.length ? `Belum diisi: ${cek.kosong.join(', ')}` : 'Semua komponen sudah diisi'}</li>
-        <li class="${cek.adaVisual ? 'yes' : 'no'}">Minimal satu media visual (gambar/video/animasi)</li>
-        <li class="${cek.adaTeks ? 'yes' : 'no'}">Minimal satu teks singkat</li>
-        <li class="${cek.padat.length ? 'no' : 'yes'}">${cek.padat.length ? `Terlalu padat (>4 poin atau teks panjang): ${cek.padat.join(', ')}` : 'Tiap layar tidak terlalu padat'}</li>
-      </ul>
+      ${masalah.length ? html`<h3>Perlu dilengkapi</h3><ul class="checks">${masalah.map((m) => html`<li class="no">${m}</li>`)}</ul>`
+        : html`<p class="cek-ok">${icon('check')}Templat lengkap: ${JUMLAH_TEMPLAT} layar terisi</p>`}
       <hr>
       <form method="post" action="/subbab/${s.id}/hapus" data-confirm="Hapus subbab ini beserta materi dan soalnya?"><button class="btn danger small">Hapus subbab</button></form>
     </section>
 
     <section class="card">
       <h2>Layar-layar materi (${komps.length})</h2>
-      <p class="muted small">Urutan mengikuti templat: fenomena nyata → gambar/animasi → istilah. Gunakan ▲▼ untuk memindah urutan.</p>
       <ol class="komp-list">
         ${komps.map((k, i) => {
           const j = JENIS_MAP[k.jenis] || { label: k.jenis };
@@ -245,13 +235,13 @@ r.get('/subbab/:id/edit', (req, res) => {
             <div class="komp-body">
               <span class="tag j-${k.jenis}">${j.label}</span>
               <b>${k.judul}</b>
-              <span class="muted small">${k.jenis === 'penilaian' ? 'Menampilkan soal yang disetujui dari bank soal' : (teks ? teks.slice(0, 110) + (teks.length > 110 ? '…' : '') : (m ? '' : 'Belum diisi'))}${k.kegiatan_json ? ' · ada kegiatan kelas' : ''}</span>
+              <span class="komp-ringkas">${k.jenis === 'penilaian' ? 'Soal dari bank soal' : (teks ? teks.slice(0, 90) : (m ? '' : 'Belum diisi'))}</span>
             </div>
             <div class="row komp-tools">
-              <form method="post" action="/komponen/${k.id}/geser"><input type="hidden" name="arah" value="naik"><button class="btn icon" ${i === 0 ? 'disabled' : ''} title="Naikkan">▲</button></form>
-              <form method="post" action="/komponen/${k.id}/geser"><input type="hidden" name="arah" value="turun"><button class="btn icon" ${i === komps.length - 1 ? 'disabled' : ''} title="Turunkan">▼</button></form>
-              <a class="btn small primary" href="/komponen/${k.id}/edit">${icon('edit')}Edit</a>
-              <form method="post" action="/komponen/${k.id}/hapus" data-confirm="Hapus komponen “${k.judul}”?"><button class="btn small danger" title="Hapus">✕</button></form>
+              <form method="post" action="/komponen/${k.id}/geser"><input type="hidden" name="arah" value="naik"><button class="btn icon ghost" ${i === 0 ? 'disabled' : ''} title="Naikkan" aria-label="Naikkan">▲</button></form>
+              <form method="post" action="/komponen/${k.id}/geser"><input type="hidden" name="arah" value="turun"><button class="btn icon ghost" ${i === komps.length - 1 ? 'disabled' : ''} title="Turunkan" aria-label="Turunkan">▼</button></form>
+              <a class="btn small" href="/komponen/${k.id}/edit">${icon('edit')}Edit</a>
+              <form method="post" action="/komponen/${k.id}/hapus" data-confirm="Hapus komponen “${k.judul}”?"><button class="btn icon ghost hapus" title="Hapus layar" aria-label="Hapus layar">✕</button></form>
             </div>
           </li>`;
         })}
@@ -260,7 +250,6 @@ r.get('/subbab/:id/edit', (req, res) => {
         <select name="jenis" aria-label="Jenis komponen">${JENIS_KOMPONEN.map((j) => html`<option value="${j.key}">${j.label}</option>`)}</select>
         <button class="btn primary small">+ Tambah layar</button>
       </form>
-      <p class="muted small">Tip: satu konsep per layar. Jika penjelasan konsep panjang, tambah layar “Penjelasan Konsep” kedua daripada memadatkan satu layar.</p>
     </section>
   </div>`;
   res.send(page({ title: 'Edit ' + s.judul, user: req.user, body, active: 'k' + s.kelas_id, pesan: req.query.pesan }));
@@ -326,7 +315,7 @@ r.get('/komponen/:id/edit', (req, res) => {
     title: html`Layar ${posisi + 1}: ${k.judul}`,
     actions: html`<a class="btn" href="/subbab/${s.id}/edit">← Kembali ke daftar layar</a>`,
   })}
-  <div class="hint-box"><b>${j.label}.</b> ${j.saran} <span class="muted">Dasar: ${j.dasar}.</span></div>
+  <div class="hint-box"><b>${j.label}.</b> ${j.saran}</div>
 
   ${k.jenis === 'penilaian' ? html`<section class="card">
     <p>Layar penilaian otomatis menampilkan soal <b>yang sudah disetujui</b> di bank soal untuk subbab ini. Guru bisa membuka jawaban satu per satu saat menyajikan.</p>
@@ -359,7 +348,7 @@ r.get('/komponen/:id/edit', (req, res) => {
           <textarea name="isi_html" hidden>${k.isi_html}</textarea>
           <div class="rte-meter" data-meter></div>
         </div>
-        <p class="muted small">Kalimat pendek. Istilah baru diberi arti sederhana (tandai dengan tombol <i>Istilah</i>). Maksimal 4 poin per layar.</p>
+        <p class="muted small">Kalimat pendek, paling banyak 4 poin.</p>
       </div>
 
       <div>
@@ -373,16 +362,15 @@ r.get('/komponen/:id/edit', (req, res) => {
               return items.length ? html`<optgroup label="${label}">${items.map((m) => html`<option value="${m.id}" ${m.id === k.media_id ? 'selected' : ''}>${m.judul}</option>`)}</optgroup>` : '';
             })}
           </select>
-          <a class="btn small" href="#unggah">Unggah media baru</a>
+          <a class="btn small" href="#unggah" data-buka="unggah">Unggah media baru</a>
         </div>
-        <p class="muted small">Media tampil di samping teks (teks dekat gambarnya). Hindari gambar dekoratif yang tidak membantu konsep.</p>
       </div>
     </section>
 
     <section class="card stack">
-      <label class="switch"><input type="checkbox" id="kegOn" ${adaKeg || kegDefault ? 'checked' : ''}> <b>Tambahkan kegiatan kelas</b> <span class="muted small">(prediksi, langkah pengamatan, pertanyaan bertahap, kunci diskusi tersembunyi)</span></label>
+      <label class="switch"><input type="checkbox" id="kegOn" ${adaKeg || kegDefault ? 'checked' : ''}> <b>Tambahkan kegiatan kelas</b> <span class="muted small">(percobaan &amp; diskusi)</span></label>
       <div id="kegBox" class="stack" ${adaKeg || kegDefault ? '' : 'hidden'}>
-        <label>Ayo memprediksi <small class="muted">(pertanyaan prediksi untuk siswa)</small><textarea id="kPrediksi" rows="2">${keg.prediksi || ''}</textarea></label>
+        <label>Ayo memprediksi<textarea id="kPrediksi" rows="2">${keg.prediksi || ''}</textarea></label>
         <label>Langkah pengamatan <small class="muted">(satu langkah per baris)</small><textarea id="kLangkah" rows="4">${(keg.langkah || []).join('\n')}</textarea></label>
         <label>Cara mencatat hasil<textarea id="kCatat" rows="2">${keg.catat || ''}</textarea></label>
         <div>
@@ -409,8 +397,8 @@ r.get('/komponen/:id/edit', (req, res) => {
     </form>
   </dialog>
 
-  <section class="card" id="unggah">
-    <h2>Unggah media baru untuk layar ini</h2>
+  <details class="card" id="unggah">
+    <summary><b>Unggah media baru untuk layar ini</b></summary>
     <form method="post" action="/media" enctype="multipart/form-data" class="stack" data-upload>
       <input type="hidden" name="pasang_ke" value="${k.id}">
       <label>Berkas<input type="file" name="berkas" required accept=".jpg,.jpeg,.png,.svg,.gif,.webp,.mp4,.webm,.mp3,.wav,.ogg,.m4a,.pdf,.ppt,.pptx,.html,.htm"></label>
@@ -419,7 +407,7 @@ r.get('/komponen/:id/edit', (req, res) => {
       <button class="btn primary">Unggah & pasang</button>
       <progress hidden max="100" value="0"></progress>
     </form>
-  </section>`}
+  </details>`}
   <script src="/static/js/editor.js"></script>`;
   res.send(page({ title: 'Edit layar', user: req.user, body, active: 'k' + s.kelas_id, pesan: req.query.pesan, galat: req.query.galat }));
 });

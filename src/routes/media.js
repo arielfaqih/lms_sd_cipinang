@@ -93,8 +93,7 @@ r.get('/media', (req, res) => {
   const body = html`
   ${pageHead({
     title: 'Pustaka Media',
-    desc: html`Kumpulan gambar, video, animasi, audio, dan dokumen untuk materi. Satu media bisa dipasang di banyak layar. <span class="muted">(${semua} media · ${fmtUkuran(total)})</span>`,
-    actions: html`<a class="btn primary" href="/media?unggah=1#unggah">${icon('upload')}Unggah media</a>`,
+    desc: html`${semua} media · ${fmtUkuran(total)}. Satu media bisa dipakai di banyak layar.`,
   })}
   <details class="card upload-card" id="unggah" ${req.query.unggah ? 'open' : ''}>
     <summary><b>${icon('upload')}Unggah media baru</b></summary>
@@ -111,7 +110,7 @@ r.get('/media', (req, res) => {
   </details>
   <nav class="type-tabs" aria-label="Saring jenis media">
     <a href="${tabUrl('')}" class="${jenis ? '' : 'on'}">Semua (${semua})</a>
-    ${Object.entries(JENIS_MEDIA).map(([k, v]) => html`<a href="${tabUrl(k)}" class="${k === jenis ? 'on' : ''}">${v} (${jumlah[k] || 0})</a>`)}
+    ${Object.entries(JENIS_MEDIA).filter(([k]) => jumlah[k] || k === jenis).map(([k, v]) => html`<a href="${tabUrl(k)}" class="${k === jenis ? 'on' : ''}">${v} (${jumlah[k] || 0})</a>`)}
   </nav>
   <form class="row filter" method="get" style="margin-bottom:1rem">
     ${jenis ? html`<input type="hidden" name="jenis" value="${jenis}">` : ''}
@@ -121,8 +120,8 @@ r.get('/media', (req, res) => {
   ${!list.length ? html`<div class="card empty">Belum ada media${jenis || q ? ' yang cocok' : ''}. <a href="/media?unggah=1#unggah">Unggah media</a>.</div>` : ''}
   <div class="media-grid">
     ${list.map((m) => html`<a class="media-card" href="/media/${m.id}">
-      <span class="mc-thumb">${thumb(m)}<span class="mc-type">${JENIS_MEDIA[m.jenis]}</span></span>
-      <span class="mc-info"><b>${m.judul}</b><small>${fmtUkuran(m.ukuran)} · ${m.dipakai ? `dipakai di ${m.dipakai} layar` : 'belum dipakai'}</small></span>
+      <span class="mc-thumb">${thumb(m)}${m.jenis === 'gambar' ? '' : html`<span class="mc-type">${JENIS_MEDIA[m.jenis]}</span>`}</span>
+      <span class="mc-info"><b>${m.judul}</b><small>${m.dipakai ? `Dipakai di ${m.dipakai} layar` : 'Belum dipakai'}</small></span>
     </a>`)}
   </div>`;
   res.send(page({ title: 'Pustaka Media', user: req.user, body, active: 'media', pesan: req.query.pesan, galat: req.query.galat }));

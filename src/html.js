@@ -37,7 +37,7 @@ const isiBawaan = (jenis) => (jenis === 'refleksi' ? REFLEKSI_BAWAAN : '');
 
 const JENIS_SOAL = { pg: 'Pilihan ganda', isian: 'Isian singkat', bs: 'Benar-salah', uraian: 'Uraian' };
 const KESULITAN = { mudah: 'Mudah', sedang: 'Sedang', sulit: 'Sulit' };
-const JENIS_MEDIA = { gambar: 'Gambar', video: 'Video', audio: 'Audio', animasi: 'Animasi HTML5', pdf: 'PDF', ppt: 'PPT' };
+const JENIS_MEDIA = { gambar: 'Gambar', video: 'Video', audio: 'Audio', animasi: 'Animasi', pdf: 'PDF', ppt: 'PPT' };
 
 const ICON = {
   home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>',
@@ -73,7 +73,8 @@ function page({ title, user, body, active = '', head = '', bodyClass = '', pesan
   const sekolah = db.setting('nama_sekolah');
   const isAdmin = user && user.role === 'admin';
   const item = (key, href, ic, label) => html`<a href="${href}" class="${active === key ? 'on' : ''}" ${active === key ? raw('aria-current="page"') : ''}>${icon(ic)}<span>${label}</span></a>`;
-  const kelasItem = (n) => html`<a href="/kelas/${n}" class="${active === 'k' + n ? 'on' : ''}" ${active === 'k' + n ? raw('aria-current="page"') : ''}><span class="nav-num k${n}">${n}</span><span>Kelas ${n}</span></a>`;
+  const fase = user ? Object.fromEntries(db.all('SELECT id, fase FROM kelas').map((k) => [k.id, k.fase])) : {};
+  const kelasItem = (n) => html`<a href="/kelas/${n}" class="${active === 'k' + n ? 'on' : ''}" ${active === 'k' + n ? raw('aria-current="page"') : ''}><span class="nav-num k${n}">${n}</span><span>Kelas ${n}</span>${fase[n] ? html`<span class="nav-fase">Fase ${fase[n]}</span>` : ''}</a>`;
   const side = user ? html`
   <aside class="side" id="nav" aria-label="Menu utama">
     <a class="brand" href="/"><img src="/static/img/logo.svg" alt="" width="38" height="38"><span><b>LMS IPAS</b><small>Bagian IPA · ${sekolah}</small></span></a>
@@ -98,7 +99,7 @@ function page({ title, user, body, active = '', head = '', bodyClass = '', pesan
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} · LMS IPAS ${esc(sekolah)}</title>
 <link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/static/css/app.css?v=7">
+<link rel="stylesheet" href="/static/css/app.css?v=9">
 ${head}
 </head><body class="${esc(bodyClass)}${user ? ' has-side' : ''}">
 ${side}
@@ -117,7 +118,7 @@ ${galat ? html`<div class="flash err" role="alert"><b>!</b><span>${galat}</span>
 ${fmt(body)}
 </main>
 </div>
-<script src="/static/js/app.js?v=7"></script>
+<script src="/static/js/app.js?v=8"></script>
 </body></html>`;
 }
 

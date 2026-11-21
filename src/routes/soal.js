@@ -48,10 +48,10 @@ r.get('/soal', (req, res) => {
   const body = html`
   <div class="page-head">
     <div class="ph-text"><h1>Bank Soal${sub ? html` <small class="muted">· ${sub.judul}</small>` : ''}</h1>
-      <p class="ph-desc">Tempat menyimpan, memeriksa, dan mencetak soal. ${list.length} soal ditampilkan.</p></div>
+      <p class="ph-desc">${list.length} soal. Centang soal untuk ditayangkan, dicetak, atau dijadikan Google Form.</p></div>
     <div class="row ph-actions">${f.subbab && list.some((q) => q.status === 'disetujui') ? html`<a class="btn" href="/soal/tayang?subbab=${f.subbab}">${icon('play')}Tayangkan soal subbab ini</a>` : ''}<a class="btn" href="/soal/baru${f.subbab ? '?subbab=' + f.subbab : ''}">+ Tulis manual</a><a class="btn primary" href="/soal/buat${f.subbab ? '?subbab=' + f.subbab : ''}">${icon('spark')}Buat dengan AI</a></div>
   </div>
-  <div class="tip"><b>Cara</b><span>Soal baru berstatus <span class="tag draf">Draf</span>. Periksa isi &amp; kuncinya, lalu klik <b>✓ Setujui</b>. Untuk memakai soal: <b>centang</b> soal, lalu pilih <b>▶ Tayangkan</b> (tampil satu per satu di layar kelas), <b>Ekspor / cetak</b> (kertas/Word), atau <b>Google Form</b> (kuis online).</span></div>
+  ${list.some((q) => q.status === 'draf') ? html`<div class="tip"><span>Soal <span class="tag draf">Draf</span> perlu diperiksa, lalu klik <b>✓ Setujui</b> sebelum dipakai.</span></div>` : ''}
   <form class="filter card" method="get">
     <input name="q" value="${f.q}" placeholder="Cari kata dalam soal" aria-label="Cari">
     <select name="kelas" aria-label="Kelas"><option value="">Semua kelas</option>${[4, 5, 6].map((k) => html`<option value="${k}" ${k === f.kelas ? 'selected' : ''}>Kelas ${k}</option>`)}</select>
@@ -76,19 +76,17 @@ r.get('/soal', (req, res) => {
     ${list.map((q) => html`<li class="card soal ${q.status} ${baru.has(q.id) ? 'baru' : ''}">
       <div class="soal-top">
         <label class="pick"><input type="checkbox" name="id" value="${q.id}" ${baru.has(q.id) ? 'checked' : ''}><span class="sr">Pilih</span></label>
-        <span class="tag ${q.status}">${q.status === 'draf' ? 'Draf' : 'Disetujui'}</span>
-        <span class="tag">${JENIS_SOAL[q.jenis]}</span><span class="tag">${KESULITAN[q.kesulitan]}</span>
-        <span class="tag ${q.asal}">${q.asal === 'ai' ? 'AI' : 'Manual'}</span>
-        <span class="muted small">Kelas ${q.kelas_id} · ${q.subbab}</span>
+        ${q.status === 'draf' ? html`<span class="tag draf">Draf</span>` : ''}${q.asal === 'ai' ? html`<span class="tag ai">AI</span>` : ''}
+        <span class="muted small">${JENIS_SOAL[q.jenis]} · ${KESULITAN[q.kesulitan]} · Kelas ${q.kelas_id} · ${q.subbab}</span>
       </div>
       <p class="q">${q.pertanyaan}</p>
       ${q.jenis === 'pg' ? html`<ol class="opsi" type="A">${opsiArr(q).map((o, i) => html`<li class="${'ABCD'[i] === q.kunci ? 'benar' : ''}">${o}</li>`)}</ol>` : ''}
-      <p class="small"><b>Kunci:</b> ${kunciTeks(q)}${q.pembahasan ? html` <span class="muted">— ${q.pembahasan}</span>` : ''}</p>
-      <div class="row">
-        <a class="btn small primary" href="/soal/tayang?ids=${q.id}" title="Tayangkan soal ini di layar kelas">${icon('play')}Tayangkan</a>
-        <a class="btn small" href="/soal/${q.id}/edit">${icon('edit')}Edit</a>
-        ${q.status === 'draf' ? html`<button class="btn small" formaction="/soal/${q.id}/setujui">✓ Setujui</button>` : ''}
-        <button class="btn small danger" formaction="/soal/${q.id}/hapus" data-confirm="Hapus soal ini?">Hapus</button>
+      ${q.jenis === 'pg' ? '' : html`<p class="small"><b>Kunci:</b> ${kunciTeks(q)}</p>`}
+      <div class="row soal-act">
+        ${q.status === 'draf' ? html`<button class="btn small primary" formaction="/soal/${q.id}/setujui">✓ Setujui</button>` : ''}
+        <a class="btn small ghost" href="/soal/tayang?ids=${q.id}" title="Tayangkan soal ini di layar kelas">${icon('play')}Tayangkan</a>
+        <a class="btn small ghost" href="/soal/${q.id}/edit">${icon('edit')}Edit</a>
+        <button class="btn icon ghost hapus" formaction="/soal/${q.id}/hapus" data-confirm="Hapus soal ini?" title="Hapus soal" aria-label="Hapus soal">✕</button>
       </div>
     </li>`)}
     </ol>
