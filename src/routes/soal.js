@@ -5,7 +5,7 @@ const { kirimPdf } = require('../pdf');
 const db = require('../db');
 const ai = require('../ai');
 const net = require('../net');
-const { html, page, icon, esc, JENIS_SOAL, KESULITAN } = require('../html');
+const { html, raw, page, icon, esc, JENIS_SOAL, KESULITAN } = require('../html');
 
 const r = express.Router();
 const toInt = (v) => parseInt(v, 10) || 0;
@@ -45,6 +45,20 @@ r.get('/soal', (req, res) => {
   const list = db.all(`SELECT q.*, s.judul AS subbab, b.kelas_id FROM soal q JOIN subbab s ON s.id = q.subbab_id JOIN bab b ON b.id = s.bab_id
     ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY q.status = 'disetujui', b.kelas_id, s.judul, q.id DESC LIMIT 500`, ...p);
   const baru = new Set(ids(req.query.baru));
+  // Kartu penyaring: per kelas dan per materi (subbab). Saringan jenis, status, dan kata kunci tetap berlaku.
+  const wLain = []; const pLain = [];
+  if (f.jenis) { wLain.push('q.jenis = ?'); pLain.push(f.jenis); }
+  if (f.status) { wLain.push('q.status = ?'); pLain.push(f.status); }
+  if (f.q) { wLain.push('(q.pertanyaan LIKE ? OR q.pembahasan LIKE ?)'); pLain.push(`%${f.q}%`, `%${f.q}%`); }
+  const syarat = wLain.length ? 'AND ' + wLain.join(' AND ') : '';
+  const kelasAktif = f.kelas || (f.subbab ? (db.get('SELECT b.kelas_id FROM subbab s JOIN bab b ON b.id = s.bab_id WHERE s.id = ?', f.subbab) || {}).kelas_id : 0) || 0;
+  const perKelas = db.all('SELECT id, fase FROM kelas ORDER BY id');
+  perKelas.forEach((k) => { k.n = db.get(`SELECT COUNT(*) AS n FROM soal q JOIN subbab s ON s.id = q.subbab_id JOIN bab b ON b.id = s.bab_id WHERE b.kelas_id = ? ${syarat}`, k.id, ...pLain).n; });
+  const totalSemua = perKelas.reduce((a, k) => a + k.n, 0);
+  const perMateri = kelasAktif ? db.all(`SELECT s.id, s.judul, b.judul AS bab,
+      (SELECT COUNT(*) FROM soal q WHERE q.subbab_id = s.id ${syarat}) AS n
+    FROM subbab s JOIN bab b ON b.id = s.bab_id WHERE b.kelas_id = ? ORDER BY b.urutan, s.urutan`, ...pLain, kelasAktif) : [];
+  const urlSaring = (ubah) => '/soal?' + new URLSearchParams(Object.entries({ ...f, ...ubah }).filter(([, v]) => v)).toString();
   const sub = f.subbab ? db.get('SELECT judul FROM subbab WHERE id = ?', f.subbab) : null;
   const body = html`
   <div class="page-head">
@@ -53,11 +67,23 @@ r.get('/soal', (req, res) => {
     <div class="row ph-actions">${f.subbab && list.some((q) => q.status === 'disetujui') ? html`<a class="btn" href="/soal/tayang?subbab=${f.subbab}">${icon('play')}Tayangkan soal subbab ini</a>` : ''}<a class="btn" href="/soal/baru${f.subbab ? '?subbab=' + f.subbab : ''}">+ Tulis manual</a><a class="btn primary" href="/soal/buat${f.subbab ? '?subbab=' + f.subbab : ''}">${icon('spark')}Buat dengan AI</a></div>
   </div>
   ${list.some((q) => q.status === 'draf') ? html`<div class="tip"><span>Soal <span class="tag draf">Draf</span> perlu diperiksa, lalu klik <b>✓ Setujui</b> sebelum dipakai.</span></div>` : ''}
+  <nav class="kls-grid" aria-label="Saring menurut kelas">
+    <a href="${urlSaring({ kelas: 0, subbab: 0 })}" class="kls semua ${kelasAktif ? '' : 'on'}"><span class="kls-no">📚</span><span class="kls-txt"><b>Semua kelas</b><small>${totalSemua} soal</small></span></a>
+    ${perKelas.map((k) => html`<a href="${urlSaring({ kelas: k.id, subbab: 0 })}" class="kls k${k.id} ${kelasAktif === k.id ? 'on' : ''}">
+      <span class="kls-no">${k.id}</span><span class="kls-txt"><b>Kelas ${k.id}</b><small>Fase ${k.fase} · ${k.n} soal</small></span></a>`)}
+  </nav>
+  ${kelasAktif ? html`<section class="mtr-wrap k${kelasAktif}" aria-label="Saring menurut materi">
+    <p class="mtr-judul">Materi kelas ${kelasAktif}</p>
+    <nav class="mtr-grid">
+      <a href="${urlSaring({ kelas: kelasAktif, subbab: 0 })}" class="mtr ${f.subbab ? '' : 'on'}"><b>Semua materi</b><small>${perMateri.reduce((a, m) => a + m.n, 0)} soal</small></a>
+      ${perMateri.map((m) => html`<a href="${urlSaring({ kelas: kelasAktif, subbab: m.id })}" class="mtr ${f.subbab === m.id ? 'on' : ''} ${m.n ? '' : 'kosong'}" title="${m.bab}">
+        <b>${m.judul}</b><small>${m.n ? `${m.n} soal` : 'Belum ada soal'}</small></a>`)}
+    </nav>
+  </section>` : ''}
   <form class="filter card" method="get">
     <input name="q" value="${f.q}" placeholder="Cari kata dalam soal" aria-label="Cari">
-    <select name="kelas" aria-label="Kelas"><option value="">Semua kelas</option>${[4, 5, 6].map((k) => html`<option value="${k}" ${k === f.kelas ? 'selected' : ''}>Kelas ${k}</option>`)}</select>
-    ${pilihanSubbab(f.subbab, { kosong: 'Semua subbab' })}
-    <select name="jenis" aria-label="Jenis"><option value="">Semua jenis</option>${Object.entries(JENIS_SOAL).map(([k, v]) => html`<option value="${k}" ${k === f.jenis ? 'selected' : ''}>${v}</option>`)}</select>
+    ${kelasAktif ? html`<input type="hidden" name="kelas" value="${kelasAktif}">` : ''}${f.subbab ? html`<input type="hidden" name="subbab" value="${f.subbab}">` : ''}
+    <select name="jenis" aria-label="Jenis soal"><option value="">Semua jenis</option>${Object.entries(JENIS_SOAL).map(([k, v]) => html`<option value="${k}" ${k === f.jenis ? 'selected' : ''}>${v}</option>`)}</select>
     <select name="status" aria-label="Status"><option value="">Semua status</option><option value="draf" ${f.status === 'draf' ? 'selected' : ''}>Draf (perlu ditinjau)</option><option value="disetujui" ${f.status === 'disetujui' ? 'selected' : ''}>Disetujui</option></select>
     <button class="btn">Saring</button>
   </form>

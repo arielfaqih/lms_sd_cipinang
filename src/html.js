@@ -99,7 +99,7 @@ function page({ title, user, body, active = '', head = '', bodyClass = '', pesan
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} · LMS IPAS ${esc(sekolah)}</title>
 <link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/static/css/app.css?v=9">
+<link rel="stylesheet" href="/static/css/app.css?v=11">
 ${head}
 </head><body class="${esc(bodyClass)}${user ? ' has-side' : ''}">
 ${side}

@@ -925,3 +925,30 @@ body.is-remote .wrap{max-width:560px;padding:.8rem .8rem 3rem}
 }
 .nav-fase{margin-left:auto;font-size:.74rem;font-weight:700;color:#7b8a92;background:#f1f5f6;border-radius:99px;padding:.1rem .55rem}
 .nav a.on .nav-fase{background:#fff;color:var(--pri2)}
+
+/* Bank soal: kartu penyaring per kelas dan per materi */
+.kls-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;margin-bottom:.8rem}
+.kls{--kc:#0f766e;display:flex;align-items:center;gap:.75rem;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:.75rem .9rem;
+  text-decoration:none;color:var(--ink);box-shadow:var(--shadow);transition:border-color .15s,transform .15s}
+.kls.k4{--kc:var(--k4)}.kls.k5{--kc:var(--k5)}.kls.k6{--kc:var(--k6)}
+.kls:hover{border-color:var(--kc);transform:translateY(-2px)}
+.kls-no{flex:0 0 2.6rem;height:2.6rem;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:1.3rem;color:#fff;background:var(--kc)}
+.kls.semua .kls-no{background:#e6f2f0;font-size:1.2rem}
+.kls-txt{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.kls-txt b{font-size:1.05rem}
+.kls-txt small{color:var(--muted);font-weight:600;font-size:.84rem}
+.kls.on{border-color:var(--kc);background:color-mix(in srgb,var(--kc) 8%,#fff);box-shadow:0 0 0 3px color-mix(in srgb,var(--kc) 22%,transparent)}
+.mtr-wrap{--kc:var(--pri);background:#fff;border:1px solid var(--line);border-radius:16px;padding:.8rem .9rem .9rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.mtr-wrap.k4{--kc:var(--k4)}.mtr-wrap.k5{--kc:var(--k5)}.mtr-wrap.k6{--kc:var(--k6)}
+.mtr-judul{margin:0 0 .55rem;font-size:.78rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.mtr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,13.5rem),1fr));gap:.5rem}
+.mtr{display:flex;flex-direction:column;gap:.1rem;border:1.5px solid var(--line);border-radius:12px;padding:.55rem .75rem;text-decoration:none;color:var(--ink);background:#fbfcfc}
+.mtr b{font-size:.92rem;line-height:1.3}
+.mtr small{color:var(--muted);font-size:.8rem;font-weight:600}
+.mtr:hover{border-color:var(--kc)}
+.mtr.on{border-color:var(--kc);background:color-mix(in srgb,var(--kc) 9%,#fff)}
+.mtr.on small{color:var(--kc)}
+.mtr.kosong{opacity:.6}
+@media (max-width:900px){.kls-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.kls-grid{gap:.5rem}.kls{padding:.6rem .7rem;gap:.55rem}.kls-no{flex-basis:2.2rem;height:2.2rem;font-size:1.1rem}.kls-txt b{font-size:.95rem}
+  .mtr-grid{grid-template-columns:1fr 1fr}.mtr{padding:.5rem .6rem}.mtr b{font-size:.85rem}}
