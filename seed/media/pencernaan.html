@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Perjalanan Makanan: Sistem Pencernaan</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#fff7ed;color:#7c2d12}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #fed7aa;background:#fff;border-radius:12px;padding:7px 12px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#7c2d12}
+  button.main{background:#ea580c;border-color:#ea580c;color:#fff}
+  .langkah{display:flex;gap:4px;flex-wrap:wrap}
+  .langkah button{font-size:clamp(11px,1.5vw,14px);padding:4px 8px}
+  .langkah button.on{background:#7c2d12;border-color:#7c2d12;color:#fff}
+  .isi{flex:1;min-height:0;display:flex;gap:12px}
+  svg{flex:1;min-width:0;width:100%;height:100%}
+  .organ{transition:filter .3s,opacity .3s}
+  .redup .organ{opacity:.45}
+  .redup .organ.on{opacity:1;filter:drop-shadow(0 0 10px #f97316)}
+  .panel{flex:1.1;min-width:0;display:flex;flex-direction:column;gap:8px;overflow:auto}
+  .panel h2{margin:0;font-size:clamp(20px,3vw,30px)}
+  .chip{display:inline-block;border-radius:99px;padding:3px 10px;font-weight:800;font-size:clamp(12px,1.6vw,15px);margin-right:4px}
+  .mek{background:#dbeafe;color:#1e40af}.kim{background:#fce7f3;color:#9d174d}.wkt{background:#fef3c7;color:#92400e}
+  .box{background:#fff;border:2px solid #fed7aa;border-radius:14px;padding:9px 12px;font-size:clamp(13px,1.9vw,18px);line-height:1.42;color:#1f2937}
+  @media (max-width:700px){.isi{flex-direction:column}}
+</style></head>
+<body><div class="app">
+  <div class="row"><button class="main" id="lanjut">🍙 Telan makanan ›</button><button id="ulang">↺ Ulangi</button><div class="langkah" id="langkah"></div></div>
+  <div class="isi">
+    <svg viewBox="0 0 420 560" id="tubuh" aria-label="Organ pencernaan">
+      <path d="M110 150 Q210 110 310 150 L330 520 Q210 556 90 520Z" fill="#ffe4d6" stroke="#e7a98a" stroke-width="3"/>
+      <circle cx="210" cy="70" r="55" fill="#fcd5bf" stroke="#e7a98a" stroke-width="3"/>
+      <g class="organ" data-i="0"><path d="M185 92 Q210 108 235 92" stroke="#be123c" stroke-width="8" fill="#fda4af"/></g>
+      <g class="organ" data-i="1"><path d="M210 110 V235" stroke="#f97316" stroke-width="14" stroke-linecap="round"/></g>
+      <g class="organ" data-i="hati"><path d="M120 240 Q170 215 215 240 Q200 285 130 280Z" fill="#92400e" opacity=".85"/><text x="120" y="232" font-size="14" fill="#78350f" font-weight="700">hati</text></g>
+      <g class="organ" data-i="2"><path d="M210 235 Q285 225 285 275 Q285 320 230 315 Q200 312 205 290" fill="#fb7185" stroke="#be123c" stroke-width="4"/></g>
+      <g class="organ" data-i="pankreas"><path d="M180 318 Q215 305 255 322" stroke="#facc15" stroke-width="12" stroke-linecap="round"/></g>
+      <g class="organ" data-i="4"><path d="M140 470 V350 Q140 330 165 330 H255 Q280 330 280 350 V470" fill="none" stroke="#a16207" stroke-width="20" stroke-linecap="round"/></g>
+      <g class="organ" data-i="3"><path d="M205 330 C170 340 165 360 200 368 C240 376 245 392 205 400 C165 408 165 425 205 430 C245 436 240 452 210 458" fill="none" stroke="#fda4af" stroke-width="13" stroke-linecap="round"/></g>
+      <g class="organ" data-i="5"><path d="M280 470 Q262 505 215 505" fill="none" stroke="#a16207" stroke-width="14" stroke-linecap="round"/><circle cx="208" cy="512" r="8" fill="#78350f"/></g>
+      <circle id="makanan" r="11" fill="#22c55e" stroke="#14532d" stroke-width="3" cx="210" cy="60"/>
+    </svg>
+    <div class="panel">
+      <h2 id="judul"></h2>
+      <div id="chips"></div>
+      <div class="box" id="ket"></div>
+      <div class="box" id="tips" style="border-color:#bbf7d0"><b>Jaga pencernaanmu:</b> makan sayur dan buah (berserat), minum air putih yang cukup, makan teratur, mengunyah sampai halus, dan cuci tangan sebelum makan.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var L=[
+    {n:'1. Mulut',xy:[[210,60],[210,96]],m:'Gigi memotong dan mengunyah makanan menjadi kecil-kecil.',k:'Air liur membasahi makanan dan mulai mengubah nasi (zat tepung) menjadi gula.',w:'± beberapa menit',t:'Lidah membantu membolak-balik dan menelan makanan.'},
+    {n:'2. Kerongkongan',xy:[[210,110],[210,235]],m:'Otot kerongkongan meremas-remas dan mendorong makanan ke lambung (gerak peristaltik).',k:'',w:'± beberapa detik',t:'Kerongkongan tidak mencerna; tugasnya menyalurkan makanan.'},
+    {n:'3. Lambung',xy:[[215,250],[260,265],[255,295],[225,305]],m:'Dinding lambung mengaduk-aduk makanan.',k:'Asam lambung dan enzim mencerna protein dan membunuh kuman. Makanan menjadi seperti bubur.',w:'± 2–4 jam',t:'Makan teratur membantu mencegah sakit maag.'},
+    {n:'4. Usus halus',xy:[[205,330],[175,350],[215,372],[175,400],[215,430],[210,458]],m:'Usus halus terus mendorong bubur makanan.',k:'Getah dari hati (empedu) dan pankreas membantu mencerna. Sari makanan diserap ke dalam darah.',w:'± beberapa jam',t:'Usus halus sangat panjang, sekitar 6 meter pada orang dewasa, tetapi tergulung rapi di perut.'},
+    {n:'5. Usus besar',xy:[[140,460],[140,340],[270,340],[280,470]],m:'',k:'Air dari sisa makanan diserap kembali. Sisa yang tidak dapat dicerna menjadi feses (tinja).',w:'± 1–2 hari',t:'Makanan berserat dan cukup minum mencegah sembelit (susah buang air besar).'},
+    {n:'6. Anus',xy:[[280,480],[250,505],[208,512]],m:'',k:'',w:'',t:'Anus adalah ujung saluran pencernaan, tempat sisa makanan (feses) dikeluarkan dari tubuh.'}
+  ];
+  var cur=-1,anim=null,svg=document.getElementById('tubuh'),food=document.getElementById('makanan');
+  var lk=document.getElementById('langkah');
+  L.forEach(function(l,i){var b=document.createElement('button');b.textContent=l.n.slice(3);b.onclick=function(){ke(i,false);};lk.appendChild(b);});
+  function jalan(pts,durasi,selesai){if(anim)cancelAnimationFrame(anim);var t0=null;
+    function f(now){if(!t0)t0=now;var t=Math.min(1,(now-t0)/durasi),n=pts.length-1;
+      if(n<1){food.setAttribute('cx',pts[0][0]);food.setAttribute('cy',pts[0][1]);selesai&&selesai();return;}
+      var s=t*n,i=Math.min(Math.floor(s),n-1),u=s-i;food.setAttribute('cx',pts[i][0]+(pts[i+1][0]-pts[i][0])*u);food.setAttribute('cy',pts[i][1]+(pts[i+1][1]-pts[i][1])*u);
+      if(t<1)anim=requestAnimationFrame(f);else selesai&&selesai();}
+    anim=requestAnimationFrame(f);}
+  function ke(i,gerak){cur=i;var l=L[i];svg.classList.add('redup');
+    Array.prototype.forEach.call(document.querySelectorAll('.organ'),function(o){var d=o.dataset.i;o.classList.toggle('on',d===String(i)||(i===3&&(d==='hati'||d==='pankreas')));});
+    Array.prototype.forEach.call(lk.children,function(b,k){b.classList.toggle('on',k===i);});
+    document.getElementById('judul').textContent=l.n;
+    document.getElementById('chips').innerHTML=(l.m?'<span class="chip mek">pencernaan mekanik</span>':'')+(l.k?'<span class="chip kim">pencernaan kimiawi</span>':'')+(l.w?'<span class="chip wkt">⏱ '+l.w+'</span>':'');
+    document.getElementById('ket').innerHTML=(l.m?'<p style="margin:0 0 6px">💪 '+l.m+'</p>':'')+(l.k?'<p style="margin:0 0 6px">🧪 '+l.k+'</p>':'')+'<p style="margin:0">💡 '+l.t+'</p>';
+    food.setAttribute('fill',i>=4?'#a16207':i>=2?'#facc15':'#22c55e');food.setAttribute('r',i>=2?9:11);
+    if(gerak)jalan(l.xy,1600);else{food.setAttribute('cx',l.xy[l.xy.length-1][0]);food.setAttribute('cy',l.xy[l.xy.length-1][1]);}
+    var b=document.getElementById('lanjut');b.textContent=i===L.length-1?'🎉 Selesai! Ulangi ↺':'Lanjut ke '+L[i+1].n.slice(3)+' ›';}
+  document.getElementById('lanjut').onclick=function(){if(cur>=L.length-1){mulai();return;}ke(cur+1,true);};
+  document.getElementById('ulang').onclick=mulai;
+  function mulai(){cur=-1;svg.classList.remove('redup');food.setAttribute('cx',210);food.setAttribute('cy',60);food.setAttribute('fill','#22c55e');
+    Array.prototype.forEach.call(lk.children,function(b){b.classList.remove('on');});
+    document.getElementById('judul').textContent='Perjalanan makanan';document.getElementById('chips').innerHTML='';
+    document.getElementById('ket').innerHTML='Makanan yang kita makan harus dicerna dulu menjadi zat yang sangat kecil agar dapat diserap tubuh. Tekan <b>Telan makanan</b> untuk mengikuti perjalanannya.';
+    document.getElementById('lanjut').textContent='🍙 Telan makanan ›';}
+  mulai();
+})();
+</script>
+</body></html>

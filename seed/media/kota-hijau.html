@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kota Hijau: Aksi Melawan Perubahan Iklim</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f0fdf4;color:#14532d}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .atas{display:flex;gap:10px;flex:1;min-height:0}
+  svg.kota{flex:1.6;min-width:0;width:100%;height:100%;border-radius:16px;background:#fff}
+  .meter{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:16px;border:2px solid #bbf7d0;padding:10px 12px;overflow:auto}
+  .meter h3{margin:0;font-size:clamp(14px,2vw,19px)}
+  .bar{height:16px;border-radius:99px;background:#e5e7eb;overflow:hidden}
+  .bar span{display:block;height:100%;border-radius:99px;transition:width .6s,background .6s}
+  .lbl{display:flex;justify-content:space-between;font-weight:700;font-size:clamp(12px,1.7vw,16px)}
+  .pesan{font-size:clamp(13px,1.8vw,17px);line-height:1.4;color:#1f2937;background:#f0fdf4;border-radius:12px;padding:8px 10px}
+  .aksi{display:flex;gap:6px;flex-wrap:wrap}
+  .aksi button{font:inherit;font-weight:700;border:2px solid #bbf7d0;background:#fff;border-radius:12px;padding:7px 10px;cursor:pointer;font-size:clamp(12px,1.7vw,16px);color:#14532d}
+  .aksi button.on{background:#16a34a;border-color:#16a34a;color:#fff}
+  @media (max-width:700px){.atas{flex-direction:column}}
+  .asap{transition:opacity .8s}.mobil,.pohon,.sampah,.biopori{transition:opacity .6s}
+</style></head>
+<body><div class="app">
+  <div class="atas">
+    <svg class="kota" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet" aria-label="Pemandangan kota">
+      <rect id="langit" width="1000" height="300" fill="#94a3b8"/>
+      <circle cx="880" cy="70" r="42" fill="#fbbf24"/>
+      <g id="pembangkit"><rect x="40" y="170" width="110" height="130" fill="#64748b"/><rect x="60" y="100" width="24" height="80" fill="#475569"/><rect x="100" y="120" width="24" height="60" fill="#475569"/>
+        <text x="95" y="320" text-anchor="middle" font-size="16" fill="#1f2937" font-weight="700">pembangkit listrik</text></g>
+      <g class="asap" id="asap"><circle cx="72" cy="80" r="22" fill="#4b5563"/><circle cx="90" cy="50" r="28" fill="#4b5563"/><circle cx="118" cy="30" r="32" fill="#4b5563"/><circle cx="112" cy="100" r="18" fill="#4b5563"/></g>
+      <rect y="300" width="1000" height="160" fill="#86efac"/>
+      <g fill="#fef3c7" stroke="#92400e" stroke-width="3">
+        <rect x="210" y="210" width="110" height="90"/><path d="M200 215 L265 165 L330 215Z" fill="#dc2626"/>
+        <rect x="360" y="225" width="100" height="75"/><path d="M350 230 L410 185 L470 230Z" fill="#ea580c"/>
+        <rect x="500" y="215" width="120" height="85"/><path d="M490 220 L560 170 L630 220Z" fill="#b91c1c"/>
+      </g>
+      <g id="lampu"><rect x="235" y="235" width="25" height="25" fill="#fde047"/><rect x="380" y="245" width="25" height="25" fill="#fde047"/><rect x="530" y="235" width="25" height="25" fill="#fde047"/><rect x="580" y="235" width="25" height="25" fill="#fde047"/></g>
+      <rect x="0" y="330" width="1000" height="40" fill="#475569"/>
+      <g class="mobil" id="mobil"><g transform="translate(120 322)"><rect width="80" height="26" rx="8" fill="#ef4444"/><circle cx="18" cy="28" r="9" fill="#111"/><circle cx="62" cy="28" r="9" fill="#111"/></g>
+        <g transform="translate(420 322)"><rect width="80" height="26" rx="8" fill="#3b82f6"/><circle cx="18" cy="28" r="9" fill="#111"/><circle cx="62" cy="28" r="9" fill="#111"/></g>
+        <g transform="translate(700 322)"><rect width="80" height="26" rx="8" fill="#a855f7"/><circle cx="18" cy="28" r="9" fill="#111"/><circle cx="62" cy="28" r="9" fill="#111"/></g></g>
+      <g class="mobil" id="sepeda" opacity="0"><text x="250" y="352" font-size="34">🚲</text><text x="560" y="352" font-size="34">🚲</text><text x="820" y="352" font-size="34">🚶</text></g>
+      <path id="sungai" d="M640 460 C700 420 760 400 1000 390 V460Z" fill="#78716c"/>
+      <g class="sampah" id="sampah"><rect x="800" y="420" width="18" height="10" fill="#f472b6"/><rect x="880" y="410" width="14" height="14" fill="#facc15"/><rect x="740" y="438" width="20" height="9" fill="#60a5fa"/></g>
+      <g class="pohon" id="pohon" opacity="0">
+        <g transform="translate(680 300)"><rect x="-6" y="-40" width="12" height="40" fill="#78350f"/><circle cy="-60" r="34" fill="#16a34a"/></g>
+        <g transform="translate(760 300)"><rect x="-6" y="-40" width="12" height="40" fill="#78350f"/><circle cy="-60" r="30" fill="#15803d"/></g>
+        <g transform="translate(860 300)"><rect x="-6" y="-40" width="12" height="40" fill="#78350f"/><circle cy="-62" r="36" fill="#22c55e"/></g>
+        <g transform="translate(180 410)"><rect x="-5" y="-30" width="10" height="30" fill="#78350f"/><circle cy="-48" r="26" fill="#16a34a"/></g>
+      </g>
+      <g class="biopori" id="biopori" opacity="0"><circle cx="330" cy="420" r="10" fill="#57534e"/><circle cx="420" cy="430" r="10" fill="#57534e"/><circle cx="510" cy="418" r="10" fill="#57534e"/><text x="420" y="455" text-anchor="middle" font-size="15" fill="#1f2937" font-weight="700">lubang biopori</text></g>
+      <g id="tandon"><rect x="930" y="230" width="44" height="70" fill="#e5e7eb" stroke="#475569" stroke-width="3"/><rect id="air" x="933" y="262" width="38" height="35" fill="#38bdf8"/><text x="952" y="222" text-anchor="middle" font-size="14" fill="#1f2937" font-weight="700">air</text></g>
+    </svg>
+    <div class="meter">
+      <h3>Keadaan Kota</h3>
+      <div><div class="lbl"><span>🌫️ Udara bersih</span><span id="tU"></span></div><div class="bar"><span id="mU"></span></div></div>
+      <div><div class="lbl"><span>💧 Persediaan air</span><span id="tA"></span></div><div class="bar"><span id="mA"></span></div></div>
+      <div><div class="lbl"><span>🌡️ Pemanasan Bumi</span><span id="tP"></span></div><div class="bar"><span id="mP"></span></div></div>
+      <div class="pesan" id="pesan">Kota ini berasap, sungainya kotor, dan sering banjir. Pilih aksi di bawah untuk menyelamatkannya!</div>
+    </div>
+  </div>
+  <div class="aksi" id="aksi"></div>
+</div>
+<script>
+(function(){
+  // u = udara bersih, a = air, p = pengurangan pemanasan (semua 0..100 tambahan)
+  var A=[
+    {k:'pohon',n:'🌳 Menanam pohon',u:25,a:10,p:25,t:'Pohon menyerap karbon dioksida (gas penyebab pemanasan Bumi), menghasilkan oksigen, dan akarnya menahan air hujan.'},
+    {k:'sepeda',n:'🚲 Bersepeda / jalan kaki',u:25,a:0,p:20,t:'Kendaraan bermotor membakar bensin dan mengeluarkan asap. Bersepeda atau berjalan kaki membuat udara lebih bersih.'},
+    {k:'lampu',n:'💡 Matikan lampu yang tidak dipakai',u:15,a:0,p:20,t:'Sebagian besar listrik dibuat dengan membakar batu bara. Hemat listrik berarti asap pembangkit berkurang.'},
+    {k:'keran',n:'🚰 Tutup keran, hemat air',u:0,a:30,p:5,t:'Air bersih terbatas. Menutup keran saat menggosok gigi menghemat banyak air setiap hari.'},
+    {k:'sampah',n:'♻️ Pilah sampah, kurangi plastik',u:10,a:20,p:15,t:'Sampah tidak lagi dibuang ke sungai. Sungai menjadi bersih dan plastik tidak dibakar sembarangan.'},
+    {k:'biopori',n:'🕳️ Buat lubang biopori',u:0,a:30,p:5,t:'Lubang biopori membantu air hujan meresap ke tanah, sehingga persediaan air tanah bertambah dan banjir berkurang.'}
+  ];
+  var on={},el=document.getElementById('aksi');
+  A.forEach(function(a){var b=document.createElement('button');b.textContent=a.n;b.onclick=function(){on[a.k]=!on[a.k];b.classList.toggle('on',on[a.k]);
+    document.getElementById('pesan').innerHTML=(on[a.k]?'<b>✅ '+a.n.slice(3)+'.</b> ':'<b>↩ Aksi dibatalkan.</b> ')+a.t;perbarui();};el.appendChild(b);});
+  function set(id,v,warna,teks){var m=document.getElementById('m'+id);m.style.width=v+'%';m.style.background=warna;document.getElementById('t'+id).textContent=teks;}
+  function perbarui(){
+    var u=20,a=25,p=0;A.forEach(function(x){if(on[x.k]){u+=x.u;a+=x.a;p+=x.p;}});u=Math.min(100,u);a=Math.min(100,a);var panas=Math.max(5,90-p);
+    set('U',u,u>60?'#22c55e':u>35?'#eab308':'#ef4444',u>60?'baik':u>35?'sedang':'buruk');
+    set('A',a,a>60?'#0ea5e9':a>35?'#eab308':'#ef4444',a>60?'cukup':a>35?'sedang':'kurang');
+    set('P',panas,panas<40?'#22c55e':panas<65?'#eab308':'#ef4444',panas<40?'rendah':panas<65?'sedang':'tinggi');
+    document.getElementById('langit').setAttribute('fill',u>60?'#7dd3fc':u>35?'#bae6fd':'#94a3b8');
+    document.getElementById('asap').style.opacity=on.lampu?0.15:1;
+    document.getElementById('lampu').style.opacity=on.lampu?0.35:1;
+    document.getElementById('mobil').style.opacity=on.sepeda?0:1;document.getElementById('sepeda').style.opacity=on.sepeda?1:0;
+    document.getElementById('pohon').style.opacity=on.pohon?1:0;
+    document.getElementById('sampah').style.opacity=on.sampah?0:1;document.getElementById('sungai').setAttribute('fill',on.sampah?'#38bdf8':'#78716c');
+    document.getElementById('biopori').style.opacity=on.biopori?1:0;
+    var h=Math.round(35*a/100);document.getElementById('air').setAttribute('y',297-h);document.getElementById('air').setAttribute('height',h);
+    if(Object.keys(on).filter(function(k){return on[k];}).length===A.length)document.getElementById('pesan').innerHTML='<b>🎉 Kota menjadi hijau!</b> Udara bersih, air cukup, dan pemanasan Bumi berkurang. Aksi kecil yang dilakukan bersama-sama membuat perbedaan besar.';
+  }
+  perbarui();
+})();
+</script>
+</body></html>

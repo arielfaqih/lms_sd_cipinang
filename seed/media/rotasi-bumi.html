@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulasi Rotasi Bumi: Siang dan Malam</title>
+<style>
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#0b1530;color:#fff}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:10px}
+  .top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .st{font-size:clamp(20px,3.2vw,32px);font-weight:800}
+  .jam{font-size:clamp(20px,3.2vw,32px);font-weight:800;color:#fde68a;font-variant-numeric:tabular-nums}
+  canvas{flex:1;min-height:0;width:100%;height:100%;border-radius:14px}
+  .ctrl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:clamp(14px,2vw,18px)}
+  button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:#f59e0b;color:#1f1300;font-size:clamp(15px,2.2vw,20px)}
+  input[type=range]{width:180px;accent-color:#f59e0b}
+  .note{font-size:clamp(13px,1.8vw,17px);color:#cbd5e1}
+</style></head>
+<body><div class="app">
+  <div class="top"><div class="st" id="st">Indonesia: Siang</div><div class="jam" id="jam">12.00</div></div>
+  <canvas id="c" aria-label="Bumi berotasi di depan Matahari"></canvas>
+  <div class="ctrl">
+    <button id="play">⏸ Jeda</button>
+    <label>Kecepatan <input type="range" id="v" min="1" max="10" value="3"></label>
+    <span class="note">Dilihat dari atas Kutub Utara. Bumi berputar dari barat ke timur (berlawanan arah jarum jam). Satu putaran ≈ 24 jam.</span>
+  </div>
+</div>
+<script>
+(function(){
+  var c=document.getElementById('c'),x=c.getContext('2d'),W,H,th=Math.PI,run=true,stars=[];
+  for(var i=0;i<90;i++)stars.push([Math.random(),Math.random(),Math.random()*1.5+.3]);
+  function size(){var r=c.getBoundingClientRect();W=c.width=r.width*devicePixelRatio;H=c.height=r.height*devicePixelRatio;}
+  size();window.addEventListener('resize',size);
+  document.getElementById('play').onclick=function(){run=!run;this.textContent=run?'⏸ Jeda':'▶ Putar';};
+  function pad(n){return(n<10?'0':'')+n;}
+  function frame(){
+    if(run)th+=0.0025*(+document.getElementById('v').value);
+    th%=Math.PI*2;
+    x.fillStyle='#0b1530';x.fillRect(0,0,W,H);
+    stars.forEach(function(s){x.fillStyle='rgba(255,255,255,.7)';x.fillRect(s[0]*W,s[1]*H,s[2]*devicePixelRatio,s[2]*devicePixelRatio);});
+    var R=Math.min(W*0.26,H*0.36),cx=W*0.62,cy=H/2,sx=W*0.09;
+    // Matahari dan sinar
+    var g=x.createRadialGradient(sx,cy,0,sx,cy,R*0.9);g.addColorStop(0,'#fff7c2');g.addColorStop(.45,'#fbbf24');g.addColorStop(1,'rgba(251,191,36,0)');
+    x.fillStyle=g;x.beginPath();x.arc(sx,cy,R*0.9,0,7);x.fill();
+    x.fillStyle='rgba(253,224,71,.10)';x.fillRect(sx,cy-R,cx-sx,R*2);
+    x.strokeStyle='rgba(253,224,71,.5)';x.lineWidth=3*devicePixelRatio;
+    for(var k=-2;k<=2;k++){var yy=cy+k*R*0.42;x.beginPath();x.moveTo(sx+R*0.6,yy);x.lineTo(cx-R*1.08,yy);x.stroke();x.beginPath();x.moveTo(cx-R*1.08,yy);x.lineTo(cx-R*1.16,yy-8*devicePixelRatio);x.lineTo(cx-R*1.16,yy+8*devicePixelRatio);x.fill();}
+    x.fillStyle='#fde68a';x.font='bold '+(16*devicePixelRatio)+'px sans-serif';x.textAlign='center';x.fillText('Matahari',sx,cy+R*0.75);
+    // Bumi
+    x.fillStyle='#1d4ed8';x.beginPath();x.arc(cx,cy,R,0,7);x.fill();
+    // daratan sederhana yang ikut berputar
+    x.save();x.translate(cx,cy);x.rotate(-th);x.fillStyle='#16a34a';
+    [[0,.55,.28],[1.3,.62,.2],[2.4,.5,.25],[3.6,.6,.22],[4.8,.45,.3],[5.6,.7,.15]].forEach(function(l){x.beginPath();x.ellipse(Math.cos(l[0])*R*l[1],Math.sin(l[0])*R*l[1],R*l[2],R*l[2]*0.6,l[0],0,7);x.fill();});
+    x.restore();
+    // sisi malam (membelakangi Matahari)
+    x.fillStyle='rgba(2,6,23,.68)';x.beginPath();x.arc(cx,cy,R,-Math.PI/2,Math.PI/2);x.fill();
+    x.strokeStyle='#93c5fd';x.lineWidth=2*devicePixelRatio;x.beginPath();x.arc(cx,cy,R,0,7);x.stroke();
+    x.fillStyle='#fff';x.beginPath();x.arc(cx,cy,4*devicePixelRatio,0,7);x.fill();
+    // label siang/malam
+    x.font='bold '+(18*devicePixelRatio)+'px sans-serif';x.fillStyle='#fde68a';x.fillText('SIANG',cx-R*0.5,cy-R*1.08);x.fillStyle='#93c5fd';x.fillText('MALAM',cx+R*0.5,cy-R*1.08);
+    // penanda Indonesia
+    var mx=cx+Math.cos(th)*R*0.88,my=cy-Math.sin(th)*R*0.88;
+    x.fillStyle='#ef4444';x.strokeStyle='#fff';x.lineWidth=3*devicePixelRatio;x.beginPath();x.arc(mx,my,9*devicePixelRatio,0,7);x.fill();x.stroke();
+    x.fillStyle='#fff';x.font='bold '+(15*devicePixelRatio)+'px sans-serif';x.fillText('Indonesia',mx,my-15*devicePixelRatio);
+    // arah putaran
+    x.strokeStyle='#e2e8f0';x.lineWidth=3*devicePixelRatio;x.beginPath();x.arc(cx,cy,R*1.18,-0.6,0.6);x.stroke();
+    var ax=cx+Math.cos(-0.6)*R*1.18,ay=cy+Math.sin(-0.6)*R*1.18;x.beginPath();x.moveTo(ax,ay);x.lineTo(ax-12*devicePixelRatio,ay+2*devicePixelRatio);x.lineTo(ax-2*devicePixelRatio,ay+12*devicePixelRatio);x.fillStyle='#e2e8f0';x.fill();
+    // waktu setempat: tengah hari saat menghadap Matahari
+    var jam=(12+(th-Math.PI)/(2*Math.PI)*24+24)%24,h=Math.floor(jam),m=Math.floor((jam-h)*60);
+    document.getElementById('jam').textContent='Pukul '+pad(h)+'.'+pad(m);
+    var s=jam>=6&&jam<18?'Siang':'Malam';
+    if(jam>=5.5&&jam<6.5)s='Matahari terbit';else if(jam>=17.5&&jam<18.5)s='Matahari terbenam';
+    document.getElementById('st').textContent='Indonesia: '+s;
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script></body></html>

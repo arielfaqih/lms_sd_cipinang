@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorium Bunyi</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#faf5ff;color:#3b0764}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #e9d5ff;background:#fff;border-radius:12px;padding:7px 12px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#3b0764}
+  .tabs button.on{background:#7e22ce;border-color:#7e22ce;color:#fff}
+  .act{background:#7e22ce;border-color:#7e22ce;color:#fff}
+  label{font-weight:700;font-size:clamp(13px,1.8vw,16px);display:flex;align-items:center;gap:6px}
+  input[type=range]{width:150px;accent-color:#7e22ce}
+  canvas{flex:1;min-height:150px;width:100%;border-radius:14px;background:#fff}
+  .ket{background:#fff;border:2px solid #e9d5ff;border-radius:14px;padding:8px 12px;font-size:clamp(13px,1.9vw,18px);line-height:1.4}
+</style></head>
+<body><div class="app">
+  <div class="row tabs"><button class="on" data-t="getar">🎸 Getaran & nada</button><button data-t="rambat">🏁 Lomba perambatan bunyi</button></div>
+  <div class="row" id="ctrlGetar">
+    <button class="act" id="petik">🎸 Petik senar</button><button id="pegang">✋ Pegang senar</button>
+    <label>Tinggi nada <input type="range" id="nada" min="0" max="100" value="40"></label>
+    <label>Kekuatan petikan <input type="range" id="kuat" min="10" max="100" value="60"></label>
+  </div>
+  <div class="row" id="ctrlRambat" hidden><button class="act" id="mulai">🔔 Bunyikan bel</button></div>
+  <canvas id="c"></canvas>
+  <div class="ket" id="ket"></div>
+</div>
+<script>
+(function(){
+  var LW=1000,LH=420,c=document.getElementById('c'),x=c.getContext('2d'),W,H,D=window.devicePixelRatio||1,tab='getar';
+  function size(){var r=c.getBoundingClientRect();W=c.width=Math.max(1,r.width*D);H=c.height=Math.max(1,r.height*D);}
+  size();window.addEventListener('resize',size);
+  var KET={getar:'Bunyi terjadi karena benda <b>bergetar</b>. Getaran yang <b>cepat</b> (frekuensi tinggi) menghasilkan <b>nada tinggi</b>; getaran lambat menghasilkan nada rendah. Simpangan getaran yang <b>besar</b> menghasilkan bunyi <b>keras</b>. Jika senar dipegang, getaran berhenti dan bunyi hilang.',
+    rambat:'Bunyi merambat melalui <b>perantara</b> (medium). Bunyi merambat paling cepat di benda <b>padat</b>, lalu <b>cair</b>, lalu <b>gas</b>. Di ruang hampa (tanpa udara, seperti di luar angkasa) bunyi <b>tidak dapat merambat</b>.'};
+  // ---- getaran ----
+  var A=0,ph=0,ac=null,gain=null,osc=null;
+  function frek(){return 196+ (+document.getElementById('nada').value)/100*(784-196);}
+  function bunyi(kuat){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();berhenti(0);
+      osc=ac.createOscillator();gain=ac.createGain();osc.type='triangle';osc.frequency.value=frek();
+      var t=ac.currentTime;gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(0.05+0.3*kuat,t+0.02);gain.gain.exponentialRampToValueAtTime(0.0001,t+2.2);
+      osc.connect(gain);gain.connect(ac.destination);osc.start(t);osc.stop(t+2.3);}catch(e){}}
+  function berhenti(cepat){try{if(gain&&ac){var t=ac.currentTime;gain.gain.cancelScheduledValues(t);gain.gain.setValueAtTime(gain.gain.value||0.0001,t);gain.gain.exponentialRampToValueAtTime(0.0001,t+(cepat?0.05:0.01));}}catch(e){}}
+  document.getElementById('petik').onclick=function(){var k=+document.getElementById('kuat').value/100;A=70*k;bunyi(k);};
+  document.getElementById('pegang').onclick=function(){A=0;berhenti(true);};
+  // ---- perambatan ----
+  var M=[['Ruang hampa','tidak ada perantara','#e5e7eb',0],['Udara (gas)','± 340 m/detik','#e0f2fe',6000],['Air (cair)','± 1.500 m/detik','#bfdbfe',1400],['Besi (padat)','± 5.000 m/detik','#cbd5e1',450]];
+  var t0=0,mulai=false;
+  document.getElementById('mulai').onclick=function(){t0=performance.now();mulai=true;};
+  function teks(s,px,py,sz,col,al,b){x.fillStyle=col||'#3b0764';x.font=(b?'800 ':'600 ')+sz+'px Segoe UI';x.textAlign=al||'center';x.fillText(s,px,py);}
+  var last=0;
+  function frame(now){var dt=Math.min(50,now-(last||now));last=now;
+    x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,H);var s=Math.min(W/LW,H/LH);x.setTransform(s,0,0,s,(W-LW*s)/2,(H-LH*s)/2);
+    if(tab==='getar'){
+      var f=frek(),fv=2+ (f-196)/(784-196)*10;ph+=dt/1000*fv*Math.PI*2;A*=Math.pow(0.55,dt/1000);if(A<0.3)A=0;
+      x.fillStyle='#78350f';x.fillRect(80,140,30,140);x.fillRect(890,140,30,140);
+      // gelombang bunyi menyebar
+      if(A>0){for(var r=0;r<4;r++){var rr=((ph*8+r*60)%240);x.strokeStyle='rgba(126,34,206,'+(A/90*(1-rr/240))+')';x.lineWidth=4;x.beginPath();x.arc(500,210,40+rr,-0.6,0.6);x.stroke();x.beginPath();x.arc(500,210,40+rr,Math.PI-0.6,Math.PI+0.6);x.stroke();}}
+      x.strokeStyle='#7e22ce';x.lineWidth=6;x.beginPath();
+      for(var i=0;i<=100;i++){var px=110+i*7.8,py=210+A*Math.sin(Math.PI*i/100)*Math.sin(ph);i?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();
+      teks(A>0?'Senar bergetar → terdengar bunyi':'Senar diam → tidak ada bunyi',500,60,30,'#3b0764','center',true);
+      teks('Nada: '+(f<350?'rendah':f<560?'sedang':'tinggi')+' ('+Math.round(f)+' getaran per detik)   ·   Bunyi: '+(A>45?'keras':A>15?'sedang':A>0?'lemah':'–'),500,380,22,'#6b21a8');
+    } else {
+      var el=mulai?now-t0:0;
+      M.forEach(function(m,i){var y=60+i*92;x.fillStyle=m[2];x.fillRect(150,y,700,64);x.strokeStyle='#a78bfa';x.lineWidth=2;x.strokeRect(150,y,700,64);
+        teks('🔔',115,y+44,34);teks('👂',890,y+46,36);teks(m[0],160,y-6,20,'#3b0764','left',true);teks(m[1],840,y-6,18,'#6b21a8','right');
+        if(i===1){for(var d=0;d<40;d++){x.fillStyle='rgba(100,116,139,.35)';x.beginPath();x.arc(160+(d*53)%690,y+8+(d*17)%50,3,0,7);x.fill();}}
+        if(i===2){for(var d2=0;d2<70;d2++){x.fillStyle='rgba(37,99,235,.35)';x.beginPath();x.arc(158+(d2*37)%690,y+6+(d2*13)%54,3,0,7);x.fill();}}
+        if(i===3){for(var d3=0;d3<120;d3++){x.fillStyle='rgba(51,65,85,.45)';x.beginPath();x.arc(156+(d3*23)%694,y+5+(d3*11)%56,3,0,7);x.fill();}}
+        if(!mulai)return;
+        if(!m[3]){if(el>800)teks('bunyi tidak sampai ✗',500,y+42,22,'#b91c1c','center',true);return;}
+        var pos=Math.min(1,el/m[3]);x.strokeStyle='#7e22ce';x.lineWidth=6;x.beginPath();x.arc(150+700*pos,y+32,22,-1,1);x.stroke();
+        if(pos>=1)teks('✓ sampai dalam '+(m[3]/1000).toFixed(1)+' detik (diperlambat)',500,y+42,20,'#15803d','center',true);
+      });
+    }
+    requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-t]'),function(b){b.onclick=function(){tab=b.dataset.t;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-t]'),function(o){o.classList.toggle('on',o===b);});
+    document.getElementById('ctrlGetar').hidden=tab!=='getar';document.getElementById('ctrlRambat').hidden=tab!=='rambat';document.getElementById('ket').innerHTML=KET[tab];mulai=false;};});
+  document.getElementById('ket').innerHTML=KET.getar;
+})();
+</script>
+</body></html>

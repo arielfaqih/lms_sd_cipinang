@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rantai Makanan di Sawah</title>
+<style>
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f3f9ec;color:#1d2a2e}
+  .app{display:flex;flex-direction:column;height:100%;padding:14px;box-sizing:border-box;gap:12px}
+  h1{margin:0;font-size:clamp(20px,3vw,30px)}
+  .chain{flex:1;display:flex;align-items:center;justify-content:center;gap:clamp(4px,1.5vw,18px);flex-wrap:wrap}
+  .org{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:3px solid #cbd5b1;border-radius:18px;padding:10px 12px;min-width:clamp(90px,14vw,150px);transition:.3s}
+  .org .em{font-size:clamp(40px,7vw,78px);line-height:1;letter-spacing:-6px}
+  .org b{font-size:clamp(16px,2.2vw,24px)}
+  .org small{font-size:clamp(12px,1.6vw,16px);color:#4d7c0f;font-weight:700}
+  .org.gone{opacity:.25;filter:grayscale(1);border-style:dashed}
+  .org.up{border-color:#dc2626;background:#fef2f2}.org.up .em{font-size:clamp(22px,3.6vw,40px);letter-spacing:0}.org.down{border-color:#f59e0b;background:#fffbeb}
+  .arrow{font-size:clamp(28px,5vw,54px);color:#15803d;font-weight:900;opacity:0;transition:.4s}
+  .arrow.on{opacity:1}
+  .info{font-size:clamp(16px,2.3vw,24px);background:#fff;border-radius:14px;padding:12px 16px;border:2px solid #d9e7c3;min-height:2.6em}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap}
+  button{font:inherit;font-size:clamp(14px,2vw,20px);font-weight:700;border:0;border-radius:12px;padding:10px 16px;cursor:pointer;background:#15803d;color:#fff}
+  button.alt{background:#b45309}button.gray{background:#64748b}
+</style></head>
+<body><div class="app">
+  <h1>Rantai makanan di sawah</h1>
+  <div class="chain" id="chain"></div>
+  <div class="info" id="info">Tekan <b>Tampilkan panah</b>. Panah menunjukkan arah: dari makhluk yang <b>dimakan</b> ke makhluk yang <b>memakan</b>.</div>
+  <div class="ctrl">
+    <button id="next">Tampilkan panah ➜</button>
+    <button class="alt" id="ular">Bagaimana jika ular ditangkapi?</button>
+    <button class="gray" id="ulang">Ulang</button>
+  </div>
+</div>
+<script>
+(function(){
+  var org=[{id:'padi',em:'🌾',nama:'Padi',peran:'Produsen'},{id:'tikus',em:'🐀',nama:'Tikus',peran:'Konsumen I'},{id:'ular',em:'🐍',nama:'Ular',peran:'Konsumen II'},{id:'elang',em:'🦅',nama:'Elang',peran:'Konsumen III'}];
+  var ch=document.getElementById('chain'),info=document.getElementById('info'),n=0;
+  var txt=['Tikus memakan padi. Padi adalah <b>produsen</b> karena membuat makanannya sendiri.','Ular memakan tikus. Tikus adalah <b>konsumen I</b> (pemakan tumbuhan).','Elang memakan ular. Elang berada di puncak rantai makanan ini.'];
+  function build(){ch.innerHTML='';org.forEach(function(o,i){if(i){var a=document.createElement('div');a.className='arrow';a.textContent='➜';ch.appendChild(a);}
+    var d=document.createElement('div');d.className='org';d.id=o.id;d.innerHTML='<span class="em">'+o.em+'</span><b>'+o.nama+'</b><small>'+o.peran+'</small>';ch.appendChild(d);});n=0;}
+  build();
+  document.getElementById('next').onclick=function(){var a=ch.querySelectorAll('.arrow');if(n<a.length){a[n].classList.add('on');info.innerHTML=txt[n];n++;}else info.innerHTML='Urutan peristiwa makan dan dimakan ini disebut <b>rantai makanan</b>.';};
+  document.getElementById('ular').onclick=function(){
+    ch.querySelectorAll('.arrow').forEach(function(a){a.classList.add('on')});n=3;
+    document.getElementById('ular').classList.add('gone');
+    var t=document.getElementById('tikus');t.classList.add('up');t.querySelector('.em').textContent='🐀🐀🐀';
+    var p=document.getElementById('padi');p.classList.add('down');p.querySelector('.em').textContent='🌱';
+    var e=document.getElementById('elang');e.classList.add('down');
+    info.innerHTML='Ular berkurang ➜ <b>tikus bertambah banyak</b> ➜ padi banyak dimakan tikus ➜ <b>panen petani berkurang</b>. Elang juga kekurangan makanan.';
+  };
+  document.getElementById('ulang').onclick=function(){build();info.innerHTML='Tekan <b>Tampilkan panah</b>. Panah menunjukkan arah: dari makhluk yang <b>dimakan</b> ke makhluk yang <b>memakan</b>.';};
+})();
+</script></body></html>

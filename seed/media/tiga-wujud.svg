@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Segoe UI, Arial, sans-serif">
+<rect width="900" height="520" fill="#fff"/>
+<g font-weight="800" font-size="34" text-anchor="middle"><text x="150" y="52" fill="#0369a1">PADAT</text><text x="450" y="52" fill="#1d4ed8">CAIR</text><text x="750" y="52" fill="#64748b">GAS</text></g>
+<g stroke-width="5" fill="#f8fafc"><rect x="40" y="80" width="220" height="250" rx="14" stroke="#0369a1"/><rect x="340" y="80" width="220" height="250" rx="14" stroke="#1d4ed8"/><rect x="640" y="80" width="220" height="250" rx="14" stroke="#64748b"/></g>
+<g fill="#7dd3fc" stroke="#1e3a8a" stroke-width="2">
+ <g id="row"><circle cx="85" cy="200" r="16"/><circle cx="120" cy="200" r="16"/><circle cx="155" cy="200" r="16"/><circle cx="190" cy="200" r="16"/><circle cx="225" cy="200" r="16"/></g>
+ <use href="#row" y="35"/><use href="#row" y="70"/><use href="#row" y="105"/>
+</g>
+<rect x="340" y="215" width="220" height="115" fill="#dbeafe"/>
+<g fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"><circle cx="370" cy="300" r="16"/><circle cx="402" cy="268" r="16"/><circle cx="440" cy="305" r="16"/><circle cx="470" cy="262" r="16"/><circle cx="505" cy="300" r="16"/><circle cx="535" cy="270" r="16"/><circle cx="385" cy="236" r="16"/><circle cx="455" cy="232" r="16"/><circle cx="520" cy="234" r="16"/><circle cx="420" cy="300" r="16" opacity="0"/></g>
+<g fill="#cbd5e1" stroke="#334155" stroke-width="2"><circle cx="680" cy="120" r="16"/><circle cx="820" cy="140" r="16"/><circle cx="730" cy="210" r="16"/><circle cx="800" cy="280" r="16"/><circle cx="680" cy="300" r="16"/><circle cx="760" cy="120" r="16"/></g>
+<g stroke="#64748b" stroke-width="3" fill="none"><path d="M700 120 l24 -8"/><path d="M840 146 l18 10"/><path d="M748 214 l20 12"/><path d="M780 282 l-20 10"/><path d="M700 300 l22 -6"/></g>
+<g font-size="22" text-anchor="middle" fill="#1d2a2e">
+ <text x="150" y="372" font-weight="700">Bentuk tetap</text><text x="150" y="402">Partikel rapat,</text><text x="150" y="428">hanya bergetar</text><text x="150" y="472" fill="#0369a1" font-weight="700">batu, es, kayu</text>
+ <text x="450" y="372" font-weight="700">Mengikuti wadah</text><text x="450" y="402">Partikel agak renggang,</text><text x="450" y="428">bisa berpindah</text><text x="450" y="472" fill="#1d4ed8" font-weight="700">air, minyak, susu</text>
+ <text x="750" y="372" font-weight="700">Memenuhi ruang</text><text x="750" y="402">Partikel sangat renggang,</text><text x="750" y="428">bergerak cepat</text><text x="750" y="472" fill="#475569" font-weight="700">udara, uap air</text>
+</g>
+</svg>

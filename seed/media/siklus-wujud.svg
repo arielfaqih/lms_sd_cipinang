@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 600" font-family="Segoe UI, Arial, sans-serif">
+<defs><marker id="r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker><marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2563eb"/></marker></defs>
+<rect width="860" height="600" fill="#fff"/>
+<g font-weight="800" font-size="30" text-anchor="middle">
+ <rect x="40" y="380" width="200" height="110" rx="20" fill="#e0f2fe" stroke="#0369a1" stroke-width="4"/><text x="140" y="430" fill="#0369a1">PADAT</text><text x="140" y="466" font-size="20" font-weight="500">es</text>
+ <rect x="330" y="40" width="200" height="110" rx="20" fill="#dbeafe" stroke="#1d4ed8" stroke-width="4"/><text x="430" y="90" fill="#1d4ed8">CAIR</text><text x="430" y="126" font-size="20" font-weight="500">air</text>
+ <rect x="620" y="380" width="200" height="110" rx="20" fill="#f1f5f9" stroke="#64748b" stroke-width="4"/><text x="720" y="430" fill="#475569">GAS</text><text x="720" y="466" font-size="20" font-weight="500">uap air</text>
+</g>
+<g stroke-width="7" fill="none">
+ <path d="M120 370 Q150 200 320 110" stroke="#dc2626" marker-end="url(#r)"/><path d="M335 160 Q220 260 205 370" stroke="#2563eb" marker-end="url(#b)"/>
+ <path d="M540 110 Q710 200 740 370" stroke="#dc2626" marker-end="url(#r)"/><path d="M655 370 Q630 260 525 160" stroke="#2563eb" marker-end="url(#b)"/>
+</g>
+<g font-size="26" font-weight="800">
+ <text x="60" y="230" fill="#dc2626">Mencair</text><text x="240" y="330" fill="#2563eb">Membeku</text>
+ <text x="690" y="230" fill="#dc2626">Menguap</text><text x="505" y="330" fill="#2563eb">Mengembun</text>
+</g>
+<g font-size="22" text-anchor="middle"><text x="430" y="545" fill="#dc2626" font-weight="700">Merah = menyerap panas (dipanaskan)</text><text x="430" y="580" fill="#2563eb" font-weight="700">Biru = melepas panas (didinginkan)</text></g>
+</svg>

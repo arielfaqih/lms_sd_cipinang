@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<defs>
+  <marker id="ar" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#cbd5e1"/></marker>
+  <g id="bumi">
+    <circle r="45" fill="#2563eb"/>
+    <ellipse cx="-10" cy="-12" rx="18" ry="11" fill="#16a34a"/><ellipse cx="14" cy="16" rx="13" ry="9" fill="#16a34a"/>
+    <line x1="-24" y1="55" x2="24" y2="-55" stroke="#f8fafc" stroke-width="3"/>
+    <line x1="-41" y1="-18" x2="41" y2="18" stroke="#fde68a" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="30" y="-58" font-size="16" font-weight="800" fill="#f8fafc">U</text>
+  </g>
+</defs>
+<rect width="900" height="540" fill="#0b1530"/>
+<ellipse cx="450" cy="275" rx="320" ry="150" fill="none" stroke="#475569" stroke-width="3" stroke-dasharray="10 8"/>
+<path d="M380 423 Q450 428 520 423" stroke="#cbd5e1" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<path d="M520 127 Q450 122 380 127" stroke="#cbd5e1" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<circle cx="450" cy="275" r="58" fill="#fbbf24"/><circle cx="450" cy="275" r="72" fill="#fbbf24" opacity=".25"/>
+<text x="450" y="282" text-anchor="middle" font-size="20" font-weight="800" fill="#78350f">Matahari</text>
+<!-- Juni (kiri): Matahari di kanan, sisi kiri gelap -->
+<g transform="translate(130 275)"><use href="#bumi"/><path d="M0 -45 A45 45 0 0 0 0 45Z" fill="#020617" opacity=".65"/></g>
+<!-- Desember (kanan): sisi kanan gelap -->
+<g transform="translate(770 275)"><use href="#bumi"/><path d="M0 -45 A45 45 0 0 1 0 45Z" fill="#020617" opacity=".65"/></g>
+<!-- Maret (atas) dan September (bawah) -->
+<g transform="translate(450 125)"><use href="#bumi"/><path d="M-45 0 A45 45 0 0 1 45 0Z" fill="#020617" opacity=".65"/></g>
+<g transform="translate(450 425)"><use href="#bumi"/><path d="M-45 0 A45 45 0 0 0 45 0Z" fill="#020617" opacity=".65"/></g>
+<g font-size="17" fill="#e2e8f0" text-anchor="middle">
+  <text x="130" y="355" font-weight="800" fill="#fde68a">± 21 Juni</text>
+  <text x="130" y="378">belahan utara condong</text><text x="130" y="398">ke Matahari</text>
+  <text x="130" y="424" fill="#fca5a5">Utara: musim panas</text><text x="130" y="446" fill="#93c5fd">Selatan: musim dingin</text>
+  <text x="770" y="355" font-weight="800" fill="#fde68a">± 22 Desember</text>
+  <text x="770" y="378">belahan selatan condong</text><text x="770" y="398">ke Matahari</text>
+  <text x="770" y="424" fill="#93c5fd">Utara: musim dingin</text><text x="770" y="446" fill="#fca5a5">Selatan: musim panas</text>
+</g>
+<g font-size="17" fill="#e2e8f0">
+  <text x="510" y="95" font-weight="800" fill="#fde68a">± 21 Maret</text><text x="510" y="117">Matahari tepat di atas khatulistiwa</text>
+  <text x="510" y="470" font-weight="800" fill="#fde68a">± 23 September</text><text x="510" y="492">Matahari tepat di atas khatulistiwa</text>
+</g>
+<text x="20" y="40" font-size="20" font-weight="800" fill="#fff">Revolusi Bumi dan empat musim</text>
+<text x="20" y="64" font-size="15" fill="#94a3b8">Poros Bumi miring ± 23,5° dan arahnya tetap.</text>
+<text x="20" y="84" font-size="15" fill="#94a3b8">Satu putaran ± 365¼ hari.</text>
+<text x="20" y="525" font-size="14" fill="#94a3b8">Gambar tidak sesuai skala. Garis putih = poros Bumi, garis kuning = khatulistiwa.</text>
+</svg>

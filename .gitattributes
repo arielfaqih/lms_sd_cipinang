@@ -1,0 +1,4 @@
+# Skrip shell harus berakhiran LF agar bisa dijalankan di Linux/macOS
+*.sh text eol=lf
+# Skrip Windows tetap CRLF
+*.bat text eol=crlf

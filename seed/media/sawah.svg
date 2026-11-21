@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<rect width="900" height="540" fill="#cfeefc"/>
+<circle cx="780" cy="90" r="50" fill="#fcd34d"/>
+<path d="M0 230 Q220 170 450 220 T900 210 V540 H0Z" fill="#8bbf5a"/>
+<path d="M0 300 H900 V540 H0Z" fill="#6aa84f"/>
+<g stroke="#245c17" stroke-width="5">
+ <g id="rumpun" stroke="#245c17" stroke-width="5" stroke-linecap="round"><path d="M0 0 q-6 -40 -18 -60M0 0 q2 -45 6 -70M0 0 q8 -38 22 -56" fill="none"/><path d="M6 -70 q8 4 4 16 M22 -56 q8 6 0 16" stroke="#e0b100" stroke-width="7" fill="none"/></g>
+</g>
+<g>
+ <use href="#rumpun" x="60" y="380"/><use href="#rumpun" x="140" y="390"/><use href="#rumpun" x="220" y="380"/><use href="#rumpun" x="300" y="392"/><use href="#rumpun" x="380" y="382"/><use href="#rumpun" x="620" y="388"/><use href="#rumpun" x="700" y="380"/><use href="#rumpun" x="780" y="392"/><use href="#rumpun" x="860" y="384"/>
+ <use href="#rumpun" x="100" y="470"/><use href="#rumpun" x="190" y="480"/><use href="#rumpun" x="280" y="470"/><use href="#rumpun" x="660" y="476"/><use href="#rumpun" x="750" y="470"/><use href="#rumpun" x="840" y="480"/>
+</g>
+<g transform="translate(470 440)"><ellipse cx="0" cy="0" rx="34" ry="18" fill="#8b7765"/><circle cx="30" cy="-6" r="13" fill="#8b7765"/><circle cx="38" cy="-10" r="3" fill="#111"/><circle cx="26" cy="-18" r="6" fill="#c9b3a3"/><path d="M-34 4 q-30 6 -40 -10" stroke="#8b7765" stroke-width="4" fill="none"/></g>
+<path d="M520 500 q30 -20 60 0 t60 0 t50 -10" stroke="#5b6b2e" stroke-width="14" fill="none" stroke-linecap="round"/><circle cx="690" cy="490" r="9" fill="#5b6b2e"/><circle cx="694" cy="487" r="2.5" fill="#111"/>
+<g transform="translate(560 120)" fill="#6b4a2b"><path d="M0 0 l-70 -24 l40 30 z"/><path d="M0 0 l70 -24 l-40 30 z"/><ellipse cx="0" cy="6" rx="20" ry="12"/><circle cx="0" cy="-8" r="9" fill="#f8fafc"/><path d="M6 -8 l10 3 l-10 3z" fill="#f59e0b"/></g>
+<g font-size="22" font-weight="700" fill="#1d2a2e">
+ <text x="420" y="410">tikus</text><text x="620" y="530">ular sawah</text><text x="600" y="150">elang</text><text x="30" y="300">padi</text>
+</g>
+<rect x="20" y="20" width="560" height="64" rx="14" fill="#fff" opacity=".92"/><text x="40" y="62" font-size="28" font-weight="800" fill="#1d2a2e">Siapa memakan siapa di sawah?</text>
+</svg>

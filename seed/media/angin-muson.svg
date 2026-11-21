@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<defs>
+  <marker id="hb" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d4ed8"/></marker>
+  <marker id="ho" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c2410c"/></marker>
+  <g id="peta">
+    <rect width="420" height="400" fill="#bae6fd"/>
+    <path d="M0 0 H420 V70 Q330 95 250 75 Q160 100 90 80 Q40 90 0 75Z" fill="#a3a380"/>
+    <text x="210" y="40" text-anchor="middle" font-size="20" font-weight="800" fill="#3f3f1f">BENUA ASIA</text>
+    <path d="M110 400 Q130 320 210 315 Q300 305 330 340 Q360 370 350 400Z" fill="#d6a76c"/>
+    <text x="235" y="372" text-anchor="middle" font-size="20" font-weight="800" fill="#5a3a12">BENUA AUSTRALIA</text>
+    <g fill="#22c55e" stroke="#15803d" stroke-width="2">
+      <path d="M40 165 l50 25 l-10 12 l-55 -25z"/><ellipse cx="135" cy="200" rx="45" ry="13"/>
+      <ellipse cx="200" cy="168" rx="40" ry="32"/><path d="M255 160 l25 10 l-15 30 l25 12 l-30 5 z"/>
+      <ellipse cx="350" cy="190" rx="50" ry="20"/>
+    </g>
+    <text x="200" y="250" text-anchor="middle" font-size="18" font-weight="800" fill="#14532d">INDONESIA</text>
+    <line x1="0" y1="185" x2="420" y2="185" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="414" y="180" text-anchor="end" font-size="12" fill="#334155">khatulistiwa</text>
+  </g>
+</defs>
+<rect width="900" height="540" fill="#f8fafc"/>
+<!-- muson barat -->
+<g transform="translate(20 70)">
+  <use href="#peta"/>
+  <g stroke="#1d4ed8" stroke-width="7" fill="none" marker-end="url(#hb)" stroke-linecap="round">
+    <path d="M90 85 C80 120 90 150 120 170"/><path d="M200 90 C190 120 190 140 200 150"/><path d="M310 90 C320 120 320 140 300 160"/>
+    <path d="M140 262 C165 280 195 292 225 306"/><path d="M300 262 C300 280 290 292 275 306"/>
+  </g>
+  <g fill="#94a3b8"><ellipse cx="160" cy="135" rx="38" ry="16"/><ellipse cx="270" cy="128" rx="34" ry="15"/></g>
+  <g stroke="#2563eb" stroke-width="3"><path d="M150 155 l-5 14"/><path d="M168 155 l-5 14"/><path d="M262 148 l-5 14"/><path d="M280 148 l-5 14"/></g>
+</g>
+<rect x="20" y="15" width="420" height="48" rx="12" fill="#1d4ed8"/>
+<text x="230" y="46" text-anchor="middle" font-size="21" font-weight="800" fill="#fff">Muson barat → MUSIM HUJAN</text>
+<text x="230" y="500" text-anchor="middle" font-size="16" fill="#1e3a8a">Angin dari Benua Asia melewati laut luas,</text>
+<text x="230" y="522" text-anchor="middle" font-size="16" fill="#1e3a8a">membawa banyak uap air (± Oktober–Maret)</text>
+<!-- muson timur -->
+<g transform="translate(460 70)">
+  <use href="#peta"/>
+  <g stroke="#c2410c" stroke-width="7" fill="none" marker-end="url(#ho)" stroke-linecap="round">
+    <path d="M300 315 C300 280 300 250 290 225"/><path d="M205 315 C200 300 200 285 205 266"/><path d="M120 330 C100 290 90 250 110 225"/>
+    <path d="M200 140 C200 120 205 100 210 90"/><path d="M330 150 C335 125 335 105 330 90"/>
+  </g>
+  <circle cx="60" cy="300" r="26" fill="#facc15"/><g stroke="#facc15" stroke-width="4" stroke-linecap="round">
+    <path d="M60 262 v-10"/><path d="M60 338 v10"/><path d="M22 300 h-10"/><path d="M98 300 h10"/><path d="M33 273 l-7 -7"/><path d="M87 327 l7 7"/></g>
+</g>
+<rect x="460" y="15" width="420" height="48" rx="12" fill="#c2410c"/>
+<text x="670" y="46" text-anchor="middle" font-size="21" font-weight="800" fill="#fff">Muson timur → MUSIM KEMARAU</text>
+<text x="670" y="500" text-anchor="middle" font-size="16" fill="#7c2d12">Angin dari Benua Australia yang kering,</text>
+<text x="670" y="522" text-anchor="middle" font-size="16" fill="#7c2d12">membawa sedikit uap air (± April–September)</text>
+</svg>

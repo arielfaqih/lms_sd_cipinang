@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Segoe UI, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#15803d"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#92400e"/></marker></defs>
+<rect width="900" height="560" fill="#fff"/>
+<rect x="320" y="20" width="260" height="70" rx="16" fill="#fef3c7" stroke="#f59e0b" stroke-width="4"/><text x="450" y="54" text-anchor="middle" font-size="24" font-weight="800">☀ Cahaya Matahari</text><text x="450" y="80" text-anchor="middle" font-size="17">sumber energi</text>
+<g font-size="22" text-anchor="middle">
+ <rect x="20" y="160" width="190" height="130" rx="16" fill="#dcfce7" stroke="#15803d" stroke-width="4"/><text x="115" y="200" font-weight="800" fill="#15803d">PRODUSEN</text><text x="115" y="235">padi, rumput</text><text x="115" y="262" font-size="15">membuat makanan sendiri</text>
+ <rect x="240" y="160" width="190" height="130" rx="16" fill="#e0f2fe" stroke="#0369a1" stroke-width="4"/><text x="335" y="200" font-weight="800" fill="#0369a1">KONSUMEN I</text><text x="335" y="235">tikus, belalang</text><text x="335" y="262" font-size="17">pemakan tumbuhan</text>
+ <rect x="460" y="160" width="190" height="130" rx="16" fill="#ede9fe" stroke="#6d28d9" stroke-width="4"/><text x="555" y="200" font-weight="800" fill="#6d28d9">KONSUMEN II</text><text x="555" y="235">ular, katak</text><text x="555" y="262" font-size="17">pemakan hewan</text>
+ <rect x="680" y="160" width="200" height="130" rx="16" fill="#fee2e2" stroke="#b91c1c" stroke-width="4"/><text x="780" y="200" font-weight="800" fill="#b91c1c">KONSUMEN III</text><text x="780" y="235">elang</text><text x="780" y="262" font-size="17">puncak rantai</text>
+ <rect x="300" y="380" width="300" height="120" rx="16" fill="#f5f0e6" stroke="#92400e" stroke-width="4"/><text x="450" y="420" font-weight="800" fill="#92400e">PENGURAI</text><text x="450" y="455">jamur, bakteri</text><text x="450" y="482" font-size="16">menguraikan makhluk yang mati</text>
+</g>
+<g stroke="#15803d" stroke-width="6" marker-end="url(#a)"><path d="M210 225 H232"/><path d="M430 225 H452"/><path d="M650 225 H672"/><path d="M380 92 L150 155"/></g>
+<g stroke="#92400e" stroke-width="4" stroke-dasharray="10 8" fill="none" marker-end="url(#b)"><path d="M115 292 Q140 420 292 440"/><path d="M780 292 Q760 420 608 440"/></g>
+<text x="450" y="540" text-anchor="middle" font-size="17" fill="#92400e">Garis putus-putus: sisa makhluk mati diuraikan menjadi zat yang menyuburkan tanah.</text>
+</svg>

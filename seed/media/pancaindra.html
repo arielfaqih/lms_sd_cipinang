@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jelajah Pancaindra</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#fff7ed;color:#1c1917}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:10px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tabs button,.btn{font:inherit;font-weight:700;border:2px solid #fed7aa;background:#fff;border-radius:12px;padding:8px 14px;cursor:pointer;font-size:clamp(14px,1.9vw,18px);color:#1c1917}
+  .tabs button.on{background:#ea580c;border-color:#ea580c;color:#fff}
+  .main{flex:1;min-height:0;overflow:auto}
+  .organs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+  .organ{border:3px solid #fed7aa;background:#fff;border-radius:18px;padding:10px 6px;cursor:pointer;text-align:center;font:inherit;transition:transform .15s}
+  .organ:hover{transform:translateY(-3px)}
+  .organ.on{border-color:#ea580c;box-shadow:0 0 0 4px #fdba74}
+  .organ .em{font-size:clamp(34px,6vw,64px);line-height:1.1}
+  .organ b{display:block;font-size:clamp(14px,2vw,20px)}
+  .organ small{color:#78716c;font-size:clamp(12px,1.5vw,15px)}
+  .info{margin-top:12px;background:#fff;border-radius:18px;border:2px solid #fed7aa;padding:12px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .info h3{margin:0 0 4px;font-size:clamp(14px,1.9vw,19px);color:#c2410c}
+  .info p,.info li{margin:0;font-size:clamp(14px,1.9vw,19px);line-height:1.4}
+  .info ul{margin:0;padding-left:1.2em}
+  @media (max-width:640px){.organs{grid-template-columns:repeat(3,minmax(0,1fr))}.info{grid-template-columns:1fr}}
+  .game{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+  .scene{font-size:clamp(20px,3.4vw,34px);font-weight:800;background:#fff;border-radius:20px;padding:16px 20px;border:3px solid #fed7aa;max-width:900px}
+  .scene .em{font-size:clamp(40px,7vw,72px);display:block}
+  .pilih{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .pilih button{font:inherit;font-size:clamp(16px,2.4vw,24px);font-weight:800;border:0;border-radius:16px;padding:10px 16px;cursor:pointer;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+  .pilih button:disabled{opacity:.45;cursor:default}
+  .fb{font-size:clamp(16px,2.3vw,22px);font-weight:700;min-height:1.4em}
+  .fb.ok{color:#15803d}.fb.no{color:#b91c1c}
+  .skor{font-weight:800;color:#c2410c}
+</style></head>
+<body><div class="app">
+  <div class="tabs"><button class="on" data-tab="jelajah">👀 Jelajah pancaindra</button><button data-tab="main">🎯 Indra apa yang dipakai?</button></div>
+  <div class="main" id="jelajah">
+    <div class="organs" id="organs"></div>
+    <div class="info" id="info"></div>
+  </div>
+  <div class="main game" id="main" hidden>
+    <div class="skor" id="skor"></div>
+    <div class="scene" id="scene"></div>
+    <div class="pilih" id="pilih"></div>
+    <div class="fb" id="fb"></div>
+    <button class="btn" id="lanjut" hidden>Berikutnya ›</button>
+  </div>
+</div>
+<script>
+(function(){
+  var O=[
+    {k:'mata',em:'👁️',n:'Mata',i:'penglihatan',c:'#2563eb',
+      f:'Melihat benda, warna, dan bentuk di sekitar kita.',
+      b:['Kelopak dan bulu mata melindungi mata dari debu.','Pupil (anak mata) mengatur banyaknya cahaya yang masuk.'],
+      r:['Membaca di tempat yang terang dengan jarak ± 30 cm.','Istirahatkan mata dari layar HP atau TV.','Jangan mengucek mata dengan tangan kotor.']},
+    {k:'telinga',em:'👂',n:'Telinga',i:'pendengaran',c:'#7c3aed',
+      f:'Mendengar bunyi dan membantu menjaga keseimbangan tubuh.',
+      b:['Daun telinga menangkap bunyi.','Gendang telinga bergetar saat ada bunyi masuk.'],
+      r:['Jangan memasukkan benda tajam ke lubang telinga.','Hindari suara yang terlalu keras.','Bersihkan bagian luar telinga dengan lembut.']},
+    {k:'hidung',em:'👃',n:'Hidung',i:'pembau',c:'#059669',
+      f:'Mencium bau dan menjadi jalan masuk udara saat bernapas.',
+      b:['Rambut hidung menyaring debu dari udara.','Lendir hidung menangkap kotoran dan kuman.'],
+      r:['Pakai masker saat udara berdebu atau berasap.','Jangan mengorek hidung terlalu keras.','Buang ingus dengan sapu tangan atau tisu.']},
+    {k:'lidah',em:'👅',n:'Lidah',i:'pengecap',c:'#db2777',
+      f:'Mengecap rasa: manis, asin, asam, pahit, dan gurih.',
+      b:['Permukaan lidah memiliki banyak bintil kecil pengecap rasa.','Semua bagian lidah dapat merasakan rasa-rasa tersebut.'],
+      r:['Sikat gigi dan bersihkan lidah setiap hari.','Hindari makanan atau minuman yang terlalu panas.','Minum air putih yang cukup.']},
+    {k:'kulit',em:'✋',n:'Kulit',i:'peraba',c:'#d97706',
+      f:'Merasakan sentuhan, tekanan, panas, dingin, dan sakit.',
+      b:['Kulit menutupi dan melindungi seluruh tubuh.','Ujung jari sangat peka terhadap sentuhan.'],
+      r:['Mandi dua kali sehari dengan sabun.','Lindungi kulit dari terik matahari dengan topi atau baju lengan panjang.','Segera bersihkan dan tutup luka.']}
+  ];
+  var organs=document.getElementById('organs'),info=document.getElementById('info');
+  O.forEach(function(o,i){var b=document.createElement('button');b.className='organ';b.innerHTML='<div class="em">'+o.em+'</div><b>'+o.n+'</b><small>indra '+o.i+'</small>';
+    b.onclick=function(){pilihOrgan(i);};organs.appendChild(b);});
+  function pilihOrgan(i){var o=O[i];Array.prototype.forEach.call(organs.children,function(c,k){c.classList.toggle('on',k===i);});
+    info.innerHTML='<div><h3>'+o.em+' Fungsi '+o.n.toLowerCase()+'</h3><p>'+o.f+'</p></div><div><h3>Bagian penting</h3><ul><li>'+o.b.join('</li><li>')+'</li></ul></div><div><h3>Cara merawat</h3><ul><li>'+o.r.join('</li><li>')+'</li></ul></div>';}
+  pilihOrgan(0);
+
+  // Permainan: pilih indra yang paling berperan
+  var S=[
+    ['🐓','Mendengar ayam berkokok di pagi hari','telinga'],['🌈','Melihat pelangi setelah hujan','mata'],
+    ['🍋','Merasakan asamnya jeruk nipis','lidah'],['🌸','Mencium harum bunga melati','hidung'],
+    ['🔥','Merasakan panasnya gelas berisi teh','kulit'],['📚','Membaca tulisan di papan tulis','mata'],
+    ['🍚','Mencium bau nasi gosong dari dapur','hidung'],['🧊','Merasakan dinginnya es batu di tangan','kulit'],
+    ['🔔','Mendengar bel tanda masuk sekolah','telinga'],['🧂','Merasakan sayur yang terlalu asin','lidah']
+  ];
+  for(var i=S.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=S[i];S[i]=S[j];S[j]=t;}
+  var no=0,benar=0;
+  function tampilSoal(){var s=S[no];document.getElementById('skor').textContent='Soal '+(no+1)+' dari '+S.length+' · Benar: '+benar;
+    document.getElementById('scene').innerHTML='<span class="em">'+s[0]+'</span>'+s[1];
+    var p=document.getElementById('pilih');p.innerHTML='';document.getElementById('fb').textContent='';document.getElementById('fb').className='fb';document.getElementById('lanjut').hidden=true;
+    O.forEach(function(o){var b=document.createElement('button');b.style.background=o.c;b.textContent=o.em+' '+o.n;b.onclick=function(){jawab(o.k,b);};p.appendChild(b);});}
+  function jawab(k,btn){var s=S[no],ok=k===s[2],o=O.filter(function(x){return x.k===s[2];})[0];
+    Array.prototype.forEach.call(document.getElementById('pilih').children,function(b){b.disabled=true;});
+    if(ok)benar++;var fb=document.getElementById('fb');fb.className='fb '+(ok?'ok':'no');
+    fb.textContent=ok?'Benar! Kita memakai '+o.n.toLowerCase()+' sebagai indra '+o.i+'.':'Belum tepat. Yang paling berperan adalah '+o.n.toLowerCase()+' (indra '+o.i+').';
+    document.getElementById('skor').textContent='Soal '+(no+1)+' dari '+S.length+' · Benar: '+benar;
+    var l=document.getElementById('lanjut');l.hidden=false;l.textContent=no===S.length-1?'Selesai 🎉':'Berikutnya ›';}
+  document.getElementById('lanjut').onclick=function(){if(no<S.length-1){no++;tampilSoal();}
+    else{document.getElementById('scene').innerHTML='<span class="em">🏆</span>Kamu benar '+benar+' dari '+S.length+' soal!';document.getElementById('pilih').innerHTML='';
+      document.getElementById('fb').textContent='Ingat: kita sering memakai lebih dari satu indra sekaligus.';document.getElementById('fb').className='fb';
+      this.textContent='Main lagi ↻';no=-1;benar=0;var self=this;this.onclick=function(){location.reload();};}};
+  tampilSoal();
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'),function(b){b.onclick=function(){
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'),function(o){o.classList.toggle('on',o===b);});
+    document.getElementById('jelajah').hidden=b.dataset.tab!=='jelajah';document.getElementById('main').hidden=b.dataset.tab!=='main';};});
+})();
+</script>
+</body></html>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="Segoe UI, Arial, sans-serif">
+<rect width="800" height="560" fill="#fdf6e9"/>
+<rect y="430" width="800" height="130" fill="#c8a27a"/><rect y="430" width="800" height="14" fill="#a9825a"/>
+<g transform="translate(250 90)">
+ <path d="M0 0 H300 L270 345 Q268 360 252 360 H48 Q32 360 30 345 Z" fill="#e8f6fb" stroke="#7aa7b8" stroke-width="6"/>
+ <path d="M14 90 H286 L268 340 Q266 352 252 352 H48 Q34 352 32 340 Z" fill="#c9752b" opacity=".85"/>
+ <g fill="#eaf7ff" stroke="#9cc6dc" stroke-width="4" opacity=".95">
+  <rect x="50" y="70" width="70" height="62" rx="10" transform="rotate(-12 85 100)"/>
+  <rect x="150" y="62" width="74" height="64" rx="10" transform="rotate(10 187 94)"/>
+  <rect x="95" y="140" width="66" height="60" rx="10" transform="rotate(20 128 170)"/>
+ </g>
+ <g fill="#bfe6f7" stroke="#5aa3c4" stroke-width="2">
+  <ellipse cx="-4" cy="150" rx="7" ry="10"/><ellipse cx="8" cy="210" rx="6" ry="9"/><ellipse cx="-2" cy="270" rx="8" ry="11"/><ellipse cx="14" cy="320" rx="6" ry="8"/>
+  <ellipse cx="300" cy="140" rx="7" ry="10"/><ellipse cx="290" cy="200" rx="6" ry="9"/><ellipse cx="292" cy="260" rx="8" ry="11"/><ellipse cx="282" cy="318" rx="6" ry="8"/>
+  <ellipse cx="120" cy="365" rx="60" ry="8" fill="#a8d8ee" opacity=".7"/>
+ </g>
+ <rect x="215" y="-70" width="18" height="300" rx="9" fill="#f43f5e" transform="rotate(14 224 80)"/>
+</g>
+<g font-size="26" fill="#1d2a2e" font-weight="700">
+ <path d="M560 250 L610 230" stroke="#1d2a2e" stroke-width="3"/><text x="618" y="226">titik-titik air</text>
+ <text x="618" y="256" font-size="20" font-weight="400">di luar gelas</text>
+ <path d="M330 175 L150 140" stroke="#1d2a2e" stroke-width="3"/><text x="40" y="132">es batu</text>
+</g>
+<text x="400" y="510" text-anchor="middle" font-size="30" font-weight="800" fill="#3b2a18">Dari mana datangnya air di luar gelas?</text>
+</svg>

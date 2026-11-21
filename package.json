@@ -1,0 +1,25 @@
+{
+  "name": "lms-ipa-sdn-cipinang-ii",
+  "version": "1.0.0",
+  "description": "LMS Offline IPAS (bagian IPA) Kelas 4-6 SDN Cipinang II",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test --test-concurrency=1 \"test/*.test.js\"",
+    "test:server": "node --test test/server.test.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "express": "^4.22.3",
+    "multer": "^2.5.0",
+    "qrcode": "^1.5.4"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.55.0"
+  }
+}

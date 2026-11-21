@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Siklus Hidup Hewan</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f0fdf4;color:#14532d}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #bbf7d0;background:#fff;border-radius:12px;padding:7px 13px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#14532d}
+  button.on{background:#16a34a;border-color:#16a34a;color:#fff}
+  .tag{font-weight:800;font-size:clamp(13px,1.7vw,16px);background:#fef9c3;color:#713f12;border-radius:99px;padding:4px 12px}
+  .main{flex:1;min-height:0;display:flex;gap:12px}
+  .lingkar{position:relative;flex:1.2;min-width:0;min-height:220px}
+  .node{position:absolute;transform:translate(-50%,-50%);width:clamp(74px,13vw,130px);text-align:center;background:#fff;border:3px solid #bbf7d0;border-radius:18px;padding:6px 4px;cursor:pointer;transition:transform .2s,border-color .2s;font:inherit}
+  .node.on{border-color:#16a34a;transform:translate(-50%,-50%) scale(1.12);box-shadow:0 0 0 5px #86efac}
+  .node .gb{height:clamp(40px,7vw,70px);display:flex;align-items:center;justify-content:center;font-size:clamp(34px,6vw,60px)}
+  .node .gb svg{height:100%;width:auto}
+  .node b{display:block;font-size:clamp(11px,1.6vw,15px);line-height:1.15}
+  svg.panah{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .ket{flex:1;min-width:0;background:#fff;border:2px solid #bbf7d0;border-radius:18px;padding:12px 14px;overflow:auto}
+  .ket h2{margin:0 0 6px;font-size:clamp(18px,2.6vw,28px)}
+  .ket p{margin:0 0 8px;font-size:clamp(14px,2vw,20px);line-height:1.45;color:#1f2937}
+  @media (max-width:600px){.main{flex-direction:column}}
+  .susun{flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .slot{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .slot div{width:clamp(70px,12vw,120px);height:clamp(70px,12vw,110px);border:3px dashed #86efac;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;font-size:clamp(11px,1.5vw,14px);font-weight:700}
+  .slot div .gb{height:60%;display:flex;align-items:center;font-size:clamp(28px,5vw,48px)}.slot div .gb svg{height:100%}
+  .acak{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .fb{font-weight:800;font-size:clamp(15px,2.2vw,22px);min-height:1.3em}
+  .fb.no{color:#b91c1c}
+</style></head>
+<body><div class="app">
+  <div class="row" id="hewan"></div>
+  <div class="row"><span class="tag" id="jenis"></span><button id="mode">🧩 Susun urutan</button><button id="lanjut" class="on">Tahap berikutnya ›</button></div>
+  <div class="main" id="lihat"><div class="lingkar" id="lingkar"></div><div class="ket" id="ket"></div></div>
+  <div class="susun" id="susun" hidden><div class="fb" id="fb">Ketuk tahap-tahap di bawah sesuai urutan, dimulai dari telur.</div><div class="slot" id="slot"></div><div class="acak" id="acak"></div></div>
+</div>
+<script>
+(function(){
+  var G={
+    telurKecil:'<svg viewBox="0 0 80 60"><ellipse cx="40" cy="42" rx="38" ry="14" fill="#4ade80"/><g fill="#fef08a" stroke="#ca8a04" stroke-width="2"><circle cx="28" cy="34" r="6"/><circle cx="40" cy="30" r="6"/><circle cx="52" cy="34" r="6"/><circle cx="40" cy="40" r="6"/></g></svg>',
+    kepompong:'<svg viewBox="0 0 60 90"><path d="M30 0 V12" stroke="#78350f" stroke-width="3"/><path d="M30 12 C55 25 50 75 30 88 C10 75 5 25 30 12Z" fill="#84cc16" stroke="#3f6212" stroke-width="3"/><path d="M20 40 H40 M18 55 H42" stroke="#3f6212" stroke-width="2"/></svg>',
+    telurKatak:'<svg viewBox="0 0 90 60"><g fill="#e0f2fe" stroke="#7dd3fc" stroke-width="2">'+[[15,20],[35,15],[55,20],[75,25],[25,40],[45,38],[65,42]].map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="10"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#111827" stroke="none"/>';}).join('')+'</g></svg>',
+    berudu:'<svg viewBox="0 0 100 50"><path d="M40 25 C70 10 85 40 98 22" stroke="#334155" stroke-width="6" fill="none"/><ellipse cx="30" cy="25" rx="24" ry="17" fill="#334155"/><circle cx="20" cy="20" r="3" fill="#fff"/></svg>',
+    beruduKaki:'<svg viewBox="0 0 100 60"><path d="M45 28 C70 15 85 42 98 25" stroke="#4d7c0f" stroke-width="6" fill="none"/><ellipse cx="32" cy="28" rx="25" ry="18" fill="#4d7c0f"/><path d="M40 42 l8 14 l8 0 M24 42 l-6 14 l-8 0" stroke="#4d7c0f" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="22" cy="22" r="3" fill="#fff"/></svg>',
+    katakMuda:'<svg viewBox="0 0 100 70"><path d="M62 45 C75 45 80 50 88 46" stroke="#16a34a" stroke-width="5" fill="none"/><ellipse cx="40" cy="42" rx="28" ry="20" fill="#22c55e"/><circle cx="28" cy="22" r="9" fill="#22c55e"/><circle cx="50" cy="22" r="9" fill="#22c55e"/><circle cx="28" cy="21" r="4" fill="#111827"/><circle cx="50" cy="21" r="4" fill="#111827"/><path d="M14 56 l-10 10 M66 56 l10 10" stroke="#16a34a" stroke-width="6" stroke-linecap="round"/></svg>'
+  };
+  var H={
+    kupu:{n:'🦋 Kupu-kupu',j:'Metamorfosis sempurna',t:[
+      ['Telur',G.telurKecil,'Kupu-kupu betina meletakkan telur di bawah daun. Telur menetas setelah beberapa hari.'],
+      ['Ulat (larva)','🐛','Ulat makan daun sangat banyak dan tumbuh cepat. Kulitnya berganti beberapa kali.'],
+      ['Kepompong (pupa)',G.kepompong,'Ulat membungkus diri menjadi kepompong. Ia tidak makan, tetapi tubuhnya berubah total di dalam.'],
+      ['Kupu-kupu','🦋','Kupu-kupu keluar dari kepompong, mengisap nektar bunga, lalu bertelur lagi. Siklus berulang.']]},
+    katak:{n:'🐸 Katak',j:'Metamorfosis sempurna',t:[
+      ['Telur',G.telurKatak,'Katak bertelur di air. Telurnya diselubungi lendir seperti jeli.'],
+      ['Berudu',G.berudu,'Berudu hidup di air, berekor, dan bernapas dengan insang.'],
+      ['Berudu berkaki',G.beruduKaki,'Kaki belakang tumbuh lebih dulu, lalu kaki depan.'],
+      ['Katak muda',G.katakMuda,'Ekor memendek. Katak muda mulai bernapas dengan paru-paru dan bisa naik ke darat.'],
+      ['Katak dewasa','🐸','Katak dewasa hidup di darat dan di air, lalu bertelur lagi.']]},
+    belalang:{n:'🦗 Belalang',j:'Metamorfosis tidak sempurna',t:[
+      ['Telur',G.telurKecil,'Belalang betina meletakkan telur di dalam tanah.'],
+      ['Nimfa','🦗','Nimfa mirip induknya tetapi kecil dan belum bersayap. Kulitnya berganti beberapa kali.'],
+      ['Belalang dewasa','🦗','Belalang dewasa sudah bersayap dan dapat bertelur. Tidak ada tahap kepompong.']]},
+    ayam:{n:'🐔 Ayam',j:'Tanpa metamorfosis',t:[
+      ['Telur','🥚','Induk ayam mengerami telur selama ± 21 hari.'],
+      ['Anak ayam','🐥','Anak ayam menetas. Bentuk tubuhnya sudah mirip induk, hanya lebih kecil dan berbulu halus.'],
+      ['Ayam remaja','🐤','Bulu halus berganti menjadi bulu yang lebih kuat. Tubuhnya terus membesar.'],
+      ['Ayam dewasa','🐔','Ayam dewasa dapat bertelur. Siklus hidup berulang.']]}
+  };
+  var cur='kupu',tahap=0,susun=false,urutan=[];
+  var hewanEl=document.getElementById('hewan');
+  Object.keys(H).forEach(function(k){var b=document.createElement('button');b.textContent=H[k].n;b.dataset.k=k;b.onclick=function(){cur=k;tahap=0;gambar();};hewanEl.appendChild(b);});
+  function gb(x){return '<div class="gb">'+x+'</div>';}
+  function gambar(){
+    Array.prototype.forEach.call(hewanEl.children,function(b){b.classList.toggle('on',b.dataset.k===cur);});
+    var h=H[cur],L=document.getElementById('lingkar');document.getElementById('jenis').textContent=h.j;
+    var n=h.t.length,html='<svg class="panah" viewBox="0 0 100 100" preserveAspectRatio="none"><ellipse cx="50" cy="50" rx="34" ry="33" fill="none" stroke="#86efac" stroke-width="1.2" stroke-dasharray="3 2"/></svg>';
+    h.t.forEach(function(t,i){var a=-Math.PI/2+i/n*Math.PI*2,x=50+34*Math.cos(a),y=52+31*Math.sin(a);
+      html+='<button class="node'+(i===tahap?' on':'')+'" data-i="'+i+'" style="left:'+x+'%;top:'+y+'%">'+gb(t[1])+'<b>'+(i+1)+'. '+t[0]+'</b></button>';});
+    L.innerHTML=html;
+    Array.prototype.forEach.call(L.querySelectorAll('.node'),function(b){b.onclick=function(){tahap=+b.dataset.i;gambar();};});
+    var t=h.t[tahap];document.getElementById('ket').innerHTML='<h2>'+(tahap+1)+'. '+t[0]+'</h2><p>'+t[2]+'</p><p style="color:#15803d"><b>'+h.j+'.</b> '+
+      (h.j==='Metamorfosis sempurna'?'Bentuk tubuh berubah total dari kecil hingga dewasa.':h.j==='Metamorfosis tidak sempurna'?'Ada tahap nimfa yang mirip induk; tidak ada kepompong.':'Anak sudah mirip induknya sejak menetas.')+'</p>';
+    if(susun)mulaiSusun();
+  }
+  document.getElementById('lanjut').onclick=function(){tahap=(tahap+1)%H[cur].t.length;gambar();};
+  function mulaiSusun(){
+    var h=H[cur],idx=h.t.map(function(_,i){return i;});
+    for(var i=idx.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=idx[i];idx[i]=idx[j];idx[j]=t;}
+    urutan=[];var slot=document.getElementById('slot'),acak=document.getElementById('acak');
+    slot.innerHTML=h.t.map(function(){return '<div>?</div>';}).join('');acak.innerHTML='';
+    document.getElementById('fb').className='fb';document.getElementById('fb').textContent='Ketuk tahap-tahap di bawah sesuai urutan, dimulai dari telur.';
+    idx.forEach(function(i){var b=document.createElement('button');b.innerHTML=h.t[i][0];b.onclick=function(){
+      var fb=document.getElementById('fb');
+      if(i===urutan.length){urutan.push(i);b.disabled=true;b.style.opacity=.35;slot.children[i].innerHTML=gb(h.t[i][1])+h.t[i][0];slot.children[i].style.borderStyle='solid';
+        fb.className='fb';fb.textContent=urutan.length===h.t.length?'🎉 Hebat! Urutannya benar. Siklus lalu berulang dari telur.':'Benar! Lanjutkan…';}
+      else{fb.className='fb no';fb.textContent='Belum tepat. Tahap apa yang terjadi setelah '+(urutan.length?h.t[urutan.length-1][0].toLowerCase():'… (mulai dari telur)')+'?';}
+    };acak.appendChild(b);});
+  }
+  document.getElementById('mode').onclick=function(){susun=!susun;this.textContent=susun?'🔄 Lihat siklus':'🧩 Susun urutan';
+    document.getElementById('lihat').hidden=susun;document.getElementById('susun').hidden=!susun;document.getElementById('lanjut').hidden=susun;gambar();};
+  gambar();
+})();
+</script>
+</body></html>

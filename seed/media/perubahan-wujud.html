@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulasi Perubahan Wujud Air</title>
+<style>
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f4fbfa;color:#1d2a2e}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:10px}
+  .top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .wujud{font-size:clamp(20px,3.4vw,34px);font-weight:800}
+  .proses{font-size:clamp(16px,2.6vw,26px);font-weight:700;color:#b45309;min-height:1.3em}
+  .main{flex:1;display:flex;gap:12px;min-height:0}
+  canvas{flex:1;min-width:0;background:#fff;border:3px solid #9cc;border-radius:14px;width:100%;height:100%}
+  .termo{width:64px;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .tube{flex:1;width:22px;background:#eee;border:3px solid #888;border-radius:12px;position:relative;overflow:hidden}
+  .fill{position:absolute;left:0;right:0;bottom:0;background:#e11d48;transition:height .2s}
+  .suhu{font-size:clamp(18px,2.8vw,28px);font-weight:800}
+  .ctrl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  button{font:inherit;font-size:clamp(15px,2.2vw,22px);font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;color:#fff}
+  .hot{background:#dc2626}.cold{background:#2563eb}.reset{background:#64748b}
+  input[type=range]{flex:1;min-width:160px;height:34px;accent-color:#e11d48}
+  .legend{font-size:clamp(13px,1.8vw,17px);color:#475569}
+</style></head>
+<body><div class="app">
+  <div class="top"><div class="wujud" id="wujud">Wujud: Padat (es)</div><div class="proses" id="proses"></div></div>
+  <div class="main">
+    <canvas id="c" aria-label="Partikel air"></canvas>
+    <div class="termo"><div class="suhu" id="suhu">-10°C</div><div class="tube"><div class="fill" id="fill"></div></div></div>
+  </div>
+  <div class="ctrl">
+    <button class="cold" id="dingin">❄ Dinginkan</button>
+    <input type="range" id="t" min="-20" max="130" value="-10" aria-label="Suhu">
+    <button class="hot" id="panas">🔥 Panaskan</button>
+    <button class="reset" id="ulang">Ulang</button>
+  </div>
+  <div class="legend">Geser suhu atau tekan tombol. Perhatikan cara partikel bergerak: padat bergetar di tempat, cair bergerak bebas di bawah, gas bergerak cepat memenuhi ruang.</div>
+</div>
+<script>
+(function(){
+  var c=document.getElementById('c'),x=c.getContext('2d'),T=document.getElementById('t');
+  var N=64,P=[],W=0,H=0,prev=null,hold=0,timer=null;
+  function size(){var r=c.getBoundingClientRect();W=c.width=Math.max(200,r.width*devicePixelRatio);H=c.height=Math.max(160,r.height*devicePixelRatio);grid();}
+  function grid(){var cols=8,s=Math.min(W,H)*0.07;var ox=W/2-cols*s/2+s/2,oy=H-s*8.5;P.forEach(function(p,i){p.hx=ox+(i%cols)*s;p.hy=oy+Math.floor(i/cols)*s;});}
+  for(var i=0;i<N;i++)P.push({x:0,y:0,vx:0,vy:0,hx:0,hy:0});
+  size();P.forEach(function(p){p.x=p.hx;p.y=p.hy;});
+  window.addEventListener('resize',size);
+  function state(t){return t<=0?'padat':(t<100?'cair':'gas');}
+  var nama={padat:'Padat (es)',cair:'Cair (air)',gas:'Gas (uap air)'};
+  var proses={'padat>cair':'Mencair! Es menyerap panas','cair>gas':'Menguap! Air menyerap panas','gas>cair':'Mengembun! Uap air melepas panas','cair>padat':'Membeku! Air melepas panas'};
+  function step(){
+    var t=+T.value,s=state(t),r=Math.min(W,H)*0.034;
+    document.getElementById('suhu').textContent=t+'°C';
+    document.getElementById('fill').style.height=((t+20)/150*100)+'%';
+    document.getElementById('wujud').textContent='Wujud: '+nama[s];
+    if(prev&&prev!==s){document.getElementById('proses').textContent=proses[prev+'>'+s]||'';hold=180;}
+    if(hold>0&&--hold===0)document.getElementById('proses').textContent='';
+    prev=s;
+    var speed=s==='padat'?0:(s==='cair'?1.2+t/60:3+t/40)*devicePixelRatio;
+    P.forEach(function(p){
+      if(s==='padat'){var j=(t+21)*0.05*devicePixelRatio;p.x+=(p.hx-p.x)*0.15+(Math.random()-.5)*j;p.y+=(p.hy-p.y)*0.15+(Math.random()-.5)*j;p.vx=p.vy=0;}
+      else{
+        p.vx+=(Math.random()-.5)*speed*(s==='cair'?1.4:0.6);p.vy+=(Math.random()-.5)*speed*0.6+(s==='cair'?0.18*devicePixelRatio:0);
+        var m=Math.hypot(p.vx,p.vy)||1,lim=speed*1.6;if(m>lim){p.vx*=lim/m;p.vy*=lim/m;}
+        p.x+=p.vx;p.y+=p.vy;
+        var top=s==='cair'?H*0.45:r;
+        if(p.x<r){p.x=r;p.vx=Math.abs(p.vx);}if(p.x>W-r){p.x=W-r;p.vx=-Math.abs(p.vx);}
+        if(p.y<top){p.y=top;p.vy=Math.abs(p.vy);}if(p.y>H-r){p.y=H-r;p.vy=-Math.abs(p.vy)*(s==='cair'?0.6:1);}
+      }
+    });
+    if(s!=='padat'){ // partikel saling menolak agar tidak menumpuk
+      for(var i=0;i<N;i++)for(var j=i+1;j<N;j++){var a=P[i],b=P[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,min=r*2.05;
+        if(d<min){var push=(min-d)/2,ux=dx/d,uy=dy/d;a.x-=ux*push;a.y-=uy*push;b.x+=ux*push;b.y+=uy*push;}}
+    }
+    x.clearRect(0,0,W,H);
+    P.forEach(function(p){x.beginPath();x.arc(p.x,p.y,r,0,7);x.fillStyle=s==='padat'?'#7dd3fc':(s==='cair'?'#3b82f6':'#94a3b8');x.fill();x.lineWidth=2;x.strokeStyle='#1e3a8a';x.stroke();});
+    requestAnimationFrame(step);
+  }
+  function hold2(d){clearInterval(timer);timer=setInterval(function(){T.value=Math.max(-20,Math.min(130,+T.value+d));},60);}
+  function stop(){clearInterval(timer);}
+  ['panas','dingin'].forEach(function(id){var b=document.getElementById(id),d=id==='panas'?1:-1;
+    b.addEventListener('pointerdown',function(){hold2(d)});['pointerup','pointerleave','pointercancel'].forEach(function(e){b.addEventListener(e,stop)});});
+  document.getElementById('ulang').onclick=function(){T.value=-10;grid();};
+  step();
+})();
+</script></body></html>

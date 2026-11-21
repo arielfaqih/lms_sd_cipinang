@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorium Cahaya</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#0f172a;color:#f8fafc}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #334155;background:#1e293b;border-radius:12px;padding:7px 12px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#f8fafc}
+  button.on{background:#f59e0b;border-color:#f59e0b;color:#1c1917}
+  label{font-weight:700;font-size:clamp(13px,1.8vw,16px);display:flex;align-items:center;gap:6px}
+  input[type=range]{width:180px;accent-color:#f59e0b}
+  canvas{flex:1;min-height:150px;width:100%;border-radius:14px;background:#020617}
+  .ket{background:#1e293b;border-radius:14px;padding:8px 12px;font-size:clamp(13px,1.9vw,18px);line-height:1.4;color:#e2e8f0}
+</style></head>
+<body><div class="app">
+  <div class="row" id="tabs"></div>
+  <div class="row" id="ctrl"></div>
+  <canvas id="c"></canvas>
+  <div class="ket" id="ket"></div>
+</div>
+<script>
+(function(){
+  var LW=1000,LH=420,c=document.getElementById('c'),x=c.getContext('2d'),W,H,D=window.devicePixelRatio||1,tab='lurus',st={};
+  function size(){var r=c.getBoundingClientRect();W=c.width=Math.max(1,r.width*D);H=c.height=Math.max(1,r.height*D);}
+  size();window.addEventListener('resize',size);
+  var T={
+    lurus:['➡️ Merambat lurus','Cahaya <b>merambat lurus</b>. Cahaya senter hanya sampai ke layar jika lubang ketiga kardus <b>segaris</b>. Geser kardus tengah untuk mencobanya.'],
+    pantul:['🪞 Dipantulkan','Cahaya yang mengenai cermin <b>dipantulkan</b>. Besar <b>sudut datang sama dengan sudut pantul</b> (diukur dari garis normal yang tegak lurus cermin). Contoh: bercermin, kaca spion.'],
+    bias:['💧 Dibiaskan','Cahaya yang masuk dari udara ke air <b>dibelokkan</b> (dibiaskan) karena kecepatannya berubah. Akibatnya pensil di dalam gelas berisi air tampak <b>patah</b>, dan dasar kolam tampak lebih dangkal.'],
+    tembus:['🔦 Menembus benda bening','Cahaya dapat <b>menembus benda bening</b> seperti kaca. Benda buram (kertas minyak) ditembus sebagian. Benda gelap/tidak tembus cahaya (kardus, kayu) menghalangi cahaya sehingga terbentuk <b>bayangan</b>.']
+  };
+  var tabs=document.getElementById('tabs');
+  Object.keys(T).forEach(function(k){var b=document.createElement('button');b.textContent=T[k][0];b.dataset.k=k;b.onclick=function(){pilih(k);};tabs.appendChild(b);});
+  function slider(lbl,min,max,val,f){var l=document.createElement('label');l.textContent=lbl+' ';var r=document.createElement('input');r.type='range';r.min=min;r.max=max;r.value=val;r.oninput=function(){f(+r.value);};l.appendChild(r);document.getElementById('ctrl').appendChild(l);f(val);}
+  function pilih(k){tab=k;st={};Array.prototype.forEach.call(tabs.children,function(b){b.classList.toggle('on',b.dataset.k===k);});
+    var ct=document.getElementById('ctrl');ct.innerHTML='';document.getElementById('ket').innerHTML=T[k][1];
+    if(k==='lurus')slider('Geser kardus tengah',-100,100,60,function(v){st.off=v;});
+    if(k==='pantul')slider('Sudut datang',10,80,40,function(v){st.i=v;});
+    if(k==='bias')slider('Sudut datang',0,75,40,function(v){st.i=v;});
+    if(k==='tembus'){st.m='kaca';[['kaca','Kaca bening'],['kertas','Kertas minyak'],['kardus','Kardus']].forEach(function(m){var b=document.createElement('button');b.textContent=m[1];b.dataset.m=m[0];
+      b.onclick=function(){st.m=m[0];Array.prototype.forEach.call(ct.children,function(o){o.classList.toggle('on',o===b);});};if(m[0]==='kaca')b.classList.add('on');ct.appendChild(b);});}
+  }
+  function sinar(x1,y1,x2,y2,a){x.strokeStyle='rgba(253,224,71,'+(a===undefined?1:a)+')';x.lineWidth=8;x.lineCap='round';x.shadowColor='#fde047';x.shadowBlur=18;x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();x.shadowBlur=0;}
+  function teks(s,px,py,sz,col,al){x.fillStyle=col||'#f8fafc';x.font='700 '+sz+'px Segoe UI';x.textAlign=al||'center';x.fillText(s,px,py);}
+  function senter(px,py,rot){x.save();x.translate(px,py);x.rotate(rot||0);x.fillStyle='#64748b';x.fillRect(-70,-16,60,32);x.fillStyle='#94a3b8';x.beginPath();x.moveTo(-10,-22);x.lineTo(10,-26);x.lineTo(10,26);x.lineTo(-10,22);x.fill();x.restore();}
+  function frame(){
+    x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,H);var s=Math.min(W/LW,H/LH);x.setTransform(s,0,0,s,(W-LW*s)/2,(H-LH*s)/2);
+    x.fillStyle='#020617';x.fillRect(0,0,LW,LH);
+    if(tab==='lurus'){
+      var y=220,cards=[[350,0],[550,st.off||0],[750,0]];senter(160,y);
+      var tembus=Math.abs(st.off||0)<12;
+      sinar(170,y,tembus?900:550,y);
+      cards.forEach(function(cd){x.fillStyle='#b45309';x.fillRect(cd[0]-10,y-130+cd[1],20,260);x.fillStyle='#020617';x.fillRect(cd[0]-12,y-8+cd[1],24,16);});
+      x.fillStyle=tembus?'#fef9c3':'#334155';x.fillRect(900,90,26,260);teks('layar',913,380,18);
+      teks(tembus?'✓ Lubang segaris: cahaya sampai ke layar':'✗ Lubang tidak segaris: cahaya terhalang kardus',500,50,26,tembus?'#86efac':'#fca5a5');
+    }
+    if(tab==='pantul'){
+      var i=(st.i||40)*Math.PI/180,px=500,py=330,L=260;
+      x.fillStyle='#93c5fd';x.fillRect(220,py,560,12);for(var k=230;k<780;k+=22){x.strokeStyle='#475569';x.lineWidth=2;x.beginPath();x.moveTo(k,py+12);x.lineTo(k-12,py+26);x.stroke();}
+      x.setLineDash([10,8]);x.strokeStyle='#94a3b8';x.lineWidth=3;x.beginPath();x.moveTo(px,py);x.lineTo(px,60);x.stroke();x.setLineDash([]);teks('garis normal',px,48,18,'#94a3b8');
+      var sx=px-L*Math.sin(i),sy=py-L*Math.cos(i),ex=px+L*Math.sin(i),ey=py-L*Math.cos(i);
+      senter(sx,sy,Math.atan2(py-sy,px-sx));sinar(sx,sy,px,py);sinar(px,py,ex,ey,.85);
+      x.strokeStyle='#f59e0b';x.lineWidth=3;x.beginPath();x.arc(px,py,70,-Math.PI/2-i,-Math.PI/2);x.stroke();x.strokeStyle='#22d3ee';x.beginPath();x.arc(px,py,80,-Math.PI/2,-Math.PI/2+i);x.stroke();
+      teks('sudut datang '+st.i+'°',px-150,py-90,20,'#fbbf24');teks('sudut pantul '+st.i+'°',px+150,py-90,20,'#67e8f9');teks('cermin datar',px,py+52,20,'#93c5fd');
+    }
+    if(tab==='bias'){
+      var ib=(st.i===undefined?40:st.i)*Math.PI/180,rb=Math.asin(Math.sin(ib)/1.33),qx=420,qy=200,L2=210;
+      x.fillStyle='#1e3a8a';x.fillRect(0,qy,LW,LH-qy);teks('UDARA',60,60,20,'#cbd5e1','left');teks('AIR',60,qy+40,20,'#bfdbfe','left');
+      x.setLineDash([10,8]);x.strokeStyle='#94a3b8';x.lineWidth=3;x.beginPath();x.moveTo(qx,20);x.lineTo(qx,LH-20);x.stroke();x.setLineDash([]);
+      var ax=qx-L2*Math.sin(ib),ay=qy-L2*Math.cos(ib);senter(ax,ay,Math.atan2(qy-ay,qx-ax));sinar(ax,ay,qx,qy);
+      sinar(qx,qy,qx+L2*Math.sin(rb),qy+L2*Math.cos(rb));
+      x.setLineDash([6,8]);x.strokeStyle='rgba(253,224,71,.35)';x.lineWidth=4;x.beginPath();x.moveTo(qx,qy);x.lineTo(qx+L2*Math.sin(ib),qy+L2*Math.cos(ib));x.stroke();x.setLineDash([]);
+      teks('arah jika tidak dibiaskan',qx+L2*Math.sin(ib)+10,qy+L2*Math.cos(ib)-8,15,'#fde68a','left');
+      teks('sudut datang '+Math.round(ib*180/Math.PI)+'° → sudut bias '+Math.round(rb*180/Math.PI)+'°',qx,40,22,'#fde68a');
+      // gelas dan pensil
+      x.strokeStyle='#e2e8f0';x.lineWidth=4;x.strokeRect(780,120,140,250);x.fillStyle='rgba(56,189,248,.35)';x.fillRect(782,200,136,168);
+      x.strokeStyle='#f59e0b';x.lineWidth=12;x.lineCap='round';x.beginPath();x.moveTo(760,90);x.lineTo(830,200);x.stroke();x.beginPath();x.moveTo(836,203);x.lineTo(912,296);x.stroke();
+      teks('pensil tampak patah',850,400,18,'#fde68a');
+    }
+    if(tab==='tembus'){
+      var m=st.m||'kaca',y2=210,tembusN=m==='kaca'?1:m==='kertas'?0.4:0;senter(140,y2);
+      x.fillStyle='rgba(253,224,71,.25)';x.beginPath();x.moveTo(150,y2-20);x.lineTo(480,y2-110);x.lineTo(480,y2+110);x.lineTo(150,y2+20);x.fill();
+      if(tembusN>0){x.fillStyle='rgba(253,224,71,'+(0.25*tembusN)+')';x.beginPath();x.moveTo(500,y2-110);x.lineTo(880,y2-170);x.lineTo(880,y2+170);x.lineTo(500,y2+110);x.fill();}
+      x.fillStyle=m==='kaca'?'rgba(186,230,253,.35)':m==='kertas'?'rgba(254,243,199,.75)':'#92400e';x.fillRect(480,y2-110,20,220);
+      x.fillStyle='rgba(254,249,195,'+(0.15+0.85*tembusN)+')';x.fillRect(880,30,30,360);
+      if(tembusN<1){x.fillStyle='rgba(2,6,23,'+(1-tembusN)*0.9+')';x.fillRect(880,y2-170,30,340);}
+      teks(m==='kaca'?'Kaca bening: cahaya menembus seluruhnya':m==='kertas'?'Kertas minyak: cahaya menembus sebagian (buram)':'Kardus: cahaya terhalang → terbentuk bayangan',500,50,24,'#fde68a');
+      teks('layar',895,412,16);
+    }
+    requestAnimationFrame(frame);}
+  pilih('lurus');requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

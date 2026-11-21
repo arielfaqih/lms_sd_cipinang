@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<rect width="900" height="540" fill="#e0f2fe"/>
+<rect y="420" width="900" height="120" fill="#86efac"/>
+<path d="M0 420 H900" stroke="#16a34a" stroke-width="4"/>
+<!-- anak setelah berlari -->
+<g transform="translate(250 120)">
+  <circle cx="0" cy="40" r="42" fill="#f2c094" stroke="#92400e" stroke-width="3"/>
+  <path d="M-40 25 C-30 -10 30 -10 40 25 C30 10 -30 10 -40 25Z" fill="#1f2937"/>
+  <circle cx="-14" cy="40" r="4" fill="#1f2937"/><circle cx="14" cy="40" r="4" fill="#1f2937"/>
+  <ellipse cx="0" cy="62" rx="9" ry="7" fill="#7f1d1d"/>
+  <ellipse cx="-27" cy="54" rx="8" ry="5" fill="#f87171" opacity=".7"/><ellipse cx="27" cy="54" rx="8" ry="5" fill="#f87171" opacity=".7"/>
+  <path d="M48 20 q8 10 0 18" stroke="#38bdf8" stroke-width="4" fill="none"/>
+  <rect x="-45" y="85" width="90" height="120" rx="20" fill="#ef4444"/>
+  <text x="0" y="160" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">4</text>
+  <path d="M-40 100 L-70 180" stroke="#f2c094" stroke-width="18" stroke-linecap="round"/>
+  <path d="M40 100 C10 120 -5 125 -10 135" stroke="#f2c094" stroke-width="18" stroke-linecap="round"/>
+  <path d="M-25 200 L-40 300" stroke="#1e3a8a" stroke-width="22" stroke-linecap="round"/>
+  <path d="M25 200 L45 300" stroke="#1e3a8a" stroke-width="22" stroke-linecap="round"/>
+</g>
+<!-- jantung berdebar -->
+<g transform="translate(600 210)">
+  <path d="M0 90 C-90 30 -100 -40 -50 -60 C-20 -72 -3 -50 0 -35 C3 -50 20 -72 50 -60 C100 -40 90 30 0 90Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="4"/>
+  <g stroke="#dc2626" stroke-width="5" stroke-linecap="round" fill="none" opacity=".6">
+    <path d="M-120 -20 q-15 20 0 40"/><path d="M-140 -35 q-25 35 0 70"/>
+    <path d="M120 -20 q15 20 0 40"/><path d="M140 -35 q25 35 0 70"/>
+  </g>
+  <text x="0" y="-95" text-anchor="middle" font-size="34" font-weight="900" fill="#7f1d1d">deg… deg… deg…</text>
+</g>
+<!-- garis denyut -->
+<path d="M430 380 H520 l15 -40 l20 80 l20 -100 l20 60 h150" stroke="#b91c1c" stroke-width="5" fill="none" stroke-linejoin="round"/>
+<text x="450" y="500" text-anchor="middle" font-size="26" font-weight="800" fill="#14532d">Setelah berlari, mengapa jantung berdetak lebih cepat?</text>
+</svg>

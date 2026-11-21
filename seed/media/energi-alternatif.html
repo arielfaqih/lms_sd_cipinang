@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Energi Alternatif</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#ecfeff;color:#083344}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #a5f3fc;background:#fff;border-radius:12px;padding:7px 12px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#083344}
+  button.on{background:#0e7490;border-color:#0e7490;color:#fff}
+  label{font-weight:700;font-size:clamp(13px,1.8vw,16px);display:flex;align-items:center;gap:6px}
+  input[type=range]{width:200px;accent-color:#0e7490}
+  .isi{flex:1;min-height:0;display:flex;gap:10px}
+  canvas{flex:1.5;min-width:0;width:100%;height:100%;border-radius:14px;background:#fff}
+  .info{flex:1;min-width:0;overflow:auto;background:#fff;border:2px solid #a5f3fc;border-radius:14px;padding:8px 12px;font-size:clamp(12px,1.7vw,16px);line-height:1.4}
+  .info h3{margin:4px 0;font-size:clamp(14px,2vw,18px)}
+  .info ul{margin:0;padding-left:1.1em}
+  @media (max-width:700px){.isi{flex-direction:column}canvas{min-height:200px}}
+</style></head>
+<body><div class="app">
+  <div class="row" id="tabs"></div>
+  <div class="row"><label id="lbl"><span id="lblTeks"></span> <input type="range" id="v" min="0" max="100" value="80"></label><b id="hasil"></b></div>
+  <div class="isi"><canvas id="c"></canvas><div class="info" id="info"></div></div>
+</div>
+<script>
+(function(){
+  var S={
+    surya:{n:'☀️ Matahari',l:'Cuaca: mendung ↔ cerah',out:function(v){return 0.1+0.9*v;},
+      i:'<h3>☀️ Pembangkit Listrik Tenaga Surya</h3>Panel surya mengubah <b>cahaya matahari</b> menjadi <b>listrik</b>.<h3>👍 Kelebihan</h3><ul><li>Tidak akan habis dan tidak berasap.</li><li>Bisa dipasang di atap rumah dan sekolah.</li></ul><h3>👎 Kekurangan</h3><ul><li>Hanya menghasilkan listrik saat siang; berkurang saat mendung.</li><li>Perlu baterai untuk menyimpan listrik.</li></ul><h3>📍 Di Indonesia</h3>PLTS atap dan lampu jalan tenaga surya, terutama di daerah yang jauh dari jaringan listrik.'},
+    angin:{n:'🌬️ Angin',l:'Kecepatan angin',out:function(v){return Math.min(1,v*1.1);},
+      i:'<h3>🌬️ Pembangkit Listrik Tenaga Bayu (Angin)</h3>Angin memutar baling-baling kincir. Putaran itu menggerakkan generator yang menghasilkan <b>listrik</b>.<h3>👍 Kelebihan</h3><ul><li>Angin tidak akan habis dan tidak berasap.</li></ul><h3>👎 Kekurangan</h3><ul><li>Angin tidak selalu bertiup kencang.</li><li>Kincir besar membutuhkan lahan yang luas.</li></ul><h3>📍 Di Indonesia</h3>PLTB Sidrap di Sulawesi Selatan memiliki puluhan kincir angin raksasa.'},
+    air:{n:'💧 Air',l:'Banyaknya air yang mengalir',out:function(v){return v;},
+      i:'<h3>💧 Pembangkit Listrik Tenaga Air</h3>Air yang mengalir deras dari tempat tinggi memutar <b>turbin</b>, lalu generator menghasilkan <b>listrik</b>.<h3>👍 Kelebihan</h3><ul><li>Air terus mengalir dan tidak berasap.</li><li>Bendungan juga dapat mengairi sawah.</li></ul><h3>👎 Kekurangan</h3><ul><li>Listrik berkurang saat kemarau panjang.</li><li>Membangun bendungan mengubah lingkungan sekitar.</li></ul><h3>📍 Di Indonesia</h3>PLTA Cirata dan Saguling di Jawa Barat; mikrohidro (PLTMH) di desa-desa pegunungan.'},
+    biogas:{n:'🐄 Biogas',l:'Banyaknya kotoran ternak',out:function(v){return v;},
+      i:'<h3>🐄 Biogas</h3>Kotoran sapi dimasukkan ke tabung tertutup (<b>digester</b>). Bakteri menguraikannya menjadi <b>gas</b> yang dapat dipakai untuk memasak.<h3>👍 Kelebihan</h3><ul><li>Memanfaatkan kotoran yang biasanya dibuang dan mengurangi bau.</li><li>Sisa olahannya menjadi pupuk.</li></ul><h3>👎 Kekurangan</h3><ul><li>Butuh kotoran ternak dalam jumlah cukup setiap hari.</li></ul><h3>📍 Di Indonesia</h3>Banyak peternak sapi di desa memasak dengan biogas buatan sendiri.'}
+  };
+  var tab='surya',v=0.8,rot=0,LW=1000,LH=520,c=document.getElementById('c'),x=c.getContext('2d'),W,H,D=window.devicePixelRatio||1,tabs=document.getElementById('tabs');
+  function size(){var r=c.getBoundingClientRect();W=c.width=Math.max(1,r.width*D);H=c.height=Math.max(1,r.height*D);}
+  size();window.addEventListener('resize',size);
+  Object.keys(S).forEach(function(k){var b=document.createElement('button');b.textContent=S[k].n;b.dataset.k=k;b.onclick=function(){pilih(k);};tabs.appendChild(b);});
+  document.getElementById('v').oninput=function(){v=+this.value/100;};
+  function pilih(k){tab=k;Array.prototype.forEach.call(tabs.children,function(b){b.classList.toggle('on',b.dataset.k===k);});
+    document.getElementById('lblTeks').textContent=S[k].l;document.getElementById('info').innerHTML=S[k].i;}
+  function lampu(px,py,o){var g=x.createRadialGradient(px,py,5,px,py,130);g.addColorStop(0,'rgba(253,224,71,'+o+')');g.addColorStop(1,'rgba(253,224,71,0)');x.fillStyle=g;x.beginPath();x.arc(px,py,130,0,7);x.fill();
+    x.fillStyle=o>0.05?'rgb(253,'+(200+55*o|0)+','+(50+150*(1-o)|0)+')':'#e5e7eb';x.strokeStyle='#64748b';x.lineWidth=3;x.beginPath();x.arc(px,py,34,0,7);x.fill();x.stroke();x.fillStyle='#64748b';x.fillRect(px-16,py+30,32,26);}
+  function kabel(x1,y1,x2,y2){x.strokeStyle='#1f2937';x.lineWidth=5;x.beginPath();x.moveTo(x1,y1);x.bezierCurveTo((x1+x2)/2,y1+80,(x1+x2)/2,y2+80,x2,y2);x.stroke();}
+  function baling(px,py,r,a){x.save();x.translate(px,py);x.rotate(a);x.fillStyle='#e2e8f0';x.strokeStyle='#64748b';x.lineWidth=2;for(var i=0;i<3;i++){x.rotate(Math.PI*2/3);x.beginPath();x.ellipse(0,-r/2,12,r/2,0,0,7);x.fill();x.stroke();}x.restore();x.fillStyle='#475569';x.beginPath();x.arc(px,py,10,0,7);x.fill();}
+  var last=0;
+  function frame(now){var dt=Math.min(50,now-(last||now));last=now;
+    x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,H);var s=Math.min(W/LW,H/LH);x.setTransform(s,0,0,s,(W-LW*s)/2,(H-LH*s)/2);
+    var o=S[tab].out(v);
+    x.fillStyle=tab==='surya'?'rgb('+(140+100*v|0)+','+(170+70*v|0)+','+(200+40*v|0)+')':'#e0f2fe';x.fillRect(0,0,LW,LH);x.fillStyle='#86efac';x.fillRect(0,420,LW,100);
+    if(tab==='surya'){x.fillStyle='#fbbf24';x.beginPath();x.arc(160,100,55,0,7);x.fill();
+      var awan=Math.round((1-v)*5);for(var i=0;i<awan;i++){x.fillStyle='#94a3b8';var ax=90+i*120;x.beginPath();x.ellipse(ax,110+(i%2)*30,70,30,0,0,7);x.fill();}
+      for(var r=0;r<6;r++){x.strokeStyle='rgba(251,191,36,'+(0.6*v)+')';x.lineWidth=4;x.beginPath();x.moveTo(200+r*20,150+r*10);x.lineTo(330+r*12,300);x.stroke();}
+      x.save();x.translate(400,330);x.rotate(-0.4);x.fillStyle='#1e3a8a';x.fillRect(-110,-50,220,100);x.strokeStyle='#93c5fd';x.lineWidth=2;for(var g=-110;g<=110;g+=44){x.beginPath();x.moveTo(g,-50);x.lineTo(g,50);x.stroke();}x.beginPath();x.moveTo(-110,0);x.lineTo(110,0);x.stroke();x.restore();
+      x.fillStyle='#475569';x.fillRect(395,360,10,60);kabel(470,380,760,330);}
+    if(tab==='angin'){rot+=dt/1000*v*12;for(var w=0;w<Math.round(v*8);w++){x.strokeStyle='rgba(14,116,144,.5)';x.lineWidth=4;var wy=90+w*35,wx=(now/4*v+w*90)%700;x.beginPath();x.moveTo(wx,wy);x.lineTo(wx+70,wy);x.stroke();}
+      x.fillStyle='#cbd5e1';x.beginPath();x.moveTo(390,420);x.lineTo(410,420);x.lineTo(403,170);x.lineTo(397,170);x.fill();baling(400,170,150,rot);kabel(405,400,760,330);}
+    if(tab==='air'){rot+=dt/1000*v*10;x.fillStyle='#78716c';x.beginPath();x.moveTo(0,120);x.lineTo(260,120);x.lineTo(300,420);x.lineTo(0,420);x.fill();
+      x.fillStyle='#38bdf8';x.fillRect(0,140,250,60);x.strokeStyle='#0ea5e9';x.lineWidth=10+30*v;x.beginPath();x.moveTo(250,190);x.quadraticCurveTo(330,220,380,330);x.stroke();
+      x.fillStyle='#38bdf8';x.globalAlpha=0.6;x.fillRect(380,400,620,20);x.globalAlpha=1;
+      x.fillStyle='#475569';x.fillRect(340,300,120,110);baling(400,340,70,rot);teks('turbin',400,445,20);kabel(460,350,760,330);}
+    if(tab==='biogas'){x.fillStyle='#78350f';for(var t=0;t<Math.round(v*6);t++){x.beginPath();x.ellipse(100+t*28,405,16,9,0,0,7);x.fill();}
+      teks('🐄',120,330,70);x.fillStyle='#94a3b8';x.beginPath();x.ellipse(430,340,110,80,0,0,7);x.fill();x.fillStyle='#a16207';x.fillRect(330,360,200,60);
+      x.fillStyle='rgba(134,239,172,.8)';for(var bb=0;bb<Math.round(v*8);bb++){x.beginPath();x.arc(370+(bb*31)%120,300-((now/20+bb*40)%60),8,0,7);x.fill();}
+      teks('digester',430,250,22);x.strokeStyle='#1f2937';x.lineWidth=8;x.beginPath();x.moveTo(530,320);x.lineTo(720,320);x.lineTo(720,360);x.stroke();
+      x.fillStyle='#334155';x.fillRect(680,360,140,40);var fl=10+70*v;
+      if(v>0.05){var gF=x.createLinearGradient(0,360-fl,0,360);gF.addColorStop(0,'rgba(59,130,246,0)');gF.addColorStop(1,'#3b82f6');x.fillStyle=gF;x.beginPath();x.moveTo(710,360);x.quadraticCurveTo(750,360-fl*1.6,790,360);x.fill();}
+      teks('kompor',750,430,20);}
+    if(tab!=='biogas')lampu(800,300,o);
+    var persen=Math.round((tab==='biogas'?v:o)*100);
+    document.getElementById('hasil').textContent=(tab==='biogas'?'🔥 Nyala api: ':'💡 Lampu: ')+persen+'%';
+    requestAnimationFrame(frame);}
+  function teks(s,px,py,sz){x.fillStyle='#083344';x.font='700 '+sz+'px Segoe UI';x.textAlign='center';x.fillText(s,px,py);}
+  pilih('surya');requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

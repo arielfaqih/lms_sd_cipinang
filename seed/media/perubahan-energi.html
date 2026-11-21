@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Perubahan Bentuk Energi</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#fffbeb;color:#1c1917}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:10px}
+  .alat{display:flex;gap:6px;flex-wrap:wrap}
+  .alat button{font:inherit;font-weight:700;border:2px solid #fde68a;background:#fff;border-radius:12px;padding:6px 10px;cursor:pointer;font-size:clamp(13px,1.7vw,16px)}
+  .alat button.on{background:#d97706;border-color:#d97706;color:#fff}
+  .main{flex:1;min-height:0;display:flex;gap:14px;align-items:stretch}
+  .panggung{flex:1;min-width:0;background:#fff;border:2px solid #fde68a;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden}
+  .benda{font-size:clamp(70px,14vw,150px);line-height:1;position:relative;transition:filter .3s}
+  .nyala .benda.cahaya{filter:drop-shadow(0 0 30px #facc15) drop-shadow(0 0 60px #fde047)}
+  .nyala .benda.gerak{animation:putar .5s linear infinite}
+  .nyala .benda.getar{animation:getar .12s linear infinite}
+  @keyframes putar{to{transform:rotate(360deg)}} @keyframes getar{50%{transform:translateX(3px)}}
+  .efek{position:absolute;inset:0;pointer-events:none}
+  .efek span{position:absolute;font-size:clamp(22px,3.5vw,38px);opacity:0}
+  .nyala .efek span{animation:naik 1.6s ease-in infinite}
+  @keyframes naik{0%{opacity:0;transform:translateY(20px)}30%{opacity:1}100%{opacity:0;transform:translateY(-70px)}}
+  .saklar{font:inherit;font-weight:900;font-size:clamp(16px,2.4vw,24px);border:0;border-radius:99px;padding:10px 26px;cursor:pointer;background:#1c1917;color:#fff}
+  .nyala .saklar{background:#16a34a}
+  .rantai{flex:1.2;min-width:0;display:flex;flex-direction:column;gap:10px;overflow:auto}
+  .rantai h2{margin:0;font-size:clamp(17px,2.4vw,26px)}
+  .chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .e{border-radius:14px;padding:8px 12px;font-weight:800;color:#fff;font-size:clamp(14px,2vw,20px);text-align:center;min-width:80px}
+  .e small{display:block;font-weight:600;font-size:.7em;opacity:.9}
+  .e.tanya{background:#e7e5e4!important;color:#57534e}
+  .ar{font-size:clamp(22px,3vw,32px);color:#a8a29e;font-weight:900}
+  .ket{background:#fff;border:2px solid #fde68a;border-radius:16px;padding:10px 14px;font-size:clamp(14px,1.9vw,19px);line-height:1.45}
+  .sumber{font-size:clamp(13px,1.7vw,16px);color:#57534e}
+  @media (max-width:700px){.main{flex-direction:column}}
+</style></head>
+<body><div class="app">
+  <div class="alat" id="alat"></div>
+  <div class="main">
+    <div class="panggung" id="panggung"><div class="benda" id="benda"></div><div class="efek" id="efek"></div><button class="saklar" id="saklar">Nyalakan ⏻</button></div>
+    <div class="rantai">
+      <h2 id="judul"></h2>
+      <div class="chain" id="chain"></div>
+      <div class="ket" id="ket"></div>
+      <div class="sumber"><b>Sumber energi</b> adalah asal energi: matahari ☀️, makanan 🍚, bahan bakar ⛽, air yang mengalir 💧, angin 🌬️, dan baterai 🔋. Energi tidak hilang, tetapi <b>berubah bentuk</b>.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var E={kimia:['Kimia','#7c3aed'],listrik:['Listrik','#ca8a04'],cahaya:['Cahaya','#f59e0b'],panas:['Panas','#dc2626'],gerak:['Gerak','#2563eb'],bunyi:['Bunyi','#059669']};
+  var A=[
+    {n:'Senter',em:'🔦',dari:['kimia','listrik'],jadi:['cahaya','panas'],s:'baterai',ef:'cahaya',fx:'✨',k:'Energi kimia di baterai berubah menjadi energi listrik, lalu lampu senter mengubahnya menjadi cahaya. Lampu juga sedikit menghangat (panas).'},
+    {n:'Kipas angin',em:'🌀',dari:['listrik'],jadi:['gerak','bunyi'],s:'listrik PLN',ef:'gerak',fx:'💨',k:'Energi listrik memutar mesin kipas sehingga baling-baling bergerak. Kipas juga mengeluarkan sedikit bunyi.'},
+    {n:'Setrika',em:'<svg viewBox="0 0 120 80" width="1em" height=".72em"><path d="M45 26 C50 6 95 6 100 24" stroke="#1e3a8a" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M8 64 C18 28 60 18 112 26 L112 64 Z" fill="#60a5fa" stroke="#1e3a8a" stroke-width="4"/><rect x="4" y="62" width="112" height="9" rx="3" fill="#94a3b8"/></svg>',dari:['listrik'],jadi:['panas'],s:'listrik PLN',ef:'',fx:'♨️',k:'Energi listrik berubah menjadi energi panas untuk merapikan pakaian.'},
+    {n:'Radio',em:'📻',dari:['listrik'],jadi:['bunyi'],s:'listrik atau baterai',ef:'getar',fx:'🎵',k:'Energi listrik berubah menjadi energi bunyi yang keluar dari pengeras suara.'},
+    {n:'Kompor gas',em:'🔥',dari:['kimia'],jadi:['panas','cahaya'],s:'gas elpiji',ef:'cahaya',fx:'♨️',k:'Energi kimia pada gas berubah menjadi panas untuk memasak dan cahaya dari nyala api.'},
+    {n:'Lilin',em:'🕯️',dari:['kimia'],jadi:['cahaya','panas'],s:'lilin',ef:'cahaya',fx:'✨',k:'Energi kimia lilin berubah menjadi cahaya dan panas saat dibakar.'},
+    {n:'Tubuh berlari',em:'🏃',dari:['kimia'],jadi:['gerak','panas'],s:'makanan',ef:'getar',fx:'💦',k:'Energi kimia dari makanan berubah menjadi energi gerak. Tubuh juga menjadi panas dan berkeringat.'},
+    {n:'Panel surya',em:'☀️',dari:['cahaya'],jadi:['listrik'],s:'cahaya matahari',ef:'cahaya',fx:'⚡',k:'Panel surya mengubah energi cahaya matahari menjadi energi listrik untuk menyalakan lampu.'}
+  ];
+  var cur=0,on=false,alat=document.getElementById('alat');
+  A.forEach(function(a,i){var b=document.createElement('button');b.textContent=(a.em.charAt(0)==='<'?'🔌':a.em)+' '+a.n;b.onclick=function(){cur=i;on=false;gambar();};alat.appendChild(b);});
+  function kotak(k,tanya){var e=E[k];return '<div class="e'+(tanya?' tanya':'')+'" style="background:'+e[1]+'">'+(tanya?'?':e[0])+'<small>'+(tanya?'nyalakan dulu':'energi')+'</small></div>';}
+  function gambar(){
+    var a=A[cur];Array.prototype.forEach.call(alat.children,function(b,i){b.classList.toggle('on',i===cur);});
+    var p=document.getElementById('panggung');p.classList.toggle('nyala',on);
+    var bd=document.getElementById('benda');bd.innerHTML=a.em;bd.className='benda '+a.ef;
+    var ef=document.getElementById('efek');ef.innerHTML='';
+    for(var i=0;i<6;i++){var s=document.createElement('span');s.textContent=a.fx;s.style.left=(20+i*12)+'%';s.style.top=(25+(i%2)*25)+'%';s.style.animationDelay=(i*.27)+'s';ef.appendChild(s);}
+    document.getElementById('saklar').textContent=on?'Matikan ⏻':'Nyalakan ⏻';
+    document.getElementById('judul').textContent=a.n+' · sumber energi: '+a.s;
+    var h=a.dari.map(function(k){return kotak(k);}).join('<span class="ar">→</span>')+'<span class="ar">→</span>'+a.jadi.map(function(k){return kotak(k,!on);}).join('<span class="ar">+</span>');
+    document.getElementById('chain').innerHTML=h;
+    document.getElementById('ket').innerHTML=on?a.k:'<b>Ayo menebak!</b> Jika '+a.n.toLowerCase()+' dinyalakan, energi apa yang muncul? Diskusikan dulu, lalu tekan <b>Nyalakan</b>.';
+  }
+  document.getElementById('saklar').onclick=function(){on=!on;gambar();};
+  gambar();
+})();
+</script>
+</body></html>

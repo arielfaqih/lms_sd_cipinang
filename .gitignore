@@ -1,0 +1,11 @@
+# Data sekolah: basis data (akun, hash sandi, kunci API), media unggahan, dan backup. Jangan diunggah.
+data/
+
+# node_modules SENGAJA disertakan agar LMS dapat dipasang tanpa internet.
+# Pengecualian: alat uji (devDependency). Pasang dengan `npm install` bila ingin menjalankan `npm test`.
+node_modules/playwright-core/
+node_modules/.bin/playwright*
+
+# Berkas sistem operasi
+Thumbs.db
+.DS_Store

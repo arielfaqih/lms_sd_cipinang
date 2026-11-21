@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jelajah Tata Surya</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#020617;color:#f8fafc}
+  .app{display:flex;flex-direction:column;height:100%;padding:10px;box-sizing:border-box;gap:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;font-weight:700;border:2px solid #334155;background:#0f172a;border-radius:12px;padding:7px 12px;cursor:pointer;font-size:clamp(13px,1.8vw,17px);color:#f8fafc}
+  button.on{background:#f59e0b;border-color:#f59e0b;color:#1c1917}
+  .isi{flex:1;min-height:0;display:flex;gap:10px}
+  canvas{flex:1.6;min-width:0;width:100%;height:100%;border-radius:14px;cursor:pointer}
+  .info{flex:1;min-width:0;overflow:auto;background:#0f172a;border:2px solid #1e293b;border-radius:14px;padding:10px 12px;font-size:clamp(13px,1.8vw,17px);line-height:1.45}
+  .info h2{margin:0 0 4px;font-size:clamp(20px,3vw,30px)}
+  .info .no{color:#fbbf24;font-weight:800}
+  .urut{flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .slot{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .slot div{width:clamp(70px,10vw,104px);height:58px;border:2px dashed #475569;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(12px,1.6vw,15px)}
+  .fb{font-weight:800;font-size:clamp(15px,2.2vw,21px);min-height:1.4em}
+  @media (max-width:700px){.isi{flex-direction:column}canvas{min-height:220px}}
+</style></head>
+<body><div class="app">
+  <div class="row"><button class="on" data-t="jelajah">🔭 Jelajah</button><button data-t="urut">🧩 Urutkan planet</button><button id="jeda">⏸ Jeda</button><button id="nama" class="on">🏷️ Nama</button></div>
+  <div class="isi" id="jelajah"><canvas id="c" aria-label="Planet-planet mengelilingi Matahari"></canvas><div class="info" id="info"></div></div>
+  <div class="urut" id="urut" hidden><div class="fb" id="fb">Ketuk planet-planet di bawah, mulai dari yang paling dekat dengan Matahari.</div><div class="slot" id="slot"></div><div class="row" id="acak" style="justify-content:center"></div></div>
+</div>
+<script>
+(function(){
+  var P=[
+    ['Merkurius','#a8a29e',6,'Planet terdekat dengan Matahari dan planet terkecil. Siangnya sangat panas, malamnya sangat dingin, karena hampir tidak punya udara.','Planet berbatu'],
+    ['Venus','#fcd34d',9,'Planet terpanas karena udaranya tebal dan menahan panas. Tampak paling terang di langit pagi atau senja, disebut bintang kejora.','Planet berbatu'],
+    ['Bumi','#3b82f6',9.5,'Satu-satunya planet yang diketahui memiliki kehidupan dan air dalam bentuk cair. Memiliki satu satelit alami: Bulan.','Planet berbatu'],
+    ['Mars','#ef4444',7,'Disebut planet merah karena tanahnya mengandung karat besi. Memiliki gunung api tertinggi di tata surya.','Planet berbatu'],
+    ['Jupiter','#d6a06b',20,'Planet terbesar. Memiliki Bintik Merah Raksasa, yaitu badai yang sangat besar.','Planet gas raksasa'],
+    ['Saturnus','#eab676',17,'Terkenal dengan cincinnya yang indah, tersusun dari bongkahan es dan batu.','Planet gas raksasa'],
+    ['Uranus','#67e8f9',13,'Berwarna biru kehijauan. Porosnya sangat miring, sehingga seolah-olah berputar sambil berguling.','Planet es raksasa'],
+    ['Neptunus','#3b5bdb',12.5,'Planet terjauh dari Matahari. Memiliki angin yang paling kencang di tata surya.','Planet es raksasa']
+  ];
+  var c=document.getElementById('c'),x=c.getContext('2d'),W,H,D=window.devicePixelRatio||1,run=true,nama=true,sel=2,t=0,pos=[],stars=[];
+  for(var i=0;i<140;i++)stars.push([Math.random(),Math.random(),Math.random()*1.4+.3]);
+  function size(){var r=c.getBoundingClientRect();W=c.width=Math.max(1,r.width*D);H=c.height=Math.max(1,r.height*D);}
+  size();window.addEventListener('resize',size);
+  function info(i){sel=i;var p=P[i];document.getElementById('info').innerHTML='<div class="no">Planet ke-'+(i+1)+' dari Matahari · '+p[4]+'</div><h2 style="color:'+p[1]+'">'+p[0]+'</h2><p>'+p[3]+'</p>'+
+    '<p style="color:#94a3b8">Semua planet <b>berevolusi</b> (beredar) mengelilingi Matahari sambil <b>berotasi</b> (berputar) pada porosnya. Makin jauh dari Matahari, makin lama satu kali revolusinya.</p><p style="color:#64748b">Ketuk planet lain pada gambar. Ukuran dan jarak tidak sesuai skala sebenarnya.</p>';}
+  var last=0;
+  function frame(now){var dt=Math.min(50,now-(last||now));last=now;if(run)t+=dt/1000;
+    x.setTransform(1,0,0,1,0,0);x.fillStyle='#020617';x.fillRect(0,0,W,H);
+    stars.forEach(function(s){x.fillStyle='rgba(255,255,255,.55)';x.fillRect(s[0]*W,s[1]*H,s[2]*D,s[2]*D);});
+    var cx=W/2,cy=H/2,maxR=Math.min(W*0.47,H*0.47/0.55),k=maxR/9,sc=Math.min(W,H)/520;
+    var g=x.createRadialGradient(cx,cy,2,cx,cy,34*sc+20);g.addColorStop(0,'#fff7ae');g.addColorStop(.5,'#fbbf24');g.addColorStop(1,'rgba(251,191,36,0)');x.fillStyle=g;x.beginPath();x.arc(cx,cy,34*sc+20,0,7);x.fill();
+    // sabuk asteroid
+    for(var a=0;a<120;a++){var ang=a*0.37+t*0.05,rr=(4.5+0.25*Math.sin(a))*k;x.fillStyle='rgba(148,163,184,.5)';x.fillRect(cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)*0.55,2*D,2*D);}
+    pos=[];
+    P.forEach(function(p,i){var r=(1.3+i)*k,sp=1.6/Math.pow(i+1,1.25),ang=t*sp+i*1.7;
+      x.strokeStyle=i===sel?'rgba(251,191,36,.6)':'rgba(148,163,184,.25)';x.lineWidth=(i===sel?2:1)*D;x.beginPath();x.ellipse(cx,cy,r,r*0.55,0,0,7);x.stroke();
+      var px=cx+r*Math.cos(ang),py=cy+r*0.55*Math.sin(ang),pr=p[2]*sc*0.9;
+      if(p[0]==='Saturnus'){x.strokeStyle='#fde68a';x.lineWidth=2*D;x.beginPath();x.ellipse(px,py,pr*1.9,pr*0.6,-0.3,0,7);x.stroke();}
+      x.fillStyle=p[1];x.beginPath();x.arc(px,py,pr,0,7);x.fill();
+      if(i===sel){x.strokeStyle='#fbbf24';x.lineWidth=3*D;x.beginPath();x.arc(px,py,pr+6*D,0,7);x.stroke();}
+      if(nama){x.fillStyle='#e2e8f0';x.font='700 '+(13*Math.max(D,sc))+'px Segoe UI';x.textAlign='center';x.fillText(p[0],px,py-pr-6*D);}
+      pos.push([px,py,Math.max(pr,14*D)]);});
+    requestAnimationFrame(frame);}
+  c.addEventListener('click',function(e){var r=c.getBoundingClientRect(),mx=(e.clientX-r.left)*D,my=(e.clientY-r.top)*D,best=-1,bd=1e9;
+    pos.forEach(function(p,i){var d=Math.hypot(p[0]-mx,p[1]-my);if(d<p[2]+18*D&&d<bd){bd=d;best=i;}});if(best>=0)info(best);});
+  document.getElementById('jeda').onclick=function(){run=!run;this.textContent=run?'⏸ Jeda':'▶ Jalankan';};
+  document.getElementById('nama').onclick=function(){nama=!nama;this.classList.toggle('on',nama);};
+  // urutkan planet
+  function mulaiUrut(){var idx=P.map(function(_,i){return i;});for(var i=idx.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tt=idx[i];idx[i]=idx[j];idx[j]=tt;}
+    var n=0,slot=document.getElementById('slot'),acak=document.getElementById('acak'),fb=document.getElementById('fb');
+    slot.innerHTML='<div style="border-color:#fbbf24;color:#fbbf24">☀️</div>'+P.map(function(){return '<div>?</div>';}).join('');acak.innerHTML='';
+    fb.textContent='Ketuk planet-planet di bawah, mulai dari yang paling dekat dengan Matahari.';fb.style.color='';
+    idx.forEach(function(i){var b=document.createElement('button');b.textContent=P[i][0];b.style.borderColor=P[i][1];b.onclick=function(){
+      if(i===n){n++;b.disabled=true;b.style.opacity=.3;var s=slot.children[n];s.textContent=P[i][0];s.style.borderStyle='solid';s.style.borderColor=P[i][1];s.style.color=P[i][1];
+        fb.style.color='#86efac';fb.textContent=n===P.length?'🎉 Hebat! Urutannya benar: Merkurius, Venus, Bumi, Mars, Jupiter, Saturnus, Uranus, Neptunus.':'Benar! Planet berikutnya?';}
+      else{fb.style.color='#fca5a5';fb.textContent='Belum tepat. Planet ke-'+(n+1)+' dari Matahari adalah… (coba lagi)';}};acak.appendChild(b);});}
+  Array.prototype.forEach.call(document.querySelectorAll('[data-t]'),function(b){b.onclick=function(){
+    Array.prototype.forEach.call(document.querySelectorAll('[data-t]'),function(o){o.classList.toggle('on',o===b);});
+    var u=b.dataset.t==='urut';document.getElementById('jelajah').hidden=u;document.getElementById('urut').hidden=!u;
+    document.getElementById('jeda').hidden=u;document.getElementById('nama').hidden=u;if(u)mulaiUrut();else size();};});
+  info(2);requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

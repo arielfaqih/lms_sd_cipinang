@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rumah Hemat Energi</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#fefce8;color:#1c1917}
+  .app{display:flex;height:100%;padding:10px;box-sizing:border-box;gap:10px}
+  .daftar{flex:1.5;min-width:0;overflow:auto;display:flex;flex-direction:column;gap:6px}
+  .alat{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px;background:#fff;border:2px solid #fef08a;border-radius:14px;padding:6px 10px}
+  .alat.mati{opacity:.55}
+  .em{font-size:clamp(24px,3.6vw,36px)}
+  .nm b{font-size:clamp(13px,1.9vw,17px)}.nm small{display:block;color:#78716c;font-size:clamp(11px,1.5vw,14px)}
+  .sw{font:inherit;font-weight:800;border:0;border-radius:99px;padding:6px 12px;cursor:pointer;color:#fff;background:#16a34a;font-size:clamp(12px,1.6vw,15px)}
+  .mati .sw{background:#a8a29e}
+  .jam{grid-column:2 / 4;display:flex;align-items:center;gap:8px;font-size:clamp(12px,1.6vw,15px);color:#57534e}
+  .jam input{flex:1;accent-color:#ca8a04}
+  .ring{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;overflow:auto}
+  .kartu{background:#fff;border:2px solid #fef08a;border-radius:16px;padding:10px 12px}
+  .besar{font-size:clamp(26px,4.6vw,46px);font-weight:900;color:#a16207;line-height:1.1}
+  .kecil{font-size:clamp(12px,1.7vw,16px);color:#57534e}
+  .bar{height:16px;border-radius:99px;background:#e7e5e4;overflow:hidden;margin-top:6px}
+  .bar span{display:block;height:100%;transition:width .4s,background .4s}
+  .tips{font-size:clamp(12px,1.7vw,16px);line-height:1.4}
+  @media (max-width:700px){.app{flex-direction:column}}
+</style></head>
+<body><div class="app">
+  <div class="daftar" id="daftar"></div>
+  <div class="ring">
+    <div class="kartu"><div class="kecil">Pemakaian listrik per hari</div><div class="besar" id="kwh"></div><div class="kecil" id="rp"></div>
+      <div class="bar"><span id="bar"></span></div><div class="kecil" id="target"></div></div>
+    <div class="kartu"><div class="kecil">Asap dari pembangkit listrik</div><div class="besar" id="co2" style="color:#57534e"></div><div class="kecil">± 0,8 kg CO₂ per kWh, karena sebagian besar listrik dibuat dengan membakar batu bara.</div></div>
+    <div class="kartu tips" id="tips"></div>
+  </div>
+</div>
+<script>
+(function(){
+  // watt dan jam pemakaian awal (perkiraan rumah tangga)
+  var A=[
+    ['💡','4 lampu (LED)',40,12,'Matikan lampu saat siang atau saat keluar kamar.'],
+    ['📺','Televisi',80,8,'Matikan TV jika tidak ditonton, jangan hanya dibiarkan menyala.'],
+    ['🌀','Kipas angin',45,10,'Matikan kipas saat ruangan kosong.'],
+    ['❄️','AC',400,8,'Atur suhu AC sekitar 25 °C dan tutup pintu serta jendela.'],
+    ['🍚','Penanak nasi (menghangatkan)',50,16,'Cabut penanak nasi setelah nasi habis atau hampir habis.'],
+    ['🧊','Kulkas (rata-rata)',60,24,'Jangan terlalu sering membuka pintu kulkas.'],
+    ['🚿','Pompa air',250,2,'Mandi dan mencuci secukupnya agar pompa tidak lama menyala.'],
+    ['👕','Setrika',350,1,'Setrika pakaian sekaligus, jangan sedikit-sedikit.']
+  ];
+  var TARIF=1445;// rupiah per kWh (perkiraan tarif rumah tangga 1.300 VA)
+  var on=A.map(function(){return true;}),jam=A.map(function(a){return a[3];}),daftar=document.getElementById('daftar');
+  var awal=hitung();
+  A.forEach(function(a,i){var d=document.createElement('div');d.className='alat';
+    d.innerHTML='<span class="em">'+a[0]+'</span><span class="nm"><b>'+a[1]+'</b><small>'+a[2]+' watt</small></span><button class="sw">Nyala</button><div class="jam">⏱ <input type="range" min="0" max="24" value="'+a[3]+'"><span>'+a[3]+' jam</span></div>';
+    d.querySelector('.sw').onclick=function(){on[i]=!on[i];d.classList.toggle('mati',!on[i]);this.textContent=on[i]?'Nyala':'Mati';perbarui(a[4]);};
+    var r=d.querySelector('input');r.oninput=function(){jam[i]=+r.value;d.querySelector('.jam span').textContent=r.value+' jam';perbarui(a[4]);};
+    daftar.appendChild(d);});
+  function hitung(){var k=0;A.forEach(function(a,i){if(on[i])k+=a[2]*jam[i]/1000;});return k;}
+  function rp(n){return 'Rp'+Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+  function perbarui(tip){var k=hitung(),hemat=(awal-k)/awal*100;
+    document.getElementById('kwh').textContent=k.toFixed(2).replace('.',',')+' kWh';
+    document.getElementById('rp').textContent='± '+rp(k*TARIF)+' per hari · ± '+rp(k*TARIF*30)+' per bulan (perkiraan)';
+    var w=Math.min(100,k/awal*100),bar=document.getElementById('bar');bar.style.width=w+'%';bar.style.background=hemat>=20?'#16a34a':hemat>0?'#eab308':'#dc2626';
+    document.getElementById('target').innerHTML=hemat>=20?'🎉 <b>Target tercapai!</b> Hemat '+Math.round(hemat)+'% dibanding awal.':'🎯 Target: hemat 20%. Sekarang hemat <b>'+Math.max(0,Math.round(hemat))+'%</b>.';
+    document.getElementById('co2').textContent='± '+(k*0.8).toFixed(1).replace('.',',')+' kg CO₂ / hari';
+    document.getElementById('tips').innerHTML=tip?'💡 <b>Tips:</b> '+tip:'💡 <b>Ayo berhemat!</b> Matikan alat yang tidak dipakai atau kurangi jam pemakaiannya. Lihat bagaimana pemakaian listrik, biaya, dan asap pembangkit berkurang.';}
+  perbarui();
+})();
+</script>
+</body></html>

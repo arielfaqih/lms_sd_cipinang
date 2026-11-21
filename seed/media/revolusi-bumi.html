@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulasi Revolusi Bumi dan Musim</title>
+<style>
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#0b1530;color:#fff}
+  .app{display:flex;flex-direction:column;height:100%;padding:12px;box-sizing:border-box;gap:8px}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px 14px}
+  .tgl{font-size:clamp(20px,3vw,30px);font-weight:800;color:#fde68a;font-variant-numeric:tabular-nums}
+  .musim{display:flex;gap:8px;flex-wrap:wrap;font-size:clamp(13px,1.8vw,17px);font-weight:700}
+  .musim span{background:rgba(255,255,255,.1);border-radius:10px;padding:4px 10px}
+  canvas{flex:1;min-height:0;width:100%;height:100%;border-radius:14px}
+  .ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:clamp(13px,1.8vw,16px)}
+  button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:8px 14px;cursor:pointer;background:#1e3a8a;color:#fff}
+  button.main{background:#f59e0b;color:#1f1300}
+  input[type=range]{width:140px;accent-color:#f59e0b}
+  .note{color:#cbd5e1;font-size:clamp(12px,1.6vw,15px)}
+</style></head>
+<body><div class="app">
+  <div class="top">
+    <div><div class="tgl" id="tgl">21 Juni</div><div class="note" id="info"></div></div>
+    <div class="musim"><span id="mu">Utara: –</span><span id="ms">Selatan: –</span><span id="mi">Indonesia: hangat sepanjang tahun</span></div>
+  </div>
+  <canvas id="c" aria-label="Bumi mengelilingi Matahari dengan poros miring"></canvas>
+  <div class="ctrl">
+    <button class="main" id="play">⏸ Jeda</button>
+    <label>Kecepatan <input type="range" id="v" min="1" max="10" value="4"></label>
+    <button data-hari="80">Maret</button><button data-hari="172">Juni</button><button data-hari="266">September</button><button data-hari="356">Desember</button>
+    <span class="note">Dilihat dari atas Kutub Utara (tidak sesuai skala). Poros miring ±23,5° dan arahnya tetap.</span>
+  </div>
+</div>
+<script>
+(function(){
+  var c=document.getElementById('c'),x=c.getContext('2d'),W,H,D=devicePixelRatio||1,hari=172,run=true,stars=[];
+  for(var i=0;i<110;i++)stars.push([Math.random(),Math.random(),Math.random()*1.4+.3]);
+  function size(){var r=c.getBoundingClientRect();W=c.width=r.width*D;H=c.height=r.height*D;}
+  size();window.addEventListener('resize',size);
+  var BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],JML=[31,28,31,30,31,30,31,31,30,31,30,31];
+  function tanggal(d){d=Math.floor(d)%365;for(var m=0;m<12;m++){if(d<JML[m])return(d+1)+' '+BULAN[m];d-=JML[m];}return '';}
+  function musim(d){d=d%365.25;
+    if(d>=80&&d<172)return['semi','gugur'];if(d>=172&&d<266)return['panas','dingin'];
+    if(d>=266&&d<356)return['gugur','semi'];return['dingin','panas'];}
+  document.getElementById('play').onclick=function(){run=!run;this.textContent=run?'⏸ Jeda':'▶ Jalankan';};
+  // tombol bulan: lompat ke tanggal itu dan berhenti agar bisa didiskusikan
+  Array.prototype.forEach.call(document.querySelectorAll('[data-hari]'),function(b){b.onclick=function(){hari=+b.dataset.hari;run=false;document.getElementById('play').textContent='▶ Jalankan';};});
+  var TILT=23.5*Math.PI/180,last=0;
+  function bumi(ex,ey,R,sx,sy){
+    // bumi + sisi malam (menjauhi Matahari)
+    x.fillStyle='#2563eb';x.beginPath();x.arc(ex,ey,R,0,7);x.fill();
+    x.fillStyle='#16a34a';x.beginPath();x.ellipse(ex-R*.25,ey-R*.25,R*.38,R*.24,0,0,7);x.fill();x.beginPath();x.ellipse(ex+R*.3,ey+R*.32,R*.28,R*.18,0,0,7);x.fill();
+    var a=Math.atan2(sy-ey,sx-ex);x.fillStyle='rgba(2,6,23,.68)';x.beginPath();x.arc(ex,ey,R,a+Math.PI/2,a+Math.PI*1.5);x.closePath();x.fill();
+    // poros (ujung atas condong ke kanan) & khatulistiwa
+    var dx=Math.sin(TILT),dy=Math.cos(TILT);
+    x.strokeStyle='#f8fafc';x.lineWidth=2.5*D;x.beginPath();x.moveTo(ex-dx*R*1.35,ey+dy*R*1.35);x.lineTo(ex+dx*R*1.35,ey-dy*R*1.35);x.stroke();
+    x.strokeStyle='#fde68a';x.setLineDash([5*D,4*D]);x.beginPath();x.moveTo(ex-dy*R,ey-dx*R);x.lineTo(ex+dy*R,ey+dx*R);x.stroke();x.setLineDash([]);
+    x.fillStyle='#f8fafc';x.font='800 '+(14*D)+'px Segoe UI';x.textAlign='center';x.fillText('U',ex+dx*R*1.5,ey-dy*R*1.5-4*D);
+  }
+  function frame(now){
+    var dt=Math.min(50,now-(last||now));last=now;
+    if(run)hari=(hari+dt*0.0045*(+document.getElementById('v').value))%365.25;
+    x.fillStyle='#0b1530';x.fillRect(0,0,W,H);
+    stars.forEach(function(s){x.fillStyle='rgba(255,255,255,.6)';x.fillRect(s[0]*W,s[1]*H,s[2]*D,s[2]*D);});
+    var cx=W/2,cy=H/2,rx=W*.38,ry=H*.34,R=Math.min(W,H)*.075;
+    x.strokeStyle='#475569';x.lineWidth=2*D;x.setLineDash([8*D,7*D]);x.beginPath();x.ellipse(cx,cy,rx,ry,0,0,7);x.stroke();x.setLineDash([]);
+    var g=x.createRadialGradient(cx,cy,R*.3,cx,cy,R*1.9);g.addColorStop(0,'#fde68a');g.addColorStop(.55,'#fbbf24');g.addColorStop(1,'rgba(251,191,36,0)');
+    x.fillStyle=g;x.beginPath();x.arc(cx,cy,R*1.9,0,7);x.fill();
+    x.fillStyle='#78350f';x.font='800 '+(15*D)+'px Segoe UI';x.textAlign='center';x.fillText('Matahari',cx,cy+5*D);
+    // posisi: 21 Juni di kiri, bergerak berlawanan arah jarum jam (dilihat dari atas)
+    var a=Math.PI-(hari-172)/365.25*Math.PI*2,ex=cx+rx*Math.cos(a),ey=cy+ry*Math.sin(a);
+    bumi(ex,ey,R,cx,cy);
+    var m=musim(hari),cond=-Math.cos(a);
+    document.getElementById('tgl').textContent=tanggal(hari);
+    document.getElementById('mu').textContent='Utara: musim '+m[0];
+    document.getElementById('ms').textContent='Selatan: musim '+m[1];
+    document.getElementById('info').textContent=cond>.5?'Belahan utara condong ke Matahari: siang di utara lebih panjang.':cond<-.5?'Belahan selatan condong ke Matahari: siang di selatan lebih panjang.':'Tidak ada belahan yang condong: Matahari dekat di atas khatulistiwa.';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Melestarikan atau Mengancam?</title>
+<style>
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:linear-gradient(160deg,#ecfdf5,#fefce8);color:#1c1917}
+  .app{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:14px;box-sizing:border-box;gap:12px;text-align:center}
+  .skor{display:flex;gap:10px;font-weight:800;font-size:clamp(14px,2vw,19px)}
+  .skor span{background:#fff;border-radius:99px;padding:4px 12px;border:2px solid #d1fae5}
+  .kartu{background:#fff;border-radius:22px;border:3px solid #a7f3d0;padding:16px 22px;max-width:760px;width:100%;box-sizing:border-box;box-shadow:0 8px 24px rgba(0,0,0,.08);animation:muncul .3s ease}
+  @keyframes muncul{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+  .kartu .em{font-size:clamp(46px,9vw,90px);line-height:1.1}
+  .kartu p{margin:6px 0 0;font-size:clamp(18px,3vw,30px);font-weight:800}
+  .pilih{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .pilih button{font:inherit;font-weight:900;font-size:clamp(17px,2.6vw,26px);border:0;border-radius:18px;padding:12px 22px;color:#fff;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.2)}
+  .pilih button:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+  .pilih button:disabled{opacity:.4;cursor:default}
+  .lestari{background:#16a34a}.ancam{background:#dc2626}
+  .fb{max-width:760px;font-size:clamp(15px,2.2vw,21px);line-height:1.4;min-height:2.8em}
+  .fb b.ok{color:#15803d}.fb b.no{color:#b91c1c}
+  .lanjut{font:inherit;font-weight:800;border:2px solid #a7f3d0;background:#fff;border-radius:14px;padding:8px 18px;cursor:pointer;font-size:clamp(15px,2vw,19px)}
+</style></head>
+<body><div class="app">
+  <div class="skor"><span id="no"></span><span>✓ <b id="b">0</b></span><span>✗ <b id="s">0</b></span></div>
+  <div class="kartu" id="kartu"></div>
+  <div class="pilih"><button class="lestari" data-v="1">🌱 Melestarikan</button><button class="ancam" data-v="0">⚠️ Mengancam</button></div>
+  <div class="fb" id="fb">Apakah tindakan ini melestarikan atau mengancam makhluk hidup?</div>
+  <button class="lanjut" id="lanjut" hidden>Berikutnya ›</button>
+</div>
+<script>
+(function(){
+  var K=[
+    ['🌳','Menanam pohon di halaman sekolah',1,'Pohon menjadi tempat tinggal dan sumber makanan bagi burung dan serangga.'],
+    ['🐢','Mengambil telur penyu di pantai untuk dijual',0,'Telur tidak sempat menetas, sehingga siklus hidup penyu terputus dan jumlahnya makin sedikit.'],
+    ['🦋','Menanam bunga di taman',1,'Kupu-kupu bertelur di daun dan mengisap nektar bunga. Taman membantu siklus hidupnya.'],
+    ['🎣','Menangkap ikan dengan bom atau racun',0,'Bom dan racun membunuh ikan kecil, telur ikan, dan terumbu karang tempat mereka hidup.'],
+    ['🐸','Menjaga kolam dan sawah tetap bersih',1,'Katak bertelur di air yang bersih. Berudu hanya bisa tumbuh di air yang tidak tercemar.'],
+    ['🗑️','Membuang sampah plastik ke sungai',0,'Sampah mencemari air dan dapat termakan atau menjerat hewan air.'],
+    ['🐦','Menembak burung dengan ketapel',0,'Burung yang mati tidak bisa bertelur. Hama ulat juga bertambah karena pemangsanya berkurang.'],
+    ['🌾','Memakai pupuk kompos, bukan racun berlebihan',1,'Racun berlebihan ikut membunuh hewan yang bermanfaat, seperti katak dan kupu-kupu.'],
+    ['🔥','Membakar hutan untuk membuka lahan',0,'Banyak tumbuhan dan hewan mati, termasuk telur dan anak-anaknya.'],
+    ['🏞️','Membuat suaka margasatwa dan taman nasional',1,'Hewan dan tumbuhan langka terlindungi di habitat aslinya, misalnya komodo di Taman Nasional Komodo.'],
+    ['🌸','Memetik bunga dan tanaman langka sembarangan',0,'Tumbuhan langka tidak sempat berbunga dan berbiji, sehingga tidak berkembang biak.'],
+    ['🐦','Mengembangbiakkan burung langka (misalnya jalak bali) di penangkaran',1,'Penangkaran membantu hewan langka bertelur dan membesarkan anaknya dengan aman, lalu dilepas ke alam.']
+  ];
+  for(var i=K.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=K[i];K[i]=K[j];K[j]=t;}
+  K=K.slice(0,8);
+  var n=0,b=0,s=0,btn=document.querySelectorAll('.pilih button');
+  function tampil(){var k=K[n];document.getElementById('no').textContent='Kartu '+(n+1)+' / '+K.length;
+    var el=document.getElementById('kartu');el.style.animation='none';void el.offsetWidth;el.style.animation='';
+    el.innerHTML='<div class="em">'+k[0]+'</div><p>'+k[1]+'</p>';
+    document.getElementById('fb').textContent='Apakah tindakan ini melestarikan atau mengancam makhluk hidup?';
+    Array.prototype.forEach.call(btn,function(x){x.disabled=false;});document.getElementById('lanjut').hidden=true;}
+  Array.prototype.forEach.call(btn,function(x){x.onclick=function(){var k=K[n],ok=(+x.dataset.v)===k[2];
+    ok?b++:s++;document.getElementById('b').textContent=b;document.getElementById('s').textContent=s;
+    Array.prototype.forEach.call(btn,function(y){y.disabled=true;});
+    document.getElementById('fb').innerHTML='<b class="'+(ok?'ok':'no')+'">'+(ok?'Benar! ':'Belum tepat. ')+'Tindakan ini '+(k[2]?'melestarikan':'mengancam')+'.</b> '+k[3];
+    var l=document.getElementById('lanjut');l.hidden=false;l.textContent=n===K.length-1?'Lihat hasil 🏆':'Berikutnya ›';};});
+  document.getElementById('lanjut').onclick=function(){
+    if(n<K.length-1){n++;tampil();return;}
+    document.getElementById('kartu').innerHTML='<div class="em">'+(b>=6?'🏆':'🌱')+'</div><p>Benar '+b+' dari '+K.length+'</p>';
+    document.getElementById('fb').innerHTML='Melestarikan makhluk hidup berarti menjaga agar siklus hidupnya tidak terputus: hewan dan tumbuhan bisa tumbuh, berkembang biak, dan menghasilkan keturunan.';
+    this.textContent='Main lagi ↻';this.onclick=function(){location.reload();};};
+  tampil();
+})();
+</script>
+</body></html>
