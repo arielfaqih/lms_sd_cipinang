@@ -1,6 +1,7 @@
 // Generate soal AI, tinjau & bank soal, ekspor (F8, F9, F10)
 'use strict';
 const express = require('express');
+const { kirimPdf } = require('../pdf');
 const db = require('../db');
 const ai = require('../ai');
 const net = require('../net');
@@ -67,7 +68,8 @@ r.get('/soal', (req, res) => {
       <span class="muted small" data-selcount>0 dipilih</span>
       <button class="btn small" name="aksi" value="setujui">✓ Setujui</button>
       <button class="btn small primary" name="aksi" value="tayang">▶ Tayangkan</button>
-      <button class="btn small" name="aksi" value="ekspor">⇩ Ekspor / cetak</button>
+      <button class="btn small" name="aksi" value="cetak">🖨 Cetak</button>
+      <button class="btn small" name="aksi" value="pdf">⇩ Unduh PDF</button>
       <button class="btn small" name="aksi" value="gform">Google Form</button>
       <button class="btn small danger" name="aksi" value="hapus" data-confirm="Hapus soal yang dipilih?">Hapus</button>
     </div>
@@ -106,7 +108,7 @@ r.post('/soal/aksi', (req, res) => {
     db.run(`DELETE FROM soal WHERE id IN (${ph})`, ...pilih);
     return res.redirect('back');
   }
-  if (req.body.aksi === 'ekspor') return res.redirect('/soal/ekspor?ids=' + pilih.join(','));
+  if (['ekspor', 'cetak', 'pdf'].includes(req.body.aksi)) return res.redirect(`/soal/ekspor?ids=${pilih.join(',')}${req.body.aksi === 'ekspor' ? '' : '&tujuan=' + req.body.aksi}`);
   if (req.body.aksi === 'tayang') return res.redirect('/soal/tayang?ids=' + pilih.join(','));
   if (req.body.aksi === 'gform') return res.redirect('/soal/gform?ids=' + pilih.join(','));
   res.redirect('/soal');
@@ -249,6 +251,7 @@ r.get('/soal/ekspor', (req, res) => {
   const list = db.all(`SELECT q.*, s.judul AS subbab, b.kelas_id FROM soal q JOIN subbab s ON s.id = q.subbab_id JOIN bab b ON b.id = s.bab_id WHERE q.id IN (${pilih.map(() => '?').join(',')}) ORDER BY CASE q.jenis WHEN 'pg' THEN 1 WHEN 'bs' THEN 2 WHEN 'isian' THEN 3 ELSE 4 END, b.kelas_id, s.urutan, q.id`, ...pilih);
   const kunci = req.query.kunci !== '0';
   const format = req.query.format;
+  const tujuan = ['cetak', 'pdf'].includes(req.query.tujuan) ? req.query.tujuan : '';
   const kelasSet = [...new Set(list.map((q) => q.kelas_id))];
   const subSet = [...new Set(list.map((q) => q.subbab))];
   const judul = String(req.query.judul || `Latihan IPAS Kelas ${kelasSet.join(', ')}`).slice(0, 120);
@@ -256,7 +259,7 @@ r.get('/soal/ekspor', (req, res) => {
 
   if (!format) {
     const body = html`
-    <div class="page-head"><div><p class="crumb"><a href="/soal">Bank Soal</a> ›</p><h1>Ekspor ${list.length} soal</h1></div></div>
+    <div class="page-head"><div><p class="crumb"><a href="/soal">Bank Soal</a> ›</p><h1>${tujuan === 'pdf' ? 'Unduh PDF' : tujuan === 'cetak' ? 'Cetak' : 'Ekspor'} ${list.length} soal</h1></div></div>
     <form method="get" action="/soal/ekspor" class="card stack">
       <input type="hidden" name="ids" value="${pilih.join(',')}">
       <label>Judul lembar soal<input name="judul" value="${judul}"></label>
@@ -265,14 +268,14 @@ r.get('/soal/ekspor', (req, res) => {
         <label><input type="radio" name="kunci" value="0"> Tanpa kunci</label>
       </fieldset>
       <div class="row">
-        <button class="btn primary big" name="format" value="cetak">Cetak / Simpan PDF</button>
-        <button class="btn big" name="format" value="doc">Unduh dokumen Word (.doc)</button>
-        <a class="btn big" href="/soal/gform?ids=${pilih.join(',')}">Jadikan Google Form</a>
-        <a class="btn big" href="/soal/tayang?ids=${pilih.join(',')}">${icon('play')}Tayangkan di layar</a>
+        <button class="btn big ${tujuan === 'pdf' ? '' : 'primary'}" name="format" value="cetak">${icon('print')}Cetak</button>
+        <button class="btn big ${tujuan === 'pdf' ? 'primary' : ''}" name="format" value="pdf">⇩ Unduh PDF</button>
+        <button class="btn big" name="format" value="doc">Unduh Word (.doc)</button>
       </div>
-      <p class="muted small">“Cetak / Simpan PDF” membuka lembar siap cetak. Pilih printer, atau pilih “Simpan sebagai PDF” di jendela cetak.</p>
+      <p class="muted small"><b>Cetak</b> langsung ke printer. <b>Unduh PDF</b> menyimpan berkas PDF untuk dibagikan atau dicetak nanti.</p>
+      <p class="row small"><a href="/soal/gform?ids=${pilih.join(',')}">Jadikan Google Form</a> · <a href="/soal/tayang?ids=${pilih.join(',')}">Tayangkan di layar</a></p>
     </form>`;
-    return res.send(page({ title: 'Ekspor soal', user: req.user, body, active: 'soal' }));
+    return res.send(page({ title: 'Ekspor soal', user: req.user, body, active: 'soal', galat: req.query.galat }));
   }
 
   const soalHtml = list.map((q, i) => {
@@ -296,13 +299,17 @@ r.get('/soal/ekspor', (req, res) => {
   .x-bar button{font-size:15px;padding:8px 18px;margin:0 4px;cursor:pointer}
   @media print{.x-bar{display:none}.x-page{padding:0}} @page{size:A4;margin:1.8cm}`;
   const doc = `<!doctype html><html lang="id"><head><meta charset="utf-8"><title>${esc(judul)}</title><link rel="icon" href="/static/img/logo.svg"><style>${css}</style></head><body>
-  ${format === 'cetak' ? '<div class="x-bar"><button onclick="window.print()">🖨 Cetak / Simpan sebagai PDF</button><button onclick="history.back()">Kembali</button></div>' : ''}
+  ${format === 'cetak' ? '<div class="x-bar"><button onclick="window.print()">🖨 Cetak</button><button onclick="history.back()">Kembali</button></div>' : ''}
   <div class="x-page">
   <h1>${esc(judul)}</h1><p class="x-sub">${esc(sekolah)} · IPAS · ${esc(subSet.join('; '))}</p>
   <table class="x-id"><tr><td>Nama: ________________________</td><td>Kelas: ______</td><td>Tanggal: ____________</td></tr></table>
   <ol class="x-list">${soalHtml}</ol>${kunciHtml}</div>
   ${format === 'cetak' ? '<script>setTimeout(function(){window.print()},400)</script>' : ''}
   </body></html>`;
+  if (format === 'pdf') {
+    const kembali = `/soal/ekspor?ids=${pilih.join(',')}&tujuan=pdf`;
+    return kirimPdf(req, res, doc, `soal-ipas-${Date.now()}.pdf`, kembali);
+  }
   if (format === 'doc') {
     res.setHeader('Content-Type', 'application/msword; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename="soal-ipa-${Date.now()}.doc"`);

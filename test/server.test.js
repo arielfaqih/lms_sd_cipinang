@@ -157,6 +157,19 @@ test('ekspor soal (cetak & Word) dan backup', async () => {
   assert.match(b.headers.get('content-type'), /zip/);
 });
 
+test('unduh PDF soal dan LKPD (terpisah dari cetak)', { skip: !require('../src/pdf').cariBrowser() && 'Edge/Chrome tidak ditemukan' }, async () => {
+  const ids = db.prepare(`SELECT id FROM soal LIMIT 4`).all().map((x) => x.id).join(',');
+  const r = await k.req(`/soal/ekspor?ids=${ids}&format=pdf&kunci=1`);
+  assert.match(r.headers.get('content-type'), /application\/pdf/);
+  assert.equal(Buffer.from(await r.arrayBuffer()).subarray(0, 5).toString(), '%PDF-');
+  const s = subbabSemua().find((x) => x.judul === 'Jenis Gaya dan Pengaruhnya');
+  const l = await k.req(`/subbab/${s.id}/lkpd?format=pdf`);
+  assert.match(l.headers.get('content-type'), /application\/pdf/);
+  const opsi = await (await k.req(`/soal/ekspor?ids=${ids}`)).text();
+  assert.match(opsi, /value="cetak"/);
+  assert.match(opsi, /value="pdf"/);
+});
+
 test('unggah media gambar', async () => {
   const fd = new FormData();
   fd.append('berkas', new Blob(['<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>'], { type: 'image/svg+xml' }), 'uji.svg');

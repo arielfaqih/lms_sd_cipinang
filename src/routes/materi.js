@@ -1,6 +1,7 @@
 // Struktur materi, kelola konten, penyaji, dan kegiatan kelas (F3–F5, F7, F11)
 'use strict';
 const express = require('express');
+const { kirimPdf } = require('../pdf');
 const db = require('../db');
 const { html, raw, esc, page, pageHead, icon, sanitize, stripTags, JENIS_KOMPONEN, JENIS_MAP, JENIS_SOAL, JUMLAH_TEMPLAT, isiBawaan } = require('../html');
 const { renderMedia, renderFigure, thumb } = require('../mediaview');
@@ -675,18 +676,20 @@ r.get('/subbab/:id/lkpd', (req, res) => {
         <label><input type="radio" name="kunci" value="1"> Untuk guru (dengan kunci jawaban diskusi)</label>
       </fieldset>
       <div class="row">
-        <button class="btn primary big" name="format" value="cetak" ${l.jumlah ? '' : 'disabled'}>${icon('print')}Cetak / Simpan PDF</button>
+        <button class="btn primary big" name="format" value="cetak" ${l.jumlah ? '' : 'disabled'}>${icon('print')}Cetak</button>
+        <button class="btn big" name="format" value="pdf" ${l.jumlah ? '' : 'disabled'}>⇩ Unduh PDF</button>
         <button class="btn big" name="format" value="doc" ${l.jumlah ? '' : 'disabled'}>Unduh Word (.doc)</button>
       </div>
-      <p class="muted small">Berisi ${l.jumlah} kegiatan. "Cetak / Simpan PDF" membuka lembar siap cetak; pilih printer atau "Simpan sebagai PDF".</p>
+      <p class="muted small">Berisi ${l.jumlah} kegiatan. <b>Cetak</b> langsung ke printer. <b>Unduh PDF</b> menyimpan berkas untuk dibagikan.</p>
     </form>`;
-    return res.send(page({ title: 'Cetak LKPD', user: req.user, body, active: 'k' + s.kelas_id }));
+    return res.send(page({ title: 'Cetak LKPD', user: req.user, body, active: 'k' + s.kelas_id, galat: req.query.galat }));
   }
   const doc = `<!doctype html><html lang="id"><head><meta charset="utf-8"><title>LKPD ${esc(s.judul)}</title><link rel="icon" href="/static/img/logo.svg"><style>${l.css}</style></head><body>
-  ${format === 'cetak' ? '<div class="x-bar"><button onclick="window.print()">🖨 Cetak / Simpan sebagai PDF</button><button onclick="history.back()">Kembali</button></div>' : ''}
+  ${format === 'cetak' ? '<div class="x-bar"><button onclick="window.print()">🖨 Cetak</button><button onclick="history.back()">Kembali</button></div>' : ''}
   ${l.isi}
   ${format === 'cetak' ? '<script>setTimeout(function(){window.print()},400)</script>' : ''}
   </body></html>`;
+  if (format === 'pdf') return kirimPdf(req, res, doc, `lkpd-${s.id}${kunci ? '-guru' : ''}-${Date.now()}.pdf`, `/subbab/${s.id}/lkpd`);
   if (format === 'doc') {
     res.setHeader('Content-Type', 'application/msword; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename="lkpd-${s.id}-${Date.now()}.doc"`);

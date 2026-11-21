@@ -77,7 +77,7 @@ Di halaman kelas, klik **LKPD** pada subbab (atau **Cetak LKPD** di halaman Edit
 - prediksi, langkah kerja yang bisa dicentang, dan tabel pengamatan (dibentuk dari isian "Buat tabel: A | B | C");
 - pertanyaan diskusi dengan baris jawaban, serta refleksi.
 
-Pilih **versi siswa** atau **versi guru** (dengan kunci diskusi), lalu **Cetak / Simpan PDF** atau **Unduh Word**.
+Pilih **versi siswa** atau **versi guru** (dengan kunci diskusi), lalu **Cetak** (langsung ke printer), **Unduh PDF**, atau **Unduh Word**.
 
 ![Mode presentasi](docs/gambar/04-mode-presentasi.png)
 ![Kegiatan kelas dengan petunjuk bertahap](docs/gambar/05-kegiatan-kelas.png)
@@ -141,8 +141,9 @@ Jika tidak ada internet, tombol nonaktif dan muncul penjelasannya. Guru tetap bi
 ![Bank soal](docs/gambar/10-bank-soal.png)
 
 ### 3.7 Mencetak soal
-Di Bank Soal, centang soal yang dipilih, lalu klik **Ekspor / cetak**. Pilih dengan atau tanpa kunci jawaban, lalu:
-- **Cetak / Simpan PDF:** di jendela cetak pilih printer atau *Save as PDF*.
+Di Bank Soal, centang soal yang dipilih, lalu klik **🖨 Cetak** atau **⇩ Unduh PDF**. Pilih dengan atau tanpa kunci jawaban, lalu:
+- **Cetak:** membuka jendela cetak, lalu pilih printer.
+- **Unduh PDF:** menyimpan berkas PDF untuk dibagikan atau dicetak nanti. Dibuat tanpa internet memakai Microsoft Edge/Chrome di laptop server.
 - **Unduh dokumen Word (.doc):** bisa diedit lagi di Word.
 
 ![Lembar soal siap cetak](docs/gambar/11-cetak-soal.png)

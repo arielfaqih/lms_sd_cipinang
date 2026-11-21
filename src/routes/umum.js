@@ -216,7 +216,7 @@ r.get('/panduan', (req, res) => {
         <li>Soal baru berstatus <span class="tag draf">Draf</span>. Periksa isinya dan kunci jawabannya, lalu klik <span class="ui">✓ Setujui</span>.</li>
         <li>Hanya soal <span class="tag disetujui">Disetujui</span> yang tampil di layar <b>Penilaian</b> saat menyajikan.</li>
         <li><b>Kuis di layar kelas:</b> klik <span class="ui pri">▶ Tayangkan</span> pada satu soal, atau centang beberapa soal → <span class="ui pri">▶ Tayangkan</span>. Pilih waktu per soal, klik <b>Mulai kuis</b>. Siswa menjawab bersama, lalu ketuk jawaban di smartboard (atau tekan A–D / 1–4). Layar langsung menunjukkan benar/salah, pembahasan, skor kelas, dan streak 🔥. Untuk soal isian/uraian, klik <span class="ui">Tampilkan jawaban</span> lalu nilai jawaban kelas. Di akhir muncul hasil dan bintang. Suara bisa dimatikan dengan tombol 🔊.</li>
-        <li><b>Mencetak:</b> centang soal → <span class="ui">Ekspor / cetak</span> → pilih dengan/tanpa kunci → <b>Cetak</b> atau <b>Unduh Word</b>.</li>
+        <li><b>Mencetak:</b> centang soal → <span class="ui">🖨 Cetak</span> atau <span class="ui">⇩ Unduh PDF</span> → pilih dengan/tanpa kunci → <b>Cetak</b>, <b>Unduh PDF</b>, atau <b>Unduh Word</b>.</li>
         <li><b>Kuis online (Google Form):</b> centang soal → <span class="ui">Google Form</span> → <span class="ui pri">Salin script</span> → buka script.google.com → tempel → <b>Jalankan</b>. Google Form kuis jadi otomatis lengkap dengan kunci. <i>Butuh internet dan akun Google.</i></li>
       </ol>
     </div></section>
