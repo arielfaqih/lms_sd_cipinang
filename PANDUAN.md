@@ -28,7 +28,8 @@ LMS ini berjalan di **satu laptop sekolah sebagai server lokal**. Laptop lain, H
 1. **Pasang Node.js.** Unduh installer **versi LTS** dari nodejs.org saat ada internet, lalu pasang dengan pilihan bawaan (Next → Next → Install). Minimal versi 22.13. Simpan installer-nya di flashdisk untuk cadangan.
 2. **Salin folder LMS** ke laptop server, misalnya ke `D:\LMS-IPA`. Jangan simpan di Desktop atau Downloads supaya tidak terhapus tidak sengaja.
 3. **Klik dua kali `mulai-server.bat`.** Jendela hitam akan terbuka dan browser membuka `http://localhost:3000`.
-   - Jika Windows Firewall bertanya, centang **Private networks**, lalu klik **Allow access**. Tanpa ini HP tidak bisa membuka LMS.
+   - **Sekali saja:** klik dua kali `izinkan-akses-jaringan.bat`, lalu klik **Yes**. Berkas ini membuka port 3000 di Windows Firewall untuk semua jenis jaringan. Tanpa ini HP dan laptop lain tidak bisa membuka LMS (muncul *This site can't be reached / took too long to respond*). Jendela server akan mengingatkan bila langkah ini belum dilakukan.
+   - Jika Windows Firewall bertanya, centang **Private networks** dan **Public networks**, lalu klik **Allow access**.
    - **Jendela hitam jangan ditutup** selama LMS dipakai.
 4. **Masuk** dengan akun bawaan, lalu **ganti kata sandinya** (diwajibkan saat pertama masuk):
    - Admin: `admin` / `admin123`
@@ -176,7 +177,7 @@ Kunci hanya tersimpan di server dan tidak pernah dikirim ke browser atau HP. Pak
 
 | Masalah | Solusi |
 |---|---|
-| HP tidak bisa membuka alamat LMS | Pastikan HP di Wi-Fi yang sama, **data seluler dimatikan**, firewall mengizinkan *Private networks* (bagian 2 langkah 3), dan jendela server masih terbuka. |
+| HP/laptop lain: *This site can't be reached* atau *took too long to respond* | 1) Jalankan `izinkan-akses-jaringan.bat` di laptop server (bagian 2 langkah 3). 2) Pastikan perangkat di Wi-Fi/hotspot yang sama, **data seluler dimatikan**, dan jendela server masih terbuka. 3) Pakai alamat yang tertulis di jendela server (alamat bisa berubah setiap tersambung ulang). 4) **Wi-Fi kampus/kantor** (mis. eduroam, Wi-Fi universitas) sering memblokir koneksi antarperangkat: pakai **router sekolah sendiri** atau **hotspot HP/laptop**. Internet tidak diperlukan. |
 | Alamat/QR berubah setiap hari | Pasang IP tetap (bagian 2 langkah 5). |
 | "Akses hanya diizinkan dari jaringan sekolah" | Perangkat memakai IP non-lokal. Matikan VPN atau data seluler. |
 | PPT tidak tampil | Pasang LibreOffice di laptop server, lalu buka media tersebut dan klik **Konversi ulang ke PDF**. Atau unggah versi PDF. |

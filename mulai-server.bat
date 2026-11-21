@@ -12,6 +12,13 @@ if errorlevel 1 (
   exit /b 1
 )
 set PORT=3000
+netsh advfirewall firewall show rule name="LMS IPAS (port 3000)" >nul 2>nul
+if errorlevel 1 (
+  echo.
+  echo   PERHATIAN: HP/laptop lain belum diizinkan membuka LMS ^(Windows Firewall^).
+  echo   Jalankan sekali berkas "izinkan-akses-jaringan.bat" di folder ini, lalu klik Yes.
+  echo.
+)
 start "" cmd /c "timeout /t 3 >nul & start http://localhost:3000"
 node server.js
 echo.

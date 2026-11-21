@@ -126,9 +126,12 @@ function validasi(data, jenis) {
   return hasil;
 }
 
-async function panggilGemini(prompt) {
-  const key = db.setting('gemini_api_key');
-  const model = (db.setting('gemini_model') || 'gemini-flash-latest').replace(/^models\//, '');
+// Model cadangan bila model utama sedang sibuk (HTTP 503 "high demand") di server Google.
+const MODEL_CADANGAN = ['gemini-flash-latest', 'gemini-2.5-flash', 'gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+const tunggu = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Satu kali panggilan ke satu model. Galat yang bisa dicoba ulang ditandai e.sementara = true.
+async function panggilSekali(model, prompt, key) {
   const ctl = new AbortController();
   const to = setTimeout(() => ctl.abort(), 90000);
   try {
@@ -145,19 +148,46 @@ async function panggilGemini(prompt) {
     if (!res.ok) {
       const msg = body.error && body.error.message ? body.error.message : `HTTP ${res.status}`;
       if (res.status === 400 && /API key/i.test(msg)) throw new Error('Kunci API Gemini tidak valid. Periksa di Admin → Pengaturan.');
-      if (res.status === 404) throw new Error(`Model "${model}" tidak ditemukan. Ganti nama model di Admin → Pengaturan.`);
-      if (res.status === 429) throw new Error('Kuota layanan Gemini habis untuk saat ini. Coba lagi nanti.');
+      if (res.status === 404) { const e = new Error(`Model "${model}" tidak ditemukan. Ganti nama model di Admin → Pengaturan.`); e.tidakAda = true; throw e; }
+      const sibuk = [500, 502, 503, 504].includes(res.status) || /overloaded|high demand|unavailable|try again/i.test(msg);
+      if (sibuk) { const e = new Error('SIBUK'); e.sementara = true; throw e; }
+      if (res.status === 429) { const e = new Error('Kuota layanan Gemini habis untuk saat ini. Coba lagi beberapa menit lagi.'); e.kuota = true; throw e; }
       throw new Error('Layanan AI menolak permintaan: ' + msg);
     }
     const text = body.candidates && body.candidates[0] && body.candidates[0].content && body.candidates[0].content.parts
-      ? body.candidates[0].content.parts.map((p) => p.text || '').join('') : '';
-    if (!text) throw new Error('Layanan AI tidak mengembalikan isi. Coba lagi.');
-    try { return JSON.parse(text); } catch (e) { throw new Error('Jawaban AI bukan JSON yang valid. Coba lagi.'); }
+      ? body.candidates[0].content.parts.map((x) => x.text || '').join('') : '';
+    if (!text) { const e = new Error('Layanan AI tidak mengembalikan isi. Coba lagi.'); e.sementara = true; throw e; }
+    try { return JSON.parse(text); } catch (e) { const g = new Error('Jawaban AI bukan JSON yang valid. Coba lagi.'); g.sementara = true; throw g; }
   } catch (e) {
     if (e.name === 'AbortError') throw new Error('Layanan AI terlalu lama merespons. Periksa internet lalu coba lagi.');
-    if (e.cause && /ENOTFOUND|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN/.test(String(e.cause.code))) throw new Error('Tidak ada koneksi internet.');
+    if (e.cause && /ENOTFOUND|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|ECONNRESET/.test(String(e.cause.code))) throw new Error('Tidak ada koneksi internet.');
     throw e;
   } finally { clearTimeout(to); }
+}
+
+// Mencoba model utama (2x dengan jeda), lalu model cadangan, bila server Google sedang sibuk.
+async function panggilGemini(prompt) {
+  const key = db.setting('gemini_api_key');
+  const utama = (db.setting('gemini_model') || 'gemini-flash-latest').replace(/^models\//, '');
+  const daftar = [utama, ...MODEL_CADANGAN.filter((m) => m !== utama)];
+  let galatTerakhir = null;
+  for (let mi = 0; mi < daftar.length; mi++) {
+    const percobaan = mi === 0 ? 2 : 1;
+    for (let c = 0; c < percobaan; c++) {
+      try {
+        return await panggilSekali(daftar[mi], prompt, key);
+      } catch (e) {
+        galatTerakhir = e;
+        if (e.tidakAda && mi > 0) break; // model cadangan tidak tersedia untuk kunci ini: lewati
+        if (!e.sementara && !e.kuota) throw e;
+        if (e.kuota && mi === 0 && c === 0) { await tunggu(3000); continue; }
+        if (e.kuota) break;
+        await tunggu(c === 0 ? 2500 : 1500);
+      }
+    }
+  }
+  if (galatTerakhir && galatTerakhir.kuota) throw galatTerakhir;
+  throw new Error('Server AI Google sedang sangat sibuk (bukan masalah kunci API atau laptop ini). LMS sudah mencoba beberapa kali dengan model cadangan. Tunggu 1–5 menit, lalu klik Buat soal lagi.');
 }
 
 async function buatSoal({ subbabId, jenis, jumlah, kesulitan, userId }) {
