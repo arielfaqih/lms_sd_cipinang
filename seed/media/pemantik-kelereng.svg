@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#fef3c7"/>
+
+<rect y="300" width="900" height="240" fill="#e7c9a0"/>
+<g stroke="#c9a27a" stroke-width="3"><path d="M-60 540 L40 300"/><path d="M60 540 L140 300"/><path d="M180 540 L240 300"/><path d="M300 540 L340 300"/><path d="M420 540 L440 300"/><path d="M540 540 L540 300"/><path d="M660 540 L640 300"/><path d="M780 540 L740 300"/><path d="M900 540 L840 300"/><path d="M0 360 H900"/><path d="M0 440 H900"/></g>
+<rect y="296" width="900" height="8" fill="#a8773f"/>
+<g transform="translate(120 250) scale(0.85)"><g class="">
+  <rect x="-30" y="138" width="24" height="66" rx="11" fill="#166534"/><rect x="6" y="138" width="24" height="66" rx="11" fill="#166534"/>
+  <rect x="-40" y="50" width="80" height="102" rx="28" fill="#22c55e"/>
+  <path d="M-34 72 L-58 132" stroke="#f5c9a0" stroke-width="17" stroke-linecap="round"/><path d="M34 80 Q90 120 110 170" stroke="#f5c9a0" stroke-width="17" fill="none" stroke-linecap="round"/><circle cx="0" cy="0" r="48" fill="#f5c9a0"/><path d="M-51 0 C-55 -64 55 -64 51 0 C42 -30 -28 -36 -51 0Z" fill="#78350f"/><circle cx="-16" cy="4" r="6.5" fill="#1f2937"/><circle cx="16" cy="4" r="6.5" fill="#1f2937"/><circle cx="-14" cy="2" r="2.2" fill="#fff"/><circle cx="18" cy="2" r="2.2" fill="#fff"/>
+  <ellipse cx="-29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><ellipse cx="29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><ellipse cx="0" cy="28" rx="8" ry="10" fill="#7c2d12"/></g></g>
+<g stroke="#f97316" stroke-width="6" stroke-linecap="round" class="blink"><path d="M226 360 l20 -14"/><path d="M232 384 l26 0"/></g>
+<path d="M210 420 H760" stroke="#a16207" stroke-width="4" stroke-dasharray="4 18" stroke-linecap="round" opacity=".6"/>
+<g transform="translate(240 392)"><g>
+  <animateTransform attributeName="transform" type="translate" values="0 0;0 0;500 0;500 0" keyTimes="0;.12;.7;1" keySplines="0 0 1 1;.15 .75 .35 1;0 0 1 1" calcMode="spline" dur="4s" repeatCount="indefinite"/>
+  <g><animateTransform attributeName="transform" type="rotate" values="0;0;900;900" keyTimes="0;.12;.7;1" keySplines="0 0 1 1;.15 .75 .35 1;0 0 1 1" calcMode="spline" dur="4s" repeatCount="indefinite"/>
+    <circle r="38" fill="#38bdf8" stroke="#0369a1" stroke-width="5"/><path d="M-35 -12 C-12 8 12 -20 35 8" stroke="#f43f5e" stroke-width="10" fill="none"/><circle cx="-13" cy="-16" r="9" fill="#fff" opacity=".8"/>
+  </g></g></g>
+<g transform="translate(500 150)"><g class="q"><circle r="44" fill="#f97316" stroke="#fff" stroke-width="5"/><text y="18.48" text-anchor="middle" font-size="59.400000000000006" font-weight="900" fill="#fff">?</text></g></g>
+<g transform="translate(260 80)"><rect x="-69.78" y="-24.7" width="139.56" height="41.6" rx="20.8" fill="#ea580c"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Sentil!</text></g><g transform="translate(740 80)"><rect x="-122.55999999999999" y="-24.7" width="245.11999999999998" height="41.6" rx="20.8" fill="#0369a1"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Lalu berhenti…</text></g>
+</svg>

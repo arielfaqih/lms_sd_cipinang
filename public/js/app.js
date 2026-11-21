@@ -23,13 +23,13 @@
 
   // Menu samping di HP/tablet
   var side = document.getElementById('nav');
-  var tog = document.querySelector('[data-nav-toggle]');
+  var togs = $$('[data-nav-toggle]');
   function setNav(open) {
     if (!side) return;
     document.body.classList.toggle('nav-open', open);
-    if (tog) tog.setAttribute('aria-expanded', open ? 'true' : 'false');
+    togs.forEach(function (t) { t.setAttribute('aria-expanded', open ? 'true' : 'false'); });
   }
-  if (tog) tog.addEventListener('click', function () { setNav(!document.body.classList.contains('nav-open')); });
+  togs.forEach(function (t) { t.addEventListener('click', function () { setNav(!document.body.classList.contains('nav-open')); }); });
   $$('[data-nav-close]').forEach(function (el) { el.addEventListener('click', function () { setNav(false); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setNav(false); });
 

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#e0e7ff"/>
+
+<rect y="440" width="900" height="100" fill="#a8a29e"/><rect x="120" y="440" width="660" height="30" rx="6" fill="#78350f"/>
+<g transform="translate(450 70)"><rect x="-300" y="0" width="600" height="40" rx="12" fill="#6b7280"/><rect x="-200" y="34" width="400" height="12" rx="6" fill="#d1d5db"/><g transform="translate(0 26)"><rect x="-75" y="-19" width="150" height="32" rx="16" fill="#374151"/><text y="5.6000000000000005" text-anchor="middle" font-size="20" font-weight="800" fill="#fca5a5">LAMPU MATI</text></g></g>
+<rect x="150" y="110" width="600" height="330" rx="14" fill="#a3b18a" stroke="#475569" stroke-width="8"/>
+<rect x="150" y="110" width="600" height="40" fill="#cbd5e1" opacity=".5"/>
+<rect x="154" y="150" width="592" height="286" fill="#6b7a3a" opacity=".55"/>
+<g fill="#8d7b55"><circle cx="180" cy="420" r="10"/><circle cx="216" cy="414" r="13"/><circle cx="252" cy="408" r="16"/><circle cx="288" cy="420" r="19"/><circle cx="324" cy="414" r="10"/><circle cx="360" cy="408" r="13"/><circle cx="396" cy="420" r="16"/><circle cx="432" cy="414" r="19"/><circle cx="468" cy="408" r="10"/><circle cx="504" cy="420" r="13"/><circle cx="540" cy="414" r="16"/><circle cx="576" cy="408" r="19"/><circle cx="612" cy="420" r="10"/><circle cx="648" cy="414" r="13"/><circle cx="684" cy="408" r="16"/><circle cx="720" cy="420" r="19"/></g>
+<g stroke="#5b6b2a" stroke-width="10" fill="none" stroke-linecap="round"><path d="M210 420 C200 360 240 340 220 290 C210 260 240 250 250 270"/><path d="M690 420 C700 370 660 350 680 300 C690 270 650 270 640 290"/></g>
+<g fill="#d6d3a6" opacity=".7"><circle class="rise" cx="300" cy="380" r="4"/><circle class="rise2" cx="520" cy="360" r="5"/><circle class="rise3" cx="610" cy="390" r="3"/><circle class="rise" cx="420" cy="340" r="4"/></g>
+<g transform="translate(300 250)"><g><animateTransform attributeName="transform" type="translate" values="0 0;200 20;0 0" dur="9s" repeatCount="indefinite"/><path d="M0 0 C30 -36 90 -36 110 0 C90 36 30 36 0 0Z" fill="#fb923c" stroke="#7c2d12" stroke-width="4"/><path d="M0 0 L-34 -26 L-34 26Z" fill="#fb923c" stroke="#7c2d12" stroke-width="4"/><circle cx="84" cy="-6" r="7" fill="#fff"/><circle cx="86" cy="-6" r="3.5" fill="#1f2937"/><path d="M98 12 q-6 -6 -12 0" stroke="#7c2d12" stroke-width="3" fill="none"/></g></g>
+<g transform="translate(560 340) scale(-.8 .8)"><g><animateTransform attributeName="transform" type="translate" values="0 0;150 -20;0 0" dur="7s" repeatCount="indefinite"/><path d="M0 0 C30 -36 90 -36 110 0 C90 36 30 36 0 0Z" fill="#facc15" stroke="#7c2d12" stroke-width="4"/><path d="M0 0 L-34 -26 L-34 26Z" fill="#facc15" stroke="#7c2d12" stroke-width="4"/><circle cx="84" cy="-6" r="7" fill="#fff"/><circle cx="86" cy="-6" r="3.5" fill="#1f2937"/><path d="M98 12 q-6 -6 -12 0" stroke="#7c2d12" stroke-width="3" fill="none"/></g></g>
+<g transform="translate(800 170)"><g class="q"><circle r="40" fill="#f97316" stroke="#fff" stroke-width="5"/><text y="16.8" text-anchor="middle" font-size="54" font-weight="900" fill="#fff">?</text></g></g>
+<g transform="translate(450 505)"><rect x="-175.33999999999997" y="-24.7" width="350.67999999999995" height="41.6" rx="20.8" fill="#334155"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Air keruh, lampu mati</text></g>
+</svg>

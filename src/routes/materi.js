@@ -477,6 +477,8 @@ r.post('/komponen/:id/hapus', (req, res) => {
 });
 
 // ---------- F5/F7: penyaji materi ----------
+// Ikon ramah anak untuk setiap jenis layar
+const IKON_LAYAR = { pemantik: '🤔', tujuan: '🎯', pengamatan: '🔍', penjelasan: '💡', contoh: '🏡', latihan: '💬', rangkuman: '📝', refleksi: '💭', penilaian: '🏆' };
 function renderKegiatan(json) {
   if (!json) return '';
   let g;
@@ -542,7 +544,7 @@ r.get('/sajikan/:id', (req, res) => {
     else if (m) main = html`<div class="sl-media solo">${renderFigure(m)}</div>`;
     else main = html`<div class="sl-text wide ${k.jenis === 'tujuan' || k.jenis === 'rangkuman' ? 'big' : ''}">${isi || (keg ? '' : html`<div class="pr-empty"><b>Layar ini belum diisi.</b><span>Buka <a href="/komponen/${k.id}/edit">Edit layar</a> untuk menambahkan teks atau media.</span></div>`)}${keg}</div>`;
     return html`<section class="slide j-${k.jenis}" data-i="${i}" ${i + 1 === mulai ? '' : 'hidden'} aria-label="Layar ${i + 1}: ${k.judul}">
-      <header class="sl-head" data-jenis="${j.label}">${String(k.judul).trim().toLowerCase() === String(j.label).toLowerCase() ? '' : html`<span class="tag j-${k.jenis}">${j.label}</span>`}<h2>${k.judul}</h2></header>
+      <header class="sl-head" data-jenis="${j.label}"><span class="sl-ico" aria-hidden="true">${IKON_LAYAR[k.jenis] || '📘'}</span>${String(k.judul).trim().toLowerCase() === String(j.label).toLowerCase() ? '' : html`<span class="tag j-${k.jenis}">${j.label}</span>`}<h2>${k.judul}</h2></header>
       <div class="sl-body">${main}</div>
     </section>`;
   });

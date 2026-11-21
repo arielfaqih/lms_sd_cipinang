@@ -48,6 +48,7 @@ LMS ini berjalan di **satu laptop sekolah sebagai server lokal**. Laptop lain, H
 
 ### 3.1 Membuka LMS
 - **Di laptop server:** buka `http://localhost:3000`.
+- **Di HP:** menu utama ada di **bilah bawah layar** (Beranda, Soal, Media, Panduan, Menu). Di daftar materi, tombol **Sajikan** dibuat lebar di atas agar mudah diketuk.
 - **Di HP/laptop lain:** sambungkan ke Wi-Fi sekolah yang sama, lalu **pindai kode QR** di halaman masuk atau ketik alamat yang tertera (misalnya `http://192.168.1.10:3000`).
 - **Matikan data seluler di HP.** Android sering pindah sendiri ke data seluler karena Wi-Fi sekolah tidak punya internet. Jika muncul pesan "Wi-Fi tidak ada internet, tetap tersambung?", pilih **Tetap tersambung / Ya**.
 
@@ -61,7 +62,7 @@ Pilih **Kelas 4, 5, atau 6**. Tombol **Lanjutkan materi terakhir** membuka layar
 ### 3.3 Menayangkan materi ke smartboard/proyektor
 1. Di halaman kelas, klik **Sajikan** pada subbab.
 2. Klik **Layar penuh** (atau tekan tombol `F`).
-3. Pindah layar dengan tombol **Berikutnya/Sebelumnya**, tombol panah keyboard, *remote presenter*, atau **geser** di HP/smartboard.
+3. Setiap jenis layar punya ikon dan warna sendiri (🤔 Pemantik, 🎯 Tujuan, 🔍 Pengamatan, 💡 Penjelasan, 🏡 Contoh, 💬 Latihan, 📝 Rangkuman, 💭 Refleksi, 🏆 Penilaian), agar siswa tahu sedang di tahap mana. Pindah layar dengan tombol **Berikutnya/Sebelumnya**, tombol panah keyboard, *remote presenter*, atau **geser** di HP/smartboard.
 4. Di layar **kegiatan dan diskusi**, klik **Petunjuk** untuk membuka bantuan satu per satu, lalu **Buka kunci** setelah siswa berdiskusi. Jawaban siswa tidak disimpan.
 5. **Remote dari HP guru (opsional):**
    - Klik **📱 Remote HP** di kanan atas layar presentasi.
@@ -124,7 +125,7 @@ Setiap subbab otomatis memakai **templat 9 layar**. Urutannya mengikuti teori be
 
 Isi **Sumber** dan **Lisensi** untuk setiap media. Utamakan media buatan sendiri atau berlisensi terbuka. **Jangan menyematkan YouTube** karena butuh internet. Satu media bisa dipakai di banyak subbab.
 
-> **Materi bawaan.** Ke-19 subbab sudah terisi lengkap: 9 layar, kegiatan kelas, media interaktif, dan 6 soal yang sudah disetujui, sesuai CP IPAS 046/2025. Guru tinggal **meninjau dan menyesuaikan** dengan kelasnya. Ilustrasi bawaan adalah gambar sederhana buatan LMS. Pada sebagian layar **Pemantik** yang masih berupa teks, sebaiknya tambahkan **foto atau video nyata** dari lingkungan siswa.
+> **Materi bawaan.** Ke-19 subbab sudah terisi lengkap: 9 layar, kegiatan kelas, media interaktif, dan 6 soal yang sudah disetujui, sesuai CP IPAS 046/2025. Guru tinggal **meninjau dan menyesuaikan** dengan kelasnya. Setiap layar **Pemantik** sudah diberi ilustrasi kartun beranimasi, dan pertanyaannya ditampilkan dalam balon kata bersama maskot **Si Ipa**. Ilustrasi ini sederhana buatan LMS. Bila ada, ganti dengan **foto atau video nyata** dari lingkungan siswa lewat **Edit layar**. Pertanyaan pemantik yang ditulis sebagai *Judul kecil* (H3) otomatis tampil di balon kata.
 
 ### 3.6 Membuat soal dengan AI
 1. Pastikan laptop server **tersambung internet** (misalnya hotspot HP) dan indikator menunjukkan *Online*.

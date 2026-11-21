@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#dcfce7"/>
+
+<g transform="translate(450 70) scale(0.9)" fill="#fff" opacity=".95"><ellipse cx="0" cy="0" rx="60" ry="26"/><ellipse cx="-38" cy="8" rx="34" ry="20"/><ellipse cx="40" cy="8" rx="36" ry="20"/><ellipse cx="6" cy="-18" rx="34" ry="24"/></g>
+<rect y="430" width="900" height="110" fill="#86efac"/>
+<g transform="translate(150 210) scale(1)"><g class="">
+  <rect x="-30" y="138" width="24" height="66" rx="11" fill="#92400e"/><rect x="6" y="138" width="24" height="66" rx="11" fill="#92400e"/>
+  <rect x="-40" y="50" width="80" height="102" rx="28" fill="#f59e0b"/>
+  <path d="M-34 72 L-58 132" stroke="#f5c9a0" stroke-width="17" stroke-linecap="round"/><path d="M34 72 Q70 70 76 30" stroke="#f5c9a0" stroke-width="17" fill="none" stroke-linecap="round"/><circle cx="0" cy="0" r="48" fill="#f5c9a0"/><path d="M-51 0 C-55 -64 55 -64 51 0 C42 -30 -28 -36 -51 0Z" fill="#3b2a20"/><circle cx="-16" cy="4" r="6.5" fill="#1f2937"/><circle cx="16" cy="4" r="6.5" fill="#1f2937"/><circle cx="-14" cy="2" r="2.2" fill="#fff"/><circle cx="18" cy="2" r="2.2" fill="#fff"/>
+  <ellipse cx="-29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><ellipse cx="29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><ellipse cx="0" cy="28" rx="8" ry="10" fill="#7c2d12"/></g></g>
+<g transform="translate(222 236) rotate(-90)"><rect x="-22" y="-30" width="44" height="60" rx="6" fill="#cbd5e1" stroke="#475569" stroke-width="4"/><path d="M-22 -16 h44 M-22 16 h44" stroke="#94a3b8" stroke-width="4"/></g>
+<g transform="translate(750 210) scale(1)"><g class="">
+  <rect x="-30" y="138" width="24" height="66" rx="11" fill="#4c1d95"/><rect x="6" y="138" width="24" height="66" rx="11" fill="#4c1d95"/>
+  <rect x="-40" y="50" width="80" height="102" rx="28" fill="#8b5cf6"/>
+  <path d="M34 72 L58 132" stroke="#c68863" stroke-width="17" stroke-linecap="round"/><path d="M-34 72 Q-70 60 -64 10" stroke="#c68863" stroke-width="17" fill="none" stroke-linecap="round"/><path d="M-58 10 C-62 -70 62 -70 58 10 L64 70 L-64 70Z" fill="#111827"/><circle cx="0" cy="4" r="44" fill="#c68863"/><circle cx="-16" cy="4" r="6.5" fill="#1f2937"/><circle cx="16" cy="4" r="6.5" fill="#1f2937"/><circle cx="-14" cy="2" r="2.2" fill="#fff"/><circle cx="18" cy="2" r="2.2" fill="#fff"/>
+  <ellipse cx="-29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><ellipse cx="29" cy="20" rx="8" ry="5" fill="#fb7185" opacity=".55"/><path d="M-13 23 Q0 37 13 23" stroke="#7c2d12" stroke-width="4.5" fill="none" stroke-linecap="round"/></g></g>
+<g transform="translate(690 214) rotate(90)"><rect x="-22" y="-30" width="44" height="60" rx="6" fill="#cbd5e1" stroke="#475569" stroke-width="4"/><path d="M-22 -16 h44 M-22 16 h44" stroke="#94a3b8" stroke-width="4"/></g>
+<path id="benang" d="M252 236 Q450 270 660 214" stroke="#b45309" stroke-width="4" fill="none"/>
+<g fill="#ef4444"><circle r="9"><animateMotion dur="2.4s" begin="0s" repeatCount="indefinite"><mpath href="#benang"/></animateMotion></circle><circle r="9"><animateMotion dur="2.4s" begin="0.8s" repeatCount="indefinite"><mpath href="#benang"/></animateMotion></circle><circle r="9"><animateMotion dur="2.4s" begin="1.6s" repeatCount="indefinite"><mpath href="#benang"/></animateMotion></circle></g>
+<g transform="translate(160 90)"><path d="M-70 -40 h140 a20 20 0 0 1 20 20 v40 a20 20 0 0 1 -20 20 h-90 l-20 22 l0 -22 h-30 a20 20 0 0 1 -20 -20 v-40 a20 20 0 0 1 20 -20Z" fill="#fff" stroke="#334155" stroke-width="4"/><text y="12" text-anchor="middle" font-size="32" font-weight="900" fill="#ea580c">Halo!</text></g>
+<g fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" class="blink"><path d="M640 150 q-14 16 0 32" /><path d="M620 136 q-26 30 0 60"/></g>
+<g transform="translate(450 330)"><g class="q"><circle r="40" fill="#f97316" stroke="#fff" stroke-width="5"/><text y="16.8" text-anchor="middle" font-size="54" font-weight="900" fill="#fff">?</text></g></g>
+</svg>

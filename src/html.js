@@ -98,7 +98,7 @@ function page({ title, user, body, active = '', head = '', bodyClass = '', pesan
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} · LMS IPAS ${esc(sekolah)}</title>
 <link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/static/css/app.css?v=6">
+<link rel="stylesheet" href="/static/css/app.css?v=7">
 ${head}
 </head><body class="${esc(bodyClass)}${user ? ' has-side' : ''}">
 ${side}
@@ -107,13 +107,17 @@ ${user ? html`<header class="mtop">
   <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" data-nav-toggle><span class="burger"></span>Menu</button>
   <a class="brand" href="/"><img src="/static/img/logo.svg" alt="" width="30" height="30"><b>LMS IPAS</b></a>
 </header>` : ''}
+${user ? html`<nav class="tabbar" aria-label="Menu cepat">
+  ${[['home', '/', 'home', 'Beranda'], ['soal', '/soal', 'quiz', 'Soal'], ['media', '/media', 'media', 'Media'], ['panduan', '/panduan', 'help', 'Panduan']].map(([k, h, ic, l]) => html`<a href="${h}" class="${active === k ? 'on' : ''}">${icon(ic)}<span>${l}</span></a>`)}
+  <button type="button" aria-controls="nav" aria-expanded="false" data-nav-toggle><span class="burger"></span><span>Menu</span></button>
+</nav>` : ''}
 <main class="wrap">
 ${pesan ? html`<div class="flash ok" role="status">${icon('check')}<span>${pesan}</span></div>` : ''}
 ${galat ? html`<div class="flash err" role="alert"><b>!</b><span>${galat}</span></div>` : ''}
 ${fmt(body)}
 </main>
 </div>
-<script src="/static/js/app.js?v=6"></script>
+<script src="/static/js/app.js?v=7"></script>
 </body></html>`;
 }
 

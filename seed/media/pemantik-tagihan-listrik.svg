@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#fef3c7"/>
+
+<rect y="400" width="900" height="140" fill="#d6a15c"/>
+<g transform="translate(220 250)">
+  <rect x="-150" y="-110" width="300" height="190" rx="14" fill="#1f2937"/><rect x="-136" y="-96" width="272" height="160" rx="6" fill="#38bdf8"><animate attributeName="fill" values="#38bdf8;#f472b6;#a3e635;#38bdf8" dur="2s" repeatCount="indefinite"/></rect>
+  <circle cx="-40" cy="-20" r="30" fill="#fde047"/><path d="M20 30 l40 -60 l40 60Z" fill="#fff" opacity=".8"/>
+  <rect x="-10" y="80" width="20" height="40" fill="#374151"/><rect x="-70" y="118" width="140" height="12" rx="6" fill="#374151"/>
+</g>
+<g transform="translate(230 440)"><rect x="-150" y="-50" width="300" height="70" rx="22" fill="#60a5fa"/><rect x="-170" y="-80" width="40" height="100" rx="16" fill="#3b82f6"/><rect x="130" y="-80" width="40" height="100" rx="16" fill="#3b82f6"/><g transform="translate(0 -10)"><rect x="-137.06" y="-17.099999999999998" width="274.12" height="28.8" rx="14.4" fill="#1e3a8a"/><text y="5.040000000000001" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">Tidak ada yang menonton</text></g></g>
+<g transform="translate(500 330)"><rect x="-60" y="-50" width="120" height="110" rx="34" fill="#f1f5f9" stroke="#64748b" stroke-width="5"/><ellipse cy="-50" rx="62" ry="18" fill="#e2e8f0" stroke="#64748b" stroke-width="5"/><circle class="blink" cx="30" cy="30" r="9" fill="#ef4444"/>
+  <path class="rise" d="M-10 -80 q-10 -14 0 -28 q10 -14 0 -28" stroke="#94a3b8" stroke-width="5" fill="none"/><path class="rise2" d="M20 -80 q-10 -14 0 -28 q10 -14 0 -28" stroke="#94a3b8" stroke-width="5" fill="none"/></g>
+<g transform="translate(730 220)" class="bob"><g transform="rotate(5)">
+  <rect x="-110" y="-140" width="220" height="280" rx="10" fill="#fff" stroke="#334155" stroke-width="5"/>
+  <text y="-96" text-anchor="middle" font-size="26" font-weight="900" fill="#334155">TAGIHAN</text><text y="-66" text-anchor="middle" font-size="20" font-weight="700" fill="#64748b">LISTRIK</text>
+  <path d="M-80 -40 h160 M-80 -14 h120 M-80 12 h140" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round"/>
+  <text y="80" text-anchor="middle" font-size="40" font-weight="900" fill="#dc2626">Rp ???</text>
+  <path d="M80 112 V40 M60 62 l20 -22 l20 22" stroke="#dc2626" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<path d="M480 80 l-24 46 h22 l-14 44 l40 -60 h-24 l16 -30Z" fill="#facc15" stroke="#a16207" stroke-width="4" class="blink"/>
+<g transform="translate(560 110)"><g class="q"><circle r="38" fill="#dc2626" stroke="#fff" stroke-width="5"/><text y="15.959999999999999" text-anchor="middle" font-size="51.300000000000004" font-weight="900" fill="#fff">?</text></g></g>
+</svg>

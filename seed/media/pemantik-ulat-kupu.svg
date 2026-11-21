@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#ecfccb"/>
+
+<g transform="translate(160 70) scale(0.9)" fill="#fff" opacity=".95"><ellipse cx="0" cy="0" rx="60" ry="26"/><ellipse cx="-38" cy="8" rx="34" ry="20"/><ellipse cx="40" cy="8" rx="36" ry="20"/><ellipse cx="6" cy="-18" rx="34" ry="24"/></g><g transform="translate(720 60) scale(0.8)" fill="#fff" opacity=".95"><ellipse cx="0" cy="0" rx="60" ry="26"/><ellipse cx="-38" cy="8" rx="34" ry="20"/><ellipse cx="40" cy="8" rx="36" ry="20"/><ellipse cx="6" cy="-18" rx="34" ry="24"/></g>
+<rect y="440" width="900" height="100" fill="#86efac"/>
+<g transform="translate(220 330) rotate(-12)">
+  <path d="M-180 0 C-120 -120 120 -120 180 0 C120 110 -120 110 -180 0Z" fill="#22c55e" stroke="#15803d" stroke-width="5"/>
+  <path d="M-180 0 L180 0" stroke="#15803d" stroke-width="4"/>
+  <circle cx="150" cy="-36" r="26" fill="#ecfccb"/><circle cx="120" cy="-60" r="18" fill="#ecfccb"/>
+</g>
+<g class="bob"><g transform="translate(180 268)">
+  <circle cx="-60" cy="0" r="20" fill="#84cc16"/><circle cx="-30" cy="-6" r="22" fill="#65a30d"/><circle cx="2" cy="-8" r="23" fill="#84cc16"/><circle cx="34" cy="-6" r="23" fill="#65a30d"/>
+  <circle cx="68" cy="-12" r="28" fill="#a3e635"/><circle cx="76" cy="-18" r="6" fill="#1f2937"/><path d="M70 -38 l-6 -18 M84 -38 l8 -16" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="-30" cy="-10" r="5" fill="#facc15"/><circle cx="2" cy="-12" r="5" fill="#facc15"/><circle cx="34" cy="-10" r="5" fill="#facc15"/>
+</g></g>
+<path d="M410 260 C470 200 540 200 600 240" stroke="#334155" stroke-width="6" fill="none" stroke-dasharray="14 12"/><path d="M600 240 l-26 -2 l12 -20Z" fill="#334155"/>
+<g transform="translate(505 175)"><g class="q"><circle r="40" fill="#f97316" stroke="#fff" stroke-width="5"/><text y="16.8" text-anchor="middle" font-size="54" font-weight="900" fill="#fff">?</text></g></g>
+<g class="bob2"><g transform="translate(720 260)">
+  <g><animateTransform attributeName="transform" type="scale" values="1 1;.25 1;1 1" dur=".7s" repeatCount="indefinite"/>
+    <path d="M0 0 C-40 -90 -130 -70 -110 -10 C-100 20 -40 20 0 0Z" fill="#f97316" stroke="#7c2d12" stroke-width="4"/>
+    <path d="M0 0 C40 -90 130 -70 110 -10 C100 20 40 20 0 0Z" fill="#f97316" stroke="#7c2d12" stroke-width="4"/>
+    <path d="M0 4 C-30 40 -90 70 -70 20Z" fill="#fb923c" stroke="#7c2d12" stroke-width="4"/>
+    <path d="M0 4 C30 40 90 70 70 20Z" fill="#fb923c" stroke="#7c2d12" stroke-width="4"/>
+    <circle cx="-62" cy="-36" r="12" fill="#fde68a"/><circle cx="62" cy="-36" r="12" fill="#fde68a"/>
+  </g>
+  <rect x="-8" y="-40" width="16" height="70" rx="8" fill="#1f2937"/><path d="M-4 -40 l-14 -26 M4 -40 l14 -26" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+</g></g>
+<g transform="translate(200 490)"><rect x="-47.16" y="-24.7" width="94.32" height="41.6" rx="20.8" fill="#15803d"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Ulat</text></g><g transform="translate(720 490)"><rect x="-84.86" y="-24.7" width="169.72" height="41.6" rx="20.8" fill="#c2410c"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Kupu-kupu</text></g>
+</svg>

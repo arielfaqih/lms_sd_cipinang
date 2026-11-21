@@ -10,7 +10,7 @@ const db = require('./db');
 const { JENIS_KOMPONEN, isiBawaan } = require('./html');
 
 const SEED_MEDIA = path.join(__dirname, '..', 'seed', 'media');
-const MATERI_VERSI = '5';
+const MATERI_VERSI = '6';
 const { MATERI } = require('./materi-lengkap');
 
 // Tujuan pembelajaran per subbab. "lama" disimpan agar instalasi yang sudah berjalan
@@ -447,6 +447,7 @@ function seedIfEmpty() {
     seedKelas6(m);
     pasangMediaInteraktif([]);
     isiMateriLengkap([]);
+    pasangPemantik([]);
     db.setSetting('materi_versi', MATERI_VERSI);
   });
   console.log('  Materi bawaan dimuat: 19 subbab terisi lengkap dengan media interaktif dan soal.');
@@ -529,6 +530,38 @@ function pasangMediaInteraktif(log) {
   }
 }
 
+// Versi 6: ilustrasi beranimasi untuk layar Pemantik yang masih berupa teks saja.
+// Dipasang hanya pada layar Pemantik yang belum diberi media (pilihan guru tidak ditimpa).
+const PEMANTIK = [
+  [4, 'Bentuk dan Fungsi Pancaindra', 'pemantik-kotak-misteri.svg', 'Pemantik: kotak misteri'],
+  [4, 'Siklus Hidup Hewan', 'pemantik-ulat-kupu.svg', 'Pemantik: dari ulat menjadi kupu-kupu?'],
+  [4, 'Pelestarian Makhluk Hidup', 'pemantik-kunang-kunang.svg', 'Pemantik: kunang-kunang dulu dan sekarang'],
+  [4, 'Sumber dan Bentuk Energi', 'pemantik-tenaga.svg', 'Pemantik: dari mana tenagamu?'],
+  [4, 'Jenis Gaya dan Pengaruhnya', 'pemantik-kelereng.svg', 'Pemantik: kelereng yang disentil'],
+  [4, 'Pelestarian Alam untuk Mengurangi Perubahan Iklim', 'pemantik-bumi-panas.svg', 'Pemantik: Bumi makin panas'],
+  [5, 'Sistem Pernapasan', 'pemantik-tahan-napas.svg', 'Pemantik: berapa lama bisa menahan napas?'],
+  [5, 'Sistem Pencernaan', 'pemantik-nasi.svg', 'Pemantik: ke mana nasi yang kita makan?'],
+  [5, 'Komponen Biotik dan Abiotik', 'pemantik-akuarium.svg', 'Pemantik: akuarium keruh dan lampu mati'],
+  [5, 'Gelombang Bunyi', 'pemantik-telepon-kaleng.svg', 'Pemantik: telepon kaleng'],
+  [5, 'Sifat-sifat Cahaya', 'pemantik-pensil-patah.svg', 'Pemantik: pensil yang tampak patah'],
+  [6, 'Penghematan Energi', 'pemantik-tagihan-listrik.svg', 'Pemantik: tagihan listrik membengkak'],
+  [6, 'Energi Alternatif', 'pemantik-desa-terang.svg', 'Pemantik: desa tanpa listrik PLN'],
+  [6, 'Sistem Tata Surya', 'pemantik-bintang-kejora.svg', 'Pemantik: bintang kejora'],
+];
+function pasangPemantik(log) {
+  for (const [kelas, judulSub, file, judulMedia] of PEMANTIK) {
+    const ada = db.get('SELECT id FROM media WHERE file = ?', `contoh-${file}`);
+    const mediaId = ada ? ada.id : tambahMedia(file, judulMedia, 'gambar', 'image/svg+xml');
+    const s = db.get(`SELECT s.id FROM subbab s JOIN bab b ON b.id = s.bab_id WHERE b.kelas_id = ? AND s.judul = ?`, kelas, judulSub);
+    if (!s) continue;
+    const k = db.get(`SELECT id FROM komponen WHERE subbab_id = ? AND jenis = 'pemantik' AND media_id IS NULL ORDER BY urutan LIMIT 1`, s.id);
+    if (!k) continue;
+    db.run('UPDATE komponen SET media_id = ? WHERE id = ?', mediaId, k.id);
+    db.run(`UPDATE subbab SET updated_at = datetime('now','localtime') WHERE id = ?`, s.id);
+    log.push('pemantik');
+  }
+}
+
 // Pembaruan materi bawaan untuk instalasi yang sudah berjalan (dijalankan sekali).
 // Hanya mengubah teks yang masih SAMA PERSIS dengan versi bawaan lama, jadi
 // isi yang sudah diubah guru tidak tertimpa.
@@ -541,11 +574,12 @@ function perbaruiMateri() {
     if (versi < 3) perbaruiKeV3(log);
     if (versi < 4) pasangMediaInteraktif(log);
     if (versi < 5) isiMateriLengkap(log);
+    if (versi < 6) pasangPemantik(log);
     segarkanMediaContoh(log);
     db.setSetting('materi_versi', MATERI_VERSI);
   });
   const hit = (k) => log.filter((x) => x === k).length;
-  console.log(`  Materi bawaan diperbarui ke versi ${MATERI_VERSI} (CP 046/2025): ${hit('tujuan')} tujuan, ${hit('refleksi')} layar Refleksi, ${hit('peredaran darah') + hit('isi lengkap')} subbab baru/diisi, ${hit('materi lengkap')} subbab kerangka diisi lengkap, ${hit('media')} media interaktif baru (${hit('dipasang')} dipasang), ${hit('media disegarkan')} berkas media contoh diperbarui.`);
+  console.log(`  Materi bawaan diperbarui ke versi ${MATERI_VERSI} (CP 046/2025): ${hit('tujuan')} tujuan, ${hit('refleksi')} layar Refleksi, ${hit('peredaran darah') + hit('isi lengkap')} subbab baru/diisi, ${hit('materi lengkap')} subbab kerangka diisi lengkap, ${hit('media')} media interaktif baru (${hit('dipasang')} dipasang), ${hit('pemantik')} ilustrasi pemantik dipasang, ${hit('media disegarkan')} berkas media contoh diperbarui.`);
 }
 
 // Versi 3: isi lengkap Sistem Peredaran Darah (kelas 5) dan Revolusi Bumi dan Musim (kelas 6),

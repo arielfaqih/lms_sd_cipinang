@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+<!-- Si Ipa: maskot tunas yang penasaran -->
+<path d="M60 30 C58 18 60 10 64 4" stroke="#15803d" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M62 14 C44 -2 26 8 30 20 C42 26 56 22 62 14Z" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
+<path d="M64 12 C80 -4 100 4 96 18 C84 24 70 20 64 12Z" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+<ellipse cx="60" cy="72" rx="44" ry="42" fill="#2dd4bf" stroke="#0f766e" stroke-width="4"/>
+<ellipse cx="60" cy="84" rx="28" ry="22" fill="#99f6e4"/>
+<circle cx="44" cy="62" r="11" fill="#fff"/><circle cx="76" cy="62" r="11" fill="#fff"/>
+<circle cx="46" cy="64" r="6" fill="#0f172a"/><circle cx="78" cy="64" r="6" fill="#0f172a"/>
+<circle cx="48" cy="61" r="2.2" fill="#fff"/><circle cx="80" cy="61" r="2.2" fill="#fff"/>
+<ellipse cx="32" cy="78" rx="6" ry="4" fill="#fb7185" opacity=".6"/><ellipse cx="88" cy="78" rx="6" ry="4" fill="#fb7185" opacity=".6"/>
+<path d="M50 80 Q60 90 70 80" stroke="#0f172a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+<path d="M17 76 C8 70 6 60 12 56" stroke="#0f766e" stroke-width="6" fill="none" stroke-linecap="round"/>
+<path d="M103 76 C112 72 114 64 110 58" stroke="#0f766e" stroke-width="6" fill="none" stroke-linecap="round"/>
+</svg>

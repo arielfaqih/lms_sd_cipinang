@@ -49,6 +49,18 @@ test('materi bawaan: 19 subbab lengkap sesuai templat', () => {
   }
 });
 
+test('setiap layar Pemantik punya ilustrasi dan penyaji memakai ikon layar', async () => {
+  for (const s of subbabSemua()) {
+    const p = db.prepare(`SELECT media_id FROM komponen WHERE subbab_id = ? AND jenis = 'pemantik' ORDER BY urutan LIMIT 1`).get(s.id);
+    assert.ok(p && p.media_id, `${s.judul}: layar Pemantik belum bergambar`);
+  }
+  const s = subbabSemua()[0];
+  const r = await k.req(`/sajikan/${s.id}`);
+  assert.match(await r.text(), /class="sl-ico"/);
+  const beranda = await k.req('/');
+  assert.match(await beranda.text(), /class="tabbar"/);
+});
+
 test('setiap subbab dapat disajikan dan ditayangkan sebagai kuis', async () => {
   for (const s of subbabSemua()) {
     const r = await k.req(`/sajikan/${s.id}`);

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Segoe UI, Arial, sans-serif">
+<style>
+.bob{animation:bob 2.4s ease-in-out infinite}
+.bob2{animation:bob 2.4s ease-in-out -1.2s infinite}
+.bobf{animation:bob .5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.q{animation:q 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes q{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.blink{animation:blink 2s ease-in-out infinite}
+.blink2{animation:blink 2.6s ease-in-out -1s infinite}
+.blink3{animation:blink 1.7s ease-in-out -.5s infinite}
+@keyframes blink{50%{opacity:.15}}
+.spin{animation:spin 10s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wob{animation:wob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.rise{animation:rise 2.4s ease-out infinite}
+.rise2{animation:rise 2.4s ease-out -.8s infinite}
+.rise3{animation:rise 2.4s ease-out -1.6s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="900" height="540" rx="0" fill="#fef9c3"/>
+
+<rect y="380" width="900" height="160" fill="#d6a15c"/><path d="M0 380 H900" stroke="#92400e" stroke-width="6"/>
+<g transform="translate(230 360)">
+  <ellipse cx="0" cy="10" rx="190" ry="44" fill="#e5e7eb" stroke="#9ca3af" stroke-width="5"/><ellipse cx="0" cy="4" rx="150" ry="30" fill="#fff"/>
+  <path d="M-110 4 C-110 -80 -10 -90 -10 4Z" fill="#fff" stroke="#d1d5db" stroke-width="4"/>
+  <g fill="#f3f4f6"><ellipse cx="-96" cy="-46" rx="6" ry="3"/><ellipse cx="-78" cy="-46" rx="6" ry="3"/><ellipse cx="-60" cy="-46" rx="6" ry="3"/><ellipse cx="-42" cy="-46" rx="6" ry="3"/><ellipse cx="-24" cy="-46" rx="6" ry="3"/><ellipse cx="-96" cy="-20" rx="6" ry="3"/><ellipse cx="-78" cy="-20" rx="6" ry="3"/><ellipse cx="-60" cy="-20" rx="6" ry="3"/><ellipse cx="-42" cy="-20" rx="6" ry="3"/><ellipse cx="-24" cy="-20" rx="6" ry="3"/></g>
+  <rect x="10" y="-36" width="70" height="40" rx="8" fill="#d4a373" stroke="#92400e" stroke-width="4"/><g fill="#a16207"><circle cx="22" cy="-24" r="4"/><circle cx="44" cy="-24" r="4"/><circle cx="66" cy="-24" r="4"/><circle cx="22" cy="-8" r="4"/><circle cx="44" cy="-8" r="4"/><circle cx="66" cy="-8" r="4"/></g>
+  <path d="M90 -4 C100 -50 150 -50 150 -4Z" fill="#22c55e" stroke="#15803d" stroke-width="4"/><circle cx="120" cy="-30" r="9" fill="#f97316"/>
+  <g transform="translate(0 -120)"><path class="rise" d="M-40 0 q-10 -14 0 -28 q10 -14 0 -28" stroke="#94a3b8" stroke-width="5" fill="none"/><path class="rise2" d="M0 0 q-10 -14 0 -28 q10 -14 0 -28" stroke="#94a3b8" stroke-width="5" fill="none"/></g>
+</g>
+<g transform="translate(660 120)">
+  <circle r="62" fill="#fde7d4" stroke="#c2410c" stroke-width="5"/>
+  <circle cx="-20" cy="-6" r="7" fill="#1f2937"/><circle cx="20" cy="-6" r="7" fill="#1f2937"/><ellipse cx="0" cy="30" rx="12" ry="9" fill="#7c2d12"/>
+  <path d="M-50 70 C-120 120 -110 330 -40 370 H40 C110 330 120 120 50 70Z" fill="#fde7d4" stroke="#c2410c" stroke-width="5"/>
+  <path id="jalur" d="M0 30 V120 C0 170 -40 170 -40 210 C-40 250 40 240 40 280 C40 320 0 320 0 360" stroke="#f97316" stroke-width="6" fill="none" stroke-dasharray="12 12"/>
+  <circle r="12" fill="#fff" stroke="#d97706" stroke-width="4"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#jalur"/></animateMotion></circle>
+</g>
+<g transform="translate(660 330)"><g class="q"><circle r="34" fill="#dc2626" stroke="#fff" stroke-width="5"/><text y="14.28" text-anchor="middle" font-size="45.900000000000006" font-weight="900" fill="#fff">?</text></g></g>
+<g transform="translate(230 470)"><rect x="-152.72" y="-24.7" width="305.44" height="41.6" rx="20.8" fill="#92400e"/><text y="7.280000000000001" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">Nasi, tempe, sayur</text></g>
+</svg>
