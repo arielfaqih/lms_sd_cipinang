@@ -23,6 +23,20 @@ LMS ini berjalan di **satu laptop sekolah sebagai server lokal**. Laptop lain, H
 
 ## 2. Pemasangan pertama (Admin/operator, sekali saja)
 
+### Cara termudah: installer `LMS-IPAS-Setup.exe` (untuk sekolah lain)
+
+Satu berkas berisi LMS lengkap **beserta Node.js**, jadi laptop sekolah tidak perlu memasang apa pun dan tidak perlu internet.
+
+1. Klik dua kali `LMS-IPAS-Setup.exe`. Jika muncul *Windows protected your PC*, klik **More info** → **Run anyway** (installer buatan sendiri belum bertanda tangan digital).
+2. Biarkan folder `C:\LMS-IPAS` (jangan pilih folder OneDrive/Desktop), centang semua pilihan, lalu klik **Pasang**. Klik **Yes** saat Windows meminta izin Administrator (untuk membuka firewall).
+3. LMS langsung berjalan. Berikutnya cukup klik dua kali pintasan **LMS IPAS** di Desktop.
+
+Memperbarui ke versi baru: jalankan installer versi baru ke folder yang sama. Data sekolah (akun, materi, soal, media) **tidak terhapus**. Tutup jendela hitam server lebih dulu.
+
+**Membuat ulang installer** (di laptop pengembang yang memiliki Node.js 22.13+): jalankan `pwsh -File tools\buat-installer.ps1`. Hasilnya `dist\LMS-IPAS-Setup.exe`. Data di folder `data\` tidak ikut dikemas. Admin juga bisa memasang tanpa jendela: `LMS-IPAS-Setup.exe /diam "D:\LMS-IPAS"`.
+
+### Cara manual (dari folder proyek)
+
 **Kebutuhan:** laptop Windows 10/11 dengan RAM ≥ 4 GB, router/access point (atau hotspot laptop), dan browser Chrome/Firefox terbaru.
 
 1. **Pasang Node.js.** Unduh installer **versi LTS** dari nodejs.org saat ada internet, lalu pasang dengan pilihan bawaan (Next → Next → Install). Minimal versi 22.13. Simpan installer-nya di flashdisk untuk cadangan.

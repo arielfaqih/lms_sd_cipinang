@@ -2,14 +2,19 @@
 chcp 65001 >nul
 title LMS IPAS SDN Cipinang II - JANGAN DITUTUP selama LMS dipakai
 cd /d "%~dp0"
-where node >nul 2>nul
-if errorlevel 1 (
-  echo.
-  echo   Node.js belum terpasang di laptop ini.
-  echo   Pasang Node.js versi LTS, lalu jalankan berkas ini lagi. Lihat PANDUAN.md bagian 2.
-  echo.
-  pause
-  exit /b 1
+rem Pakai Node.js bawaan paket (folder runtime) bila ada; jika tidak, pakai Node.js yang terpasang.
+set "NODE=node"
+if exist "%~dp0runtime\node.exe" set "NODE=%~dp0runtime\node.exe"
+if "%NODE%"=="node" (
+  where node >nul 2>nul
+  if errorlevel 1 (
+    echo.
+    echo   Node.js belum terpasang di laptop ini.
+    echo   Pasang Node.js versi LTS, lalu jalankan berkas ini lagi. Lihat PANDUAN.md bagian 2.
+    echo.
+    pause
+    exit /b 1
+  )
 )
 set PORT=3000
 netsh advfirewall firewall show rule name="LMS IPAS (port 3000)" >nul 2>nul
@@ -20,7 +25,7 @@ if errorlevel 1 (
   echo.
 )
 start "" cmd /c "timeout /t 3 >nul & start http://localhost:3000"
-node server.js
+"%NODE%" server.js
 echo.
 echo   Server berhenti.
 pause

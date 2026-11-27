@@ -9,3 +9,6 @@ node_modules/.bin/playwright*
 # Berkas sistem operasi
 Thumbs.db
 .DS_Store
+
+# Hasil build installer (dibuat ulang dengan tools/buat-installer.ps1)
+dist/
