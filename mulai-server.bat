@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title LMS IPAS SDN Cipinang II - JANGAN DITUTUP selama LMS dipakai
+title LMS IPAS - JANGAN DITUTUP selama LMS dipakai
 cd /d "%~dp0"
 rem Pakai Node.js bawaan paket (folder runtime) bila ada; jika tidak, pakai Node.js yang terpasang.
 set "NODE=node"

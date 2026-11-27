@@ -19,6 +19,8 @@ foreach ($f in 'server.js', 'package.json', 'mulai-server.bat', 'izinkan-akses-j
   Copy-Item (Join-Path $root $f) $paket
 }
 foreach ($d in 'src', 'public', 'seed') { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $paket $d) }
+# Buku panduan guru juga diletakkan langsung di folder paket agar mudah ditemukan
+if (Test-Path (Join-Path $root 'public\panduan-guru.pdf')) { Copy-Item (Join-Path $root 'public\panduan-guru.pdf') (Join-Path $paket 'Buku Panduan Guru LMS IPAS.pdf') }
 # node_modules tanpa alat uji (playwright-core)
 Copy-Item -Recurse (Join-Path $root 'node_modules') (Join-Path $paket 'node_modules')
 foreach ($x in 'node_modules\playwright-core', 'node_modules\.bin\playwright*') {
@@ -89,6 +91,10 @@ function Kompilasi([string]$keluar, [string[]]$resource) {
 Copy-Item (Join-Path $PSScriptRoot 'hapus-lms.js') $paket
 # Pemasang untuk paket ZIP (jalur yang selalu lolos Smart App Control)
 Copy-Item (Join-Path $PSScriptRoot 'pasang-lms.js') $paket
+# Pemulih akses Admin bila kata sandinya lupa (hanya bisa dijalankan di laptop server)
+Copy-Item (Join-Path $PSScriptRoot 'reset-sandi-admin.js') $paket
+$batReset = "@echo off`r`nchcp 65001 >nul`r`ntitle Reset kata sandi Admin LMS IPAS`r`ncd /d `"%~dp0`"`r`n`"%~dp0runtime\node.exe`" `"%~dp0reset-sandi-admin.js`"`r`n"
+[System.IO.File]::WriteAllText((Join-Path $paket 'reset-sandi-admin.bat'), $batReset, (New-Object System.Text.ASCIIEncoding))
 $bat = "@echo off`r`nchcp 65001 >nul`r`ntitle Pasang LMS IPAS`r`n`"%~dp0runtime\node.exe`" `"%~dp0pasang-lms.js`" %*`r`n"
 [System.IO.File]::WriteAllText((Join-Path $paket 'PASANG-LMS.bat'), $bat, (New-Object System.Text.ASCIIEncoding))
 
@@ -117,7 +123,8 @@ MENGHAPUS (UNINSTALL)
   Data sekolah disimpan, kecuali Anda mengetik HAPUS DATA.
 
 INTERNET hanya dibutuhkan untuk fitur "Buat soal dengan AI".
-Panduan lengkap: PANDUAN.md
+Panduan bergambar untuk guru (cara pakai, pencegahan, kalau ada masalah, FAQ):
+  Buku Panduan Guru LMS IPAS.pdf  (juga ada di LMS: menu Panduan Singkat)
 "@ | Set-Content -Encoding UTF8 (Join-Path $paket 'BACA-DULU.txt')
 
 Write-Host '4/5 Memadatkan paket (zip)...'

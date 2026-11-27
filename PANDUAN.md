@@ -40,6 +40,8 @@ Paket ZIP dipilih sebagai cara utama karena **Smart App Control** di Windows 11 
 
 **Menghapus (uninstall):** **Settings → Apps → Installed apps → LMS IPAS → Uninstall**, atau Start Menu → **Hapus LMS IPAS**. Di jendela penghapus, ketik **Y** untuk menghapus. Data sekolah **disimpan** kecuali Anda mengetik `HAPUS DATA`. Data yang disimpan otomatis dipakai lagi bila LMS dipasang ke folder yang sama.
 
+**Buku Panduan Guru (PDF)** untuk sekolah: `public/panduan-guru.pdf`, ikut di paket sebagai `Buku Panduan Guru LMS IPAS.pdf` dan bisa dibuka dari LMS (menu **Panduan Singkat**). Isinya cara pakai, pencegahan, tabel "kalau ada masalah", FAQ, dan kartu ringkas. Sumbernya `docs/panduan-guru/panduan.html`. Buat ulang setelah tampilan LMS berubah dengan `node tools/buat-panduan.js` (tangkapan layar baru + PDF) atau `--pdf-saja`. **Admin lupa sandi:** jalankan `reset-sandi-admin.bat` di folder LMS.
+
 **Membuat ulang paket** (di laptop pengembang yang memiliki Node.js 22.13+): jalankan `pwsh -File tools\buat-installer.ps1`. Hasilnya `dist\LMS-IPAS.zip` dan `dist\LMS-IPAS-Setup.exe`. Data di folder `data\` tidak ikut dikemas. Pemasangan tanpa pertanyaan untuk admin: `PASANG-LMS.bat --diam "D:\LMS-IPAS"`.
 
 ### Cara manual (dari folder proyek)

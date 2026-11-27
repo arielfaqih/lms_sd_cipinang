@@ -170,7 +170,8 @@ r.get('/', async (req, res) => {
 // ---------- Panduan singkat di dalam aplikasi ----------
 r.get('/panduan', (req, res) => {
   const body = html`
-  ${pageHead({ title: 'Panduan Singkat', desc: 'Semua yang perlu diketahui guru untuk memakai LMS ini, dalam 5 bagian. Baca sekali, setelah itu cukup ikuti alurnya.' })}
+  ${pageHead({ title: 'Panduan Singkat', desc: 'Ringkasan cara memakai LMS. Untuk panduan lengkap bergambar, termasuk cara mengatasi masalah dan FAQ, buka Buku Panduan Guru.',
+    actions: html`<a class="btn primary" href="/static/panduan-guru.pdf" target="_blank" rel="noopener">${icon('help')}Buku Panduan Guru (PDF)</a><a class="btn" href="/static/panduan-guru.pdf" download="Buku Panduan Guru LMS IPAS.pdf">⇩ Unduh</a>` })}
   <div class="guide">
     <section class="card guide-sec"><span class="guide-no">1</span><div>
       <h2>Membuka LMS</h2>

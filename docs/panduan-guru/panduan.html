@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Buku Panduan Guru - LMS IPAS</title>
+<style>
+  @page { size: A4; margin: 15mm 16mm 16mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.8pt; line-height: 1.45; color: #1c2b31; margin: 0; }
+  h1, h2, h3 { line-height: 1.25; color: #0c3f3a; }
+  h2 { font-size: 19pt; margin: 0 0 4mm; padding-bottom: 2mm; border-bottom: 3px solid #0f766e; }
+  h3 { font-size: 13pt; margin: 4.5mm 0 1.6mm; color: #0f766e; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 7mm; }
+  li { margin-bottom: 1.2mm; }
+  .bab { page-break-before: always; }
+  .jaga { page-break-inside: avoid; }
+  b { color: #0c2a2f; }
+  .tombol { display: inline-block; border: 1.5px solid #9fb3ba; border-radius: 6px; padding: 0 2mm; font-weight: 700; font-size: 10pt; background: #fff; white-space: nowrap; }
+  .tombol.hijau { background: #0f766e; border-color: #0f766e; color: #fff; }
+  .kbd { display: inline-block; border: 1px solid #9fb3ba; border-bottom-width: 2px; border-radius: 4px; padding: 0 1.5mm; font-family: Consolas, monospace; font-size: 9.5pt; background: #f6f8f9; }
+  code { font-family: Consolas, monospace; font-size: 10pt; background: #eef3f4; padding: 0 1.2mm; border-radius: 3px; }
+
+  /* kotak penanda */
+  .kotak { border-radius: 8px; padding: 2.4mm 3.6mm; margin: 2.4mm 0; border: 1.5px solid; page-break-inside: avoid; }
+  .kotak > b:first-child { display: block; margin-bottom: 1mm; }
+  .ingat { background: #e8f6f3; border-color: #9dd6cc; }
+  .awas { background: #fff1ef; border-color: #f2b8b0; }
+  .awas > b:first-child { color: #b42318; }
+  .tips { background: #fff8e6; border-color: #f1d48f; }
+
+  /* langkah bernomor besar */
+  ol.langkah { list-style: none; padding: 0; counter-reset: l; }
+  ol.langkah > li { counter-increment: l; position: relative; padding-left: 11mm; margin-bottom: 2mm; min-height: 7.5mm; }
+  ol.langkah > li::before { content: counter(l); position: absolute; left: 0; top: 0; width: 7.5mm; height: 7.5mm; border-radius: 50%; background: #0f766e; color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 10.5pt; }
+
+  /* daftar centang */
+  ul.cek { list-style: none; padding: 0; }
+  ul.cek > li { position: relative; padding-left: 8mm; }
+  ul.cek > li::before { content: ""; position: absolute; left: 0; top: 1.2mm; width: 4.2mm; height: 4.2mm; border: 1.6px solid #0f766e; border-radius: 1.2mm; }
+  ul.ya > li::marker { content: "✓  "; color: #15803d; font-weight: 800; }
+  ul.tidak > li::marker { content: "✗  "; color: #b42318; font-weight: 800; }
+
+  figure { margin: 2.5mm 0 3mm; page-break-inside: avoid; }
+  figure img { width: 80%; margin: 0 auto; border: 1px solid #cfd9dc; border-radius: 6px; display: block; }
+  figure.kecil img { width: 52%; }
+  figure.sedang img { width: 66%; }
+  .dua figure img { width: 100%; }
+  figure.hp img { width: 38%; margin: 0 auto; }
+  figcaption { font-size: 9.5pt; color: #5b6b70; margin-top: 1.5mm; text-align: center; }
+  .dua { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; align-items: start; }
+
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 10.2pt; }
+  th { background: #0f766e; color: #fff; text-align: left; padding: 2mm 2.5mm; font-weight: 700; }
+  td { border-bottom: 1px solid #dbe4e6; padding: 2mm 2.5mm; vertical-align: top; }
+  tr { page-break-inside: avoid; }
+  tr.grup td { background: #e8f6f3; font-weight: 800; color: #0c3f3a; border-bottom: 0; padding-top: 3mm; }
+  td:first-child { width: 31%; }
+  td:nth-child(2) { width: 24%; color: #4b5a5f; }
+  table.rapat td { padding: 1.1mm 2.5mm; line-height: 1.35; }
+  table.rapat td:first-child { width: 24%; } table.rapat td:nth-child(2) { width: 30%; }
+
+  /* jendela hitam tiruan */
+  .terminal { background: #0c0c0c; color: #e6e6e6; font-family: Consolas, monospace; font-size: 9pt; border-radius: 6px; padding: 3mm 4mm; white-space: pre; line-height: 1.45; margin: 3mm 0; }
+  .terminal .judul { display: block; color: #9aa; margin-bottom: 1mm; }
+
+  /* sampul */
+  .sampul { height: 262mm; display: flex; flex-direction: column; }
+  .sampul .pita { background: linear-gradient(135deg, #0b544f, #0f766e); color: #fff; border-radius: 10px; padding: 14mm 12mm 12mm; }
+  .sampul .pita h1 { color: #fff; font-size: 30pt; margin: 0 0 3mm; }
+  .sampul .pita p { font-size: 13pt; margin: 0; color: #d6f1ec; }
+  .sampul .untuk { margin: 8mm 0 5mm; font-size: 12pt; }
+  .isi-daftar { columns: 2; column-gap: 8mm; font-size: 11pt; }
+  .isi-daftar div { break-inside: avoid; margin-bottom: 1.6mm; }
+  .isi-daftar b { color: #0f766e; display: inline-block; width: 7mm; }
+  .sampul .bawah { margin-top: auto; font-size: 10pt; color: #5b6b70; border-top: 1px solid #dbe4e6; padding-top: 3mm; }
+  .isian { border-bottom: 1px dotted #7a8a8f; display: inline-block; min-width: 70mm; }
+
+  /* bagan cara kerja */
+  .bagan { display: flex; align-items: center; justify-content: center; gap: 3mm; margin: 4mm 0; page-break-inside: avoid; }
+  .bagan .node { border: 2px solid #0f766e; border-radius: 8px; padding: 2.5mm 3.5mm; text-align: center; font-size: 10pt; background: #fff; }
+  .bagan .node b { display: block; font-size: 11pt; }
+  .bagan .panah { font-size: 18pt; color: #0f766e; }
+  .bagan .wifi { border-style: dashed; background: #e8f6f3; }
+
+  /* FAQ */
+  .faq { margin-bottom: 1.8mm; page-break-inside: avoid; font-size: 10.1pt; line-height: 1.4; }
+  .faq .t { font-weight: 800; color: #0c3f3a; }
+  .faq .t::before { content: "T: "; color: #0f766e; }
+  .faq .j::before { content: "J: "; font-weight: 800; color: #b45309; }
+
+  /* kartu ringkas */
+  .ringkas { border: 3px solid #0f766e; border-radius: 10px; padding: 8mm 8mm; font-size: 13pt; line-height: 1.5; }
+  .ringkas h2 { font-size: 24pt; }
+  .ringkas h3 { font-size: 15pt; margin: 5mm 0 2mm; }
+  .ringkas h2 { border: 0; text-align: center; margin-bottom: 2mm; }
+  .ringkas .sub { text-align: center; color: #5b6b70; margin-bottom: 5mm; }
+  .ringkas .kol { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .ringkas h3 { margin-top: 0; }
+  .ringkas li { margin-bottom: 1.6mm; }
+</style>
+</head>
+<body>
+
+<!-- ================= SAMPUL ================= -->
+<section class="sampul">
+  <div class="pita">
+    <h1>Buku Panduan Guru</h1>
+    <p><b style="color:#fff">LMS IPAS</b> · Media belajar IPA SD Kelas 4–6 yang berjalan <b style="color:#fff">tanpa internet</b></p>
+  </div>
+  <p class="untuk">Buku ini untuk <b>Bapak/Ibu guru</b> yang akan memakai LMS IPAS di kelas. Tidak perlu paham komputer: ikuti langkahnya satu per satu. Simpan buku ini di dekat laptop, atau cetak halaman terakhir (<b>Kartu Ringkas</b>) dan tempel di meja guru.</p>
+  <h3 style="margin-top:2mm">Isi buku</h3>
+  <div class="isi-daftar">
+    <div><b>1</b> Kenalan dengan LMS IPAS</div>
+    <div><b>2</b> Memasang LMS (sekali saja)</div>
+    <div><b>3</b> Rutinitas setiap mengajar</div>
+    <div><b>4</b> Menyajikan materi di kelas</div>
+    <div><b>5</b> Mengendalikan dari HP guru</div>
+    <div><b>6</b> Kuis interaktif</div>
+    <div><b>7</b> Bank Soal: cetak, PDF, Word, Google Form</div>
+    <div><b>8</b> LKPD (lembar kerja siswa)</div>
+    <div><b>9</b> Mengubah materi, gambar, dan video</div>
+    <div><b>10</b> Membuka LMS di HP dan smartboard</div>
+    <div><b>11</b> Tugas Admin: akun, backup, pengaturan</div>
+    <div><b>12</b> Pencegahan: agar LMS awet dan data aman</div>
+    <div><b>13</b> Kalau ada masalah</div>
+    <div><b>14</b> Pertanyaan yang sering diajukan (FAQ)</div>
+    <div><b>15</b> Memperbarui dan menghapus LMS</div>
+    <div><b>✦</b> Kartu Ringkas (untuk ditempel)</div>
+  </div>
+  <div class="bawah">
+    <p>Nama sekolah: <span class="isian">&nbsp;</span></p>
+    <p>Kontak yang bisa dihubungi bila ada masalah (pengelola/operator): <span class="isian">&nbsp;</span></p>
+    <p style="margin-top:3mm">LMS IPAS versi 1.0 · Materi sesuai Capaian Pembelajaran IPAS Kurikulum Merdeka (Fase B dan C).</p>
+  </div>
+</section>
+
+<!-- ================= 1 ================= -->
+<section class="bab">
+  <h2>1. Kenalan dengan LMS IPAS</h2>
+  <p><b>LMS IPAS</b> adalah aplikasi belajar IPA untuk kelas 4, 5, dan 6. Isinya sudah lengkap: <b>19 materi</b> dengan gambar, animasi, percobaan, diskusi, rangkuman, dan <b>114 soal</b>. Guru tinggal memilih materi lalu menayangkannya di layar kelas.</p>
+
+  <h3>Cara kerjanya</h3>
+  <p>Satu laptop guru menjadi <b>"laptop server"</b>, yaitu tempat LMS dinyalakan. Perangkat lain membukanya lewat Wi-Fi yang sama. <b>Tidak perlu internet</b>, cukup Wi-Fi sekolah atau hotspot HP.</p>
+  <div class="bagan">
+    <div class="node"><b>💻 Laptop server</b>LMS dinyalakan di sini</div>
+    <div class="panah">⇄</div>
+    <div class="node wifi"><b>📶 Wi-Fi / hotspot</b>tidak perlu internet</div>
+    <div class="panah">⇄</div>
+    <div class="node"><b>📱 HP · 🖥️ Smartboard</b>laptop lain, HP guru &amp; siswa</div>
+  </div>
+
+  <h3>Tiga istilah yang perlu diingat</h3>
+  <table>
+    <tr><th>Istilah</th><th colspan="2">Artinya</th></tr>
+    <tr><td><b>Laptop server</b></td><td colspan="2">Laptop tempat LMS dipasang dan dinyalakan. Selama pelajaran, laptop ini harus <b>menyala</b>.</td></tr>
+    <tr><td><b>Jendela hitam</b></td><td colspan="2">Jendela yang muncul saat LMS dinyalakan. Inilah "mesin" LMS. <b>Jangan ditutup</b> selama LMS dipakai. Boleh diperkecil (minimize).</td></tr>
+    <tr><td><b>Alamat LMS</b></td><td colspan="2">Seperti alamat rumah untuk LMS, misalnya <code>http://192.168.1.10:3000</code>. Dipakai HP dan smartboard untuk membuka LMS. Lebih mudah dengan <b>memindai kode QR</b>.</td></tr>
+  </table>
+  <p>Seperti inilah jendela hitam saat LMS berjalan dengan benar:</p>
+  <div class="terminal"><span class="judul">LMS IPAS - JANGAN DITUTUP selama LMS dipakai</span>
+  LMS IPAS SD Negeri ... — server berjalan (versi 1.0.0)
+  Di laptop ini   : http://localhost:3000
+  Dari HP/perangkat: http://192.168.1.10:3000   (Wi-Fi)
+
+  Biarkan jendela ini terbuka selama LMS dipakai. Tekan Ctrl+C untuk berhenti.</div>
+
+  <h3>Apa yang butuh internet?</h3>
+  <p>Hampir semua fitur jalan <b>tanpa internet</b>. Hanya dua hal yang butuh internet: <b>Buat soal dengan AI</b>, dan mengisi <b>Google Form</b> (soal online).</p>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="bab">
+  <h2>2. Memasang LMS (sekali saja)</h2>
+  <p>Cukup dilakukan <b>satu kali</b> di laptop server, oleh guru atau operator yang ditunjuk. Waktu: sekitar 5 menit. <b>Tidak perlu internet.</b></p>
+  <div class="kotak ingat"><b>Yang disiapkan</b>Laptop Windows 10/11 (RAM minimal 4 GB) dan berkas <code>LMS-IPAS.zip</code> (dari flashdisk, Google Drive, atau WhatsApp).</div>
+  <ol class="langkah">
+    <li>Simpan <code>LMS-IPAS.zip</code> di laptop, misalnya di folder <b>Downloads</b>.</li>
+    <li><b>Klik kanan</b> berkas itu → pilih <span class="tombol">Extract All…</span> → klik <span class="tombol">Extract</span>.</li>
+    <li>Buka folder hasil ekstrak, masuk ke folder <b>LMS-IPAS</b>, lalu <b>klik dua kali</b> berkas <b>PASANG-LMS.bat</b>.</li>
+    <li>Jika muncul layar biru <b>"Windows protected your PC"</b>: klik <b>More info</b>, lalu <span class="tombol">Run anyway</span>. Ini wajar untuk aplikasi sekolah yang tidak dijual di toko aplikasi.</li>
+    <li>Muncul jendela hitam bertuliskan <b>PASANG LMS IPAS</b>. Tekan tombol <span class="kbd">Enter</span> untuk memasang ke <code>C:\LMS-IPAS</code>.</li>
+    <li>Windows bertanya <b>"Do you want to allow this app to make changes?"</b> → klik <span class="tombol">Yes</span>. Ini supaya HP dan smartboard boleh membuka LMS.</li>
+    <li>Setelah muncul tulisan <b>"LMS IPAS berhasil dipasang"</b>, tekan <span class="kbd">Enter</span> sekali lagi. LMS menyala dan browser terbuka sendiri.</li>
+  </ol>
+  <div class="kotak tips"><b>Setelah selesai</b>Muncul ikon <b>LMS IPAS</b> di Desktop. Folder hasil ekstrak boleh dihapus. Simpan <code>LMS-IPAS.zip</code> di flashdisk sebagai cadangan.</div>
+
+  <h3>Masuk pertama kali</h3>
+  <div class="dua">
+    <div>
+      <ol class="langkah">
+        <li>Di halaman masuk, ketik nama pengguna <b>admin</b> dan kata sandi <b>admin123</b>.</li>
+        <li>LMS <b>mewajibkan</b> mengganti kata sandi. Ketik sandi lama (<b>admin123</b>), lalu sandi baru dua kali (minimal 6 huruf/angka).</li>
+        <li><b>Catat sandi baru</b> di buku catatan yang disimpan di tempat aman.</li>
+      </ol>
+      <p>Akun guru bawaan juga tersedia: <b>guru</b> / <b>guru123</b> (juga wajib ganti sandi).</p>
+    </div>
+    <figure style="margin-top:0"><img src="gambar/01-masuk.jpg"><figcaption>Halaman masuk. Di kanan ada kode QR untuk HP.</figcaption></figure>
+  </div>
+
+  <h3>Dua hal yang dilakukan Admin setelah memasang</h3>
+  <ol class="langkah">
+    <li><b>Ganti nama sekolah:</b> menu <b>Admin</b> → <b>Pengaturan</b> → isi <b>Nama sekolah</b> → <span class="tombol hijau">Simpan</span>.</li>
+    <li><b>Buat akun untuk setiap guru:</b> menu <b>Admin</b> → <b>Pengguna</b> → isi nama, nama pengguna, dan sandi sementara → simpan. Berikan sandi sementara itu ke guru; guru akan diminta menggantinya.</li>
+  </ol>
+</section>
+
+<!-- ================= 3 ================= -->
+<section class="bab">
+  <h2>3. Rutinitas setiap mengajar</h2>
+  <h3>Sebelum kelas (± 5 menit)</h3>
+  <ul class="cek">
+    <li>Laptop server <b>dicas</b> atau dicolok ke listrik.</li>
+    <li><b>Klik dua kali ikon LMS IPAS</b> di Desktop → tunggu jendela hitam muncul dan browser terbuka.</li>
+    <li><b>Masuk</b> dengan akun Anda.</li>
+    <li>Jika memakai HP atau smartboard: nyalakan <b>Wi-Fi sekolah atau hotspot HP</b>, sambungkan semua perangkat ke jaringan yang sama.</li>
+    <li>Pilih <b>Kelas</b> di menu kiri → cari materi → klik <span class="tombol hijau">▶ Sajikan</span> → klik <span class="tombol">Layar penuh</span>.</li>
+  </ul>
+  <figure class="sedang"><img src="gambar/03-beranda.jpg"><figcaption>Beranda: pilih kelas, atau klik <b>Lanjutkan</b> untuk membuka materi terakhir.</figcaption></figure>
+
+  <h3>Saat mengajar</h3>
+  <ul>
+    <li>Pindah layar: tombol <span class="tombol">Berikutnya ›</span> / <span class="tombol">‹ Sebelumnya</span>, tombol panah <span class="kbd">→</span> <span class="kbd">←</span> di keyboard, atau <b>geser</b> di smartboard.</li>
+    <li>Ingin mengendalikan sambil berjalan di kelas? Pakai <b>Remote HP</b> (Bagian 5).</li>
+  </ul>
+
+  <h3>Setelah kelas</h3>
+  <ul>
+    <li>Klik <span class="tombol">← Keluar</span> untuk kembali ke daftar materi.</li>
+    <li>Jika semua pelajaran hari itu sudah selesai, <b>jendela hitam boleh ditutup</b> (klik tanda ✕ di pojoknya).</li>
+    <li><b>Seminggu sekali</b>, Admin membuat <b>backup</b> ke flashdisk (Bagian 11).</li>
+  </ul>
+</section>
+
+<!-- ================= 4 ================= -->
+<section class="bab">
+  <h2>4. Menyajikan materi di kelas</h2>
+  <figure class="kecil"><img src="gambar/04-kelas.jpg"><figcaption>Daftar materi Kelas 4. Tombol hijau <b>Sajikan</b> untuk menayangkan.</figcaption></figure>
+  <p>Setiap materi tersusun dari <b>10 layar</b> dengan urutan yang sama. Ikon di pojok kiri atas menunjukkan tahap pelajaran:</p>
+  <table class="rapat">
+    <tr><th>Layar</th><th>Isi</th><th>Yang dilakukan guru</th></tr>
+    <tr><td>🤔 Pemantik</td><td>Gambar + pertanyaan pembuka</td><td>Ajak siswa menebak. Belum perlu jawaban benar.</td></tr>
+    <tr><td>🎯 Tujuan</td><td>Hal yang akan dipelajari</td><td>Bacakan bersama.</td></tr>
+    <tr><td>🔍 Pengamatan</td><td>Percobaan sederhana</td><td>Bagi kelompok, ikuti langkah di layar.</td></tr>
+    <tr><td>💡 Penjelasan (2 layar)</td><td>Konsep + animasi interaktif</td><td>Klik tombol di animasi bersama siswa.</td></tr>
+    <tr><td>🏡 Contoh</td><td>Contoh di sekitar siswa</td><td>Minta siswa menambah contoh lain.</td></tr>
+    <tr><td>💬 Diskusi</td><td>Pertanyaan berkelompok</td><td>Buka <b>Petunjuk</b> satu per satu; <b>Buka kunci</b> di akhir.</td></tr>
+    <tr><td>📝 Rangkuman</td><td>Poin penting</td><td>Siswa mencatat.</td></tr>
+    <tr><td>💭 Refleksi</td><td>Pertanyaan renungan</td><td>Siswa menjawab di buku.</td></tr>
+    <tr><td>🏆 Penilaian</td><td>Soal latihan</td><td>Pakai <b>Tayangkan soal satu per satu</b> (kuis).</td></tr>
+  </table>
+  <div class="dua">
+    <figure><img src="gambar/05-sajikan-pemantik.jpg"><figcaption>Layar Pemantik: gambar beranimasi dan pertanyaan.</figcaption></figure>
+    <figure><img src="gambar/06-sajikan-diskusi.jpg"><figcaption>Layar Diskusi: petunjuk dibuka satu per satu.</figcaption></figure>
+  </div>
+  <div class="kotak tips"><b>Tombol di atas layar presentasi</b><span class="tombol">Daftar layar</span> untuk melompat ke layar tertentu · <span class="tombol">Layar penuh</span> (atau tombol <span class="kbd">F</span>) · <span class="tombol">📱 Remote HP</span> · gambar bisa diperbesar dengan tombol <span class="tombol">Perbesar</span>.</div>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="bab">
+  <h2>5. Mengendalikan presentasi dari HP guru</h2>
+  <p>Dengan <b>Remote HP</b>, guru bisa berjalan di kelas sambil memindah layar dari HP. HP juga menampilkan <b>kunci jawaban yang hanya terlihat oleh guru</b>.</p>
+  <div class="dua">
+    <div>
+      <ol class="langkah">
+        <li>Sambungkan HP ke <b>Wi-Fi atau hotspot yang sama</b> dengan laptop server. <b>Matikan data seluler</b> HP.</li>
+        <li>Di layar presentasi, klik <span class="tombol">📱 Remote HP</span>.</li>
+        <li>Pindai kode QR yang muncul dengan kamera HP, lalu masuk dengan akun guru.</li>
+        <li>Muncul tulisan hijau <b>"Terhubung ke layar presentasi"</b>. Tekan <b>▶</b> untuk maju dan <b>◀</b> untuk mundur.</li>
+      </ol>
+      <p>Tanpa kamera? Buka alamat yang tertulis di layar (misalnya <code>http://192.168.1.10:3000/remote</code>) lalu ketik <b>4 angka kodenya</b>.</p>
+    </div>
+    <figure class="hp" style="margin-top:0"><img src="gambar/08-remote-hp.jpg" style="width:62%"><figcaption>Tampilan remote di HP.</figcaption></figure>
+  </div>
+  <figure class="sedang"><img src="gambar/07-remote-dialog.jpg"><figcaption>Jendela Remote HP di laptop: kode QR, 4 angka kode, dan alamatnya.</figcaption></figure>
+</section>
+
+<!-- ================= 6 ================= -->
+<section class="bab">
+  <h2>6. Kuis interaktif</h2>
+  <p>Soal ditayangkan <b>satu per satu</b> dengan huruf besar, waktu hitung mundur, suara, dan skor kelas. Seperti permainan kuis.</p>
+  <ol class="langkah">
+    <li>Di layar <b>Penilaian</b> pada presentasi, klik <span class="tombol hijau">▶ Tayangkan soal satu per satu</span>. Atau dari <b>Bank Soal</b> → tombol <span class="tombol">▶ Tayangkan</span>.</li>
+    <li>Pilih <b>waktu per soal</b> (misalnya 30 detik), lalu klik <span class="tombol">Mulai kuis ▶</span>.</li>
+    <li>Siswa atau guru <b>mengetuk jawaban</b> di layar. Langsung tampil benar atau salah.</li>
+    <li>Soal isian dan uraian: siswa menulis di buku, lalu guru klik <b>Tampilkan jawaban</b>.</li>
+  </ol>
+  <div class="dua">
+    <figure><img src="gambar/10-kuis-mulai.jpg"><figcaption>Sebelum mulai: pilih waktu per soal.</figcaption></figure>
+    <figure><img src="gambar/11-kuis-jawab.jpg"><figcaption>Setelah menjawab: langsung terlihat benar/salah.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="bab">
+  <h2>7. Bank Soal: cetak, PDF, Word, Google Form</h2>
+  <figure class="sedang"><img src="gambar/09-bank-soal.jpg"><figcaption>Bank Soal: klik kartu <b>kelas</b>, lalu kartu <b>materi</b> untuk menyaring soal.</figcaption></figure>
+  <ol class="langkah">
+    <li>Klik kartu <b>Kelas</b> (misalnya Kelas 5), lalu kartu <b>materi</b> yang diinginkan.</li>
+    <li><b>Centang</b> soal yang akan dipakai, atau centang <b>Pilih semua</b>.</li>
+    <li>Pilih tombol di bilah atas:
+      <ul>
+        <li><span class="tombol">🖨 Cetak</span>: langsung ke printer.</li>
+        <li><span class="tombol">⇩ Unduh PDF</span>: menyimpan berkas PDF (untuk dibagikan lewat WhatsApp atau dicetak nanti).</li>
+        <li><span class="tombol">Google Form</span>: membuat kuis online (butuh internet saat membuatnya).</li>
+        <li><span class="tombol">▶ Tayangkan</span>: kuis interaktif di layar kelas.</li>
+      </ul>
+    </li>
+    <li>Pilih <b>dengan atau tanpa kunci jawaban</b>, lalu klik tombolnya. Ada juga <b>Unduh Word</b> bila soal ingin diubah dulu di Microsoft Word.</li>
+  </ol>
+  <figure class="kecil"><img src="gambar/12-cetak-soal.jpg"><figcaption>Pilihan cetak: judul, kunci jawaban, lalu Cetak / Unduh PDF / Unduh Word.</figcaption></figure>
+  <div class="kotak ingat"><b>Soal "Draf"</b>Soal yang baru dibuat (terutama dari AI) berstatus <b>Draf</b>. Periksa dulu isi dan kuncinya, lalu klik <span class="tombol">✓ Setujui</span>. Hanya soal yang disetujui yang muncul di layar Penilaian.</div>
+</section>
+
+<!-- ================= 8 & 9 ================= -->
+<section class="bab">
+  <h2>8. LKPD (lembar kerja siswa)</h2>
+  <p>LKPD dibuat <b>otomatis</b> dari kegiatan pada materi: prediksi, langkah percobaan, tabel pengamatan, pertanyaan diskusi, dan refleksi.</p>
+  <ol class="langkah">
+    <li>Buka <b>Kelas</b> → pada materi yang diinginkan klik <span class="tombol">LKPD</span>.</li>
+    <li>Pilih <b>Untuk siswa</b> (baris jawaban kosong) atau <b>Untuk guru</b> (berisi kunci).</li>
+    <li>Klik <span class="tombol hijau">Cetak</span>, <span class="tombol">⇩ Unduh PDF</span>, atau <span class="tombol">Unduh Word</span>.</li>
+  </ol>
+  <figure class="kecil"><img src="gambar/13-lkpd.jpg"><figcaption>Halaman Cetak LKPD.</figcaption></figure>
+
+  <h2 style="margin-top:8mm">9. Mengubah materi, gambar, dan video</h2>
+  <p>Semua materi sudah terisi. Guru <b>boleh</b> menyesuaikannya dengan kondisi kelas, misalnya mengganti gambar dengan foto lingkungan sekolah sendiri.</p>
+  <ol class="langkah">
+    <li>Buka <b>Kelas</b> → klik <span class="tombol">Edit</span> pada materi.</li>
+    <li>Di daftar layar, klik <span class="tombol">Edit</span> pada layar yang ingin diubah.</li>
+    <li>Ubah teks. Untuk gambar/video: pilih dari daftar <b>Media utama</b>, atau buka <b>Unggah media baru untuk layar ini</b>.</li>
+    <li>Klik <span class="tombol hijau">Simpan</span> atau <span class="tombol">Simpan &amp; pratinjau</span> untuk langsung melihat hasilnya.</li>
+  </ol>
+  <div class="kotak tips"><b>Tips gambar dan video</b>Gunakan foto JPG/PNG. Video sebaiknya <b>MP4, maksimal 720p, dan pendek (di bawah 5 menit)</b> agar lancar di HP. Hindari menempel video YouTube karena butuh internet.</div>
+</section>
+
+<!-- ================= 10 ================= -->
+<section class="bab">
+  <h2>10. Membuka LMS di HP dan smartboard</h2>
+  <ol class="langkah">
+    <li>Pastikan LMS sudah menyala di laptop server (jendela hitam terbuka).</li>
+    <li>Sambungkan HP/smartboard ke <b>Wi-Fi atau hotspot yang SAMA</b> dengan laptop server.</li>
+    <li>Di HP: <b>matikan data seluler</b>. Bila muncul "Wi-Fi tidak ada internet, tetap tersambung?", pilih <b>Ya / Tetap tersambung</b>.</li>
+    <li>Di laptop server, buka <b>Beranda</b> → klik <b>Buka di HP atau perangkat lain</b> → <b>pindai kode QR</b> dengan kamera HP. Atau ketik alamatnya di browser.</li>
+  </ol>
+  <figure class="kecil"><img src="gambar/15-qr-hp.jpg"><figcaption>Kode QR dan alamat LMS di Beranda.</figcaption></figure>
+  <div class="kotak awas"><b>Penting tentang alamat</b>Alamat LMS <b>bisa berubah</b> setiap laptop pindah Wi-Fi atau tersambung ulang. Sebelum kelas, selalu lihat alamat terbaru di Beranda. Jangan memakai alamat lama yang tersimpan di HP.</div>
+  <div class="kotak tips"><b>Wi-Fi mana yang cocok?</b>Paling baik: <b>router Wi-Fi sekolah sendiri</b> atau <b>hotspot HP</b>, tanpa pulsa/kuota pun tidak masalah. Wi-Fi kantor, kampus, atau Wi-Fi umum sering <b>melarang perangkat saling terhubung</b>, sehingga HP tidak bisa membuka LMS.</div>
+</section>
+
+<!-- ================= 11 ================= -->
+<section class="bab">
+  <h2>11. Tugas Admin: akun, backup, pengaturan</h2>
+  <h3>Akun guru</h3>
+  <p>Menu <b>Admin</b> → <b>Pengguna</b>. Di sini Admin bisa <b>membuat akun guru</b>, <b>mereset kata sandi</b> guru yang lupa, dan <b>menonaktifkan</b> akun guru yang sudah pindah.</p>
+  <figure class="sedang"><img src="gambar/16-pengguna.jpg"><figcaption>Halaman Pengguna.</figcaption></figure>
+  <h3>Backup (cadangan data): seminggu sekali</h3>
+  <p>Backup menyimpan <b>semua data</b>: akun, materi yang diubah, soal, gambar, dan video. Jika laptop rusak atau hilang, data bisa dikembalikan dari backup.</p>
+  <ol class="langkah">
+    <li>Menu <b>Admin</b> → <b>Backup &amp; Restore</b> → klik <span class="tombol hijau">Buat &amp; unduh backup</span>.</li>
+    <li>Berkas <code>.zip</code> akan terunduh. <b>Salin ke flashdisk</b> atau Google Drive, jangan hanya disimpan di laptop yang sama.</li>
+    <li>Untuk <b>mengembalikan</b> data: di halaman yang sama pilih berkas backup → klik <b>Restore</b>. (Data saat itu otomatis diamankan dulu.)</li>
+  </ol>
+  <figure class="kecil"><img src="gambar/17-backup.jpg"><figcaption>Halaman Backup &amp; Restore.</figcaption></figure>
+  <h3>Pengaturan</h3>
+  <p>Menu <b>Admin</b> → <b>Pengaturan</b>: nama sekolah, kunci Buat Soal AI (Gemini), dan batas pemakaian AI per hari.</p>
+</section>
+
+<!-- ================= 12 ================= -->
+<section class="bab">
+  <h2>12. Pencegahan: agar LMS awet dan data aman</h2>
+  <div class="dua">
+    <div class="kotak ingat" style="margin-top:0"><b>✓ Lakukan</b>
+      <ul class="ya" style="padding-left:6mm;margin:0">
+        <li>Nyalakan LMS <b>5 menit sebelum</b> kelas dimulai.</li>
+        <li>Colok laptop server ke <b>listrik</b> selama mengajar.</li>
+        <li>Buat <b>backup seminggu sekali</b> dan simpan di flashdisk.</li>
+        <li><b>Ganti kata sandi</b> bawaan dan simpan di tempat aman.</li>
+        <li>Pakai <b>router sekolah atau hotspot HP</b> untuk HP/smartboard.</li>
+        <li><b>Matikan data seluler</b> HP yang dipakai membuka LMS.</li>
+        <li>Lihat <b>alamat terbaru</b> di Beranda setiap ganti Wi-Fi.</li>
+        <li>Periksa dan <b>setujui</b> soal Draf sebelum dipakai.</li>
+        <li>Pakai video <b>pendek, MP4, 720p</b>.</li>
+        <li>Klik ikon LMS <b>satu kali saja</b>, lalu tunggu.</li>
+      </ul>
+    </div>
+    <div class="kotak awas" style="margin-top:0"><b>✗ Jangan</b>
+      <ul class="tidak" style="padding-left:6mm;margin:0">
+        <li><b>Menutup jendela hitam</b> saat pelajaran berlangsung.</li>
+        <li>Memindahkan atau menghapus folder <code>C:\LMS-IPAS</code>.</li>
+        <li>Memasang LMS di folder <b>OneDrive, Desktop, atau Documents</b>.</li>
+        <li>Mematikan laptop paksa (tekan lama tombol power) saat LMS menyala.</li>
+        <li>Membiarkan laptop <b>tidur (sleep)</b> di tengah pelajaran.</li>
+        <li>Memberi tahu kata sandi Admin ke siswa.</li>
+        <li>Menghapus folder <code>data</code> di dalam <code>C:\LMS-IPAS</code>.</li>
+        <li>Memakai soal Draf dari AI tanpa diperiksa.</li>
+        <li>Mengunggah video sangat besar (lebih dari 150 MB).</li>
+        <li>Menyalakan LMS di dua laptop sekaligus untuk satu kelas.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="kotak tips"><b>Agar laptop tidak tidur di tengah pelajaran</b>Windows: <b>Settings → System → Power &amp; battery → Screen and sleep</b> → saat dicolok listrik, ubah "sleep" menjadi <b>Never</b> (atau 1 jam).</div>
+</section>
+
+<!-- ================= 13 ================= -->
+<section class="bab">
+  <h2>13. Kalau ada masalah</h2>
+  <div class="kotak ingat"><b>Langkah umum, coba berurutan</b>
+    <ol style="margin:0">
+      <li><b>Muat ulang</b> halaman: tekan <span class="kbd">Ctrl</span> + <span class="kbd">F5</span> (atau tarik layar ke bawah di HP).</li>
+      <li><b>Tutup jendela hitam</b>, lalu klik dua kali ikon <b>LMS IPAS</b> lagi.</li>
+      <li><b>Mulai ulang (restart)</b> laptop server, lalu nyalakan LMS lagi.</li>
+      <li>Masih belum bisa? <b>Foto layarnya</b> (termasuk jendela hitam), lalu kirim ke kontak pengelola di halaman sampul.</li>
+    </ol>
+  </div>
+  <table>
+    <tr><th>Yang terlihat</th><th>Artinya</th><th>Yang harus dilakukan</th></tr>
+    <tr class="grup"><td colspan="3">Menyalakan LMS</td></tr>
+    <tr><td>Muncul layar biru <b>"Windows protected your PC"</b></td><td>Windows berhati-hati dengan aplikasi baru.</td><td>Klik <b>More info</b> → <b>Run anyway</b>. Hanya perlu sekali.</td></tr>
+    <tr><td><b>"An Application Control policy has blocked this file"</b> atau "Smart App Control blocked"</td><td>Windows 11 memblokir berkas <b>.exe</b>.</td><td>Pakai cara pasang dari <b>LMS-IPAS.zip</b> dan <b>PASANG-LMS.bat</b> (Bagian 2). Cara ini tidak diblokir.</td></tr>
+    <tr><td>Jendela hitam: <b>"LMS IPAS SUDAH BERJALAN di jendela lain"</b></td><td>LMS sudah menyala sebelumnya.</td><td>Tidak apa-apa. Pakai browser yang terbuka. Jendela baru menutup sendiri.</td></tr>
+    <tr><td>Jendela hitam: <b>"Port 3000 sedang dipakai aplikasi lain"</b></td><td>Ada aplikasi lain yang memakai "pintu" LMS.</td><td>Tutup aplikasi lain yang sedang berjalan, atau <b>restart laptop</b>, lalu nyalakan LMS lagi.</td></tr>
+    <tr><td>Jendela hitam menampilkan tulisan <b>Error</b> lalu <b>"Server berhenti"</b></td><td>LMS gagal menyala.</td><td><b>Foto</b> seluruh isi jendela hitam, kirim ke pengelola. Sementara itu coba <b>restart</b> laptop lalu nyalakan LMS lagi.</td></tr>
+    <tr><td>Di laptop server: <b>"This site can't be reached"</b> / <b>localhost refused to connect</b></td><td>LMS belum menyala, atau jendela hitam tertutup.</td><td>Klik dua kali ikon <b>LMS IPAS</b>, tunggu 5 detik, lalu muat ulang browser.</td></tr>
+    <tr><td>Ikon <b>LMS IPAS</b> di Desktop hilang</td><td>Pintasan terhapus. LMS masih ada.</td><td>Klik <b>Start</b>, ketik <b>LMS IPAS</b>, lalu buka. Atau buka <code>C:\LMS-IPAS\mulai-server.bat</code>.</td></tr>
+
+    <tr class="grup"><td colspan="3">Membuka di HP, smartboard, atau laptop lain</td></tr>
+    <tr><td><b>"This site can't be reached"</b> / <b>"took too long to respond"</b></td><td>Perangkat tidak menemukan laptop server.</td><td>1) Pastikan <b>Wi-Fi sama</b> dan data seluler HP mati. 2) Pakai <b>alamat terbaru</b> dari Beranda (alamat bisa berubah). 3) Periksa <b>angka alamat</b> (sering salah ketik). 4) Di laptop server jalankan <code>C:\LMS-IPAS\izinkan-akses-jaringan.bat</code> → <b>Yes</b>.</td></tr>
+    <tr><td>Langkah di atas sudah dicoba, tetap tidak bisa</td><td>Wi-Fi itu melarang perangkat saling terhubung (biasa di Wi-Fi kantor/kampus).</td><td>Nyalakan <b>hotspot HP</b> (tidak perlu kuota), sambungkan laptop server dan perangkat lain ke hotspot itu.</td></tr>
+    <tr><td>"Connection was interrupted" / <b>"network change was detected"</b></td><td>Laptop baru saja berganti Wi-Fi.</td><td>Tunggu beberapa detik, lalu buka alamat <b>terbaru</b> dari Beranda.</td></tr>
+    <tr><td>Remote HP: <b>layar putih/hitam</b> atau terus memuat</td><td>HP tidak terhubung ke laptop server.</td><td>Sama seperti di atas: Wi-Fi sama, data seluler mati. Tutup jendela Remote di laptop lalu klik <b>📱 Remote HP</b> lagi untuk kode baru.</td></tr>
+    <tr><td>Remote HP: <b>"Kode tidak ditemukan"</b></td><td>Kode lama (LMS sempat dinyalakan ulang).</td><td>Di layar presentasi klik <b>📱 Remote HP</b> lagi, pindai QR yang baru.</td></tr>
+    <tr><td>Remote HP: <b>"Layar presentasi tidak terhubung"</b></td><td>Halaman presentasi di laptop sudah ditutup.</td><td>Buka lagi materi dengan <b>Sajikan</b> di laptop.</td></tr>
+
+    <tr class="grup"><td colspan="3">Saat mengajar</td></tr>
+    <tr><td>Tampilan <b>berantakan</b> atau tombol tidak bisa diklik</td><td>Browser memakai tampilan lama.</td><td>Tekan <span class="kbd">Ctrl</span> + <span class="kbd">F5</span>.</td></tr>
+    <tr><td>Video <b>tersendat</b> di HP</td><td>Video terlalu besar atau Wi-Fi lemah.</td><td>Pakai video 720p atau 480p, dekatkan router ke kelas, atau tayangkan dari laptop server saja.</td></tr>
+    <tr><td>PDF <b>tidak tampil</b> di HP</td><td>Beberapa HP tidak bisa menampilkan PDF di halaman.</td><td>Klik tombol <b>Buka</b> / <b>Unduh</b> di bawah PDF.</td></tr>
+    <tr><td><b>"PPT ini belum bisa ditayangkan langsung"</b></td><td>PowerPoint perlu diubah ke PDF.</td><td>Di PowerPoint: <b>File → Save As → PDF</b>, lalu unggah PDF-nya.</td></tr>
+    <tr><td>Suara kuis <b>tidak terdengar</b></td><td>Suara dimatikan.</td><td>Klik tombol 🔊 di pojok kanan atas kuis, dan periksa volume laptop.</td></tr>
+
+    <tr class="grup"><td colspan="3">Soal, cetak, dan AI</td></tr>
+    <tr><td><b>"PDF gagal dibuat"</b> atau "butuh Microsoft Edge"</td><td>Laptop tidak punya browser Edge/Chrome.</td><td>Pakai <b>Cetak</b>, lalu pilih printer <b>"Save as PDF / Microsoft Print to PDF"</b>.</td></tr>
+    <tr><td>Soal tidak muncul di layar <b>Penilaian</b></td><td>Soal masih berstatus <b>Draf</b>.</td><td>Bank Soal → periksa soal → klik <b>✓ Setujui</b>.</td></tr>
+    <tr><td>Buat soal AI: <b>"Butuh internet"</b></td><td>Laptop server tidak terhubung internet.</td><td>Sambungkan laptop server ke Wi-Fi yang ada internetnya atau hotspot HP, klik <b>Periksa ulang</b>. Atau tulis soal manual.</td></tr>
+    <tr><td>Buat soal AI: <b>"belum diaktifkan"</b> / "kunci API bermasalah"</td><td>Kunci AI belum diisi atau salah.</td><td>Admin → <b>Pengaturan</b> → isi kunci API Gemini (butuh internet).</td></tr>
+    <tr><td>Buat soal AI: <b>"Server AI Google sedang sangat sibuk"</b></td><td>Layanan Google penuh. Bukan masalah laptop.</td><td>Tunggu 1–5 menit, lalu klik <b>Buat soal</b> lagi.</td></tr>
+
+    <tr class="grup"><td colspan="3">Akun dan data</td></tr>
+    <tr><td>Guru <b>lupa kata sandi</b></td><td>-</td><td>Admin → <b>Pengguna</b> → isi sandi sementara pada guru itu → <b>Reset</b>.</td></tr>
+    <tr><td><b>Admin lupa</b> kata sandi</td><td>-</td><td>Di laptop server, buka folder <code>C:\LMS-IPAS</code>, klik dua kali <b>reset-sandi-admin.bat</b>, ketik <b>Y</b> lalu Enter. Masuk dengan <b>admin / admin123</b>, lalu ganti sandinya.</td></tr>
+    <tr><td><b>"Nama pengguna atau kata sandi salah"</b></td><td>Salah ketik, atau tombol Caps Lock menyala.</td><td>Periksa huruf besar/kecil, matikan Caps Lock, coba lagi.</td></tr>
+    <tr><td>Materi atau soal <b>hilang</b> / laptop rusak</td><td>Data terhapus atau laptop bermasalah.</td><td>Pasang LMS di laptop (pengganti), lalu Admin → <b>Backup &amp; Restore</b> → pilih berkas backup terakhir → <b>Restore</b>.</td></tr>
+  </table>
+</section>
+
+<!-- ================= 14 ================= -->
+<section class="bab">
+  <h2>14. Pertanyaan yang sering diajukan (FAQ)</h2>
+  <div class="faq"><div class="t">Apakah LMS ini butuh internet atau kuota?</div><div class="j">Tidak. Cukup Wi-Fi atau hotspot tanpa kuota agar HP/smartboard bisa terhubung ke laptop server. Internet hanya untuk Buat Soal AI dan Google Form.</div></div>
+  <div class="faq"><div class="t">Apakah siswa perlu akun?</div><div class="j">Tidak. Akun hanya untuk guru dan admin. Siswa melihat materi dan mengerjakan kuis dari <b>layar kelas</b> (proyektor/smartboard) yang dikendalikan guru.</div></div>
+  <div class="faq"><div class="t">Bisakah beberapa guru memakai LMS bersamaan?</div><div class="j">Bisa. Setiap guru masuk dengan akunnya sendiri dari laptop/HP masing-masing, dan semuanya tersambung ke laptop server yang sama. Semakin banyak perangkat dan video, semakin penting router/hotspot yang kuat.</div></div>
+  <div class="faq"><div class="t">Apakah laptop server harus selalu menyala?</div><div class="j">Hanya selama LMS dipakai. Setelah pelajaran selesai, jendela hitam boleh ditutup dan laptop boleh dimatikan. Data tetap tersimpan.</div></div>
+  <div class="faq"><div class="t">Kalau jendela hitam tidak sengaja tertutup?</div><div class="j">LMS berhenti sebentar. Klik dua kali ikon <b>LMS IPAS</b> lagi. Data tidak hilang.</div></div>
+  <div class="faq"><div class="t">Kalau listrik padam di tengah pelajaran?</div><div class="j">Nyalakan laptop lagi, lalu klik ikon LMS IPAS. Data yang sudah disimpan tetap ada. Di Beranda, klik <b>Lanjutkan</b> untuk kembali ke materi terakhir.</div></div>
+  <div class="faq"><div class="t">Bolehkah materi bawaan diubah? Bisakah dikembalikan?</div><div class="j">Boleh diubah lewat tombol Edit. Materi bawaan tidak bisa dikembalikan otomatis setelah diubah, jadi buat <b>backup</b> dulu sebelum mengubah banyak hal.</div></div>
+  <div class="faq"><div class="t">Bisakah menambah materi baru?</div><div class="j">Bisa. Buka Kelas → <b>Atur bab &amp; subbab</b> → tambah bab/subbab → klik Edit untuk mengisi layar-layarnya.</div></div>
+  <div class="faq"><div class="t">Kenapa materi Kelas 4 juga ada di Kelas 3?</div><div class="j">Kurikulum Merdeka menggabungkan kelas 3–4 dalam Fase B. Sekolah menentukan topik per kelas lewat ATP. Atur penandanya di Kelas 4 → <b>Atur bab &amp; subbab</b>.</div></div>
+  <div class="faq"><div class="t">Soal dari AI, apakah langsung bisa dipakai?</div><div class="j">Belum. Soal AI masuk sebagai <b>Draf</b> dan wajib diperiksa guru (isi, kunci, bahasa) sebelum disetujui.</div></div>
+  <div class="faq"><div class="t">Bagaimana membagikan soal ke siswa untuk dikerjakan di rumah?</div><div class="j">Bank Soal → centang soal → <b>Unduh PDF</b>, lalu kirim lewat WhatsApp. Atau buat <b>Google Form</b> bila siswa punya internet.</div></div>
+  <div class="faq"><div class="t">Apakah LMS bisa dipasang di beberapa laptop?</div><div class="j">Bisa, tetapi datanya terpisah (tidak tersambung). Sebaiknya satu kelas memakai satu laptop server. Untuk memindah data ke laptop lain, gunakan Backup lalu Restore.</div></div>
+  <div class="faq"><div class="t">Alamat LMS di HP selalu berubah, kenapa?</div><div class="j">Router/hotspot memberi alamat baru saat laptop tersambung ulang. Selalu pindai QR terbaru di Beranda. Bila sekolah punya operator jaringan, minta alamat laptop server dibuat tetap.</div></div>
+  <div class="faq"><div class="t">Apakah data sekolah aman?</div><div class="j">Data hanya tersimpan di laptop server, tidak dikirim ke internet. Jaga kata sandi Admin, dan simpan backup di flashdisk.</div></div>
+  <div class="faq"><div class="t">Laptop server mana yang sebaiknya dipakai?</div><div class="j">Laptop guru yang paling sering dibawa ke kelas, Windows 10/11, RAM minimal 4 GB, baterai sehat.</div></div>
+</section>
+
+<!-- ================= 15 ================= -->
+<section class="bab">
+  <h2>15. Memperbarui dan menghapus LMS</h2>
+  <h3>Memperbarui ke versi baru</h3>
+  <ol class="langkah">
+    <li>Tutup jendela hitam LMS.</li>
+    <li>Ekstrak <code>LMS-IPAS.zip</code> versi baru, lalu klik dua kali <b>PASANG-LMS.bat</b>.</li>
+    <li>Tekan <span class="kbd">Enter</span> (folder tetap <code>C:\LMS-IPAS</code>). <b>Akun, materi, soal, dan media tetap aman.</b></li>
+  </ol>
+  <h3>Menghapus (uninstall)</h3>
+  <ol class="langkah">
+    <li>Buka <b>Settings → Apps → Installed apps</b>, cari <b>LMS IPAS</b> → klik <b>⋯</b> → <b>Uninstall</b>. (Atau Start → <b>Hapus LMS IPAS</b>.)</li>
+    <li>Di jendela hitam, ketik <b>Y</b> lalu Enter.</li>
+    <li>Ditanya soal data sekolah: tekan <b>Enter saja</b> untuk <b>menyimpan</b> data (bisa dipakai lagi bila dipasang ulang), atau ketik <b>HAPUS DATA</b> untuk menghapus semuanya.</li>
+  </ol>
+  <div class="kotak awas"><b>Sebelum menghapus</b>Buat <b>backup</b> dulu (Admin → Backup &amp; Restore) dan simpan di flashdisk, apalagi bila memilih HAPUS DATA.</div>
+
+  <h3>Catatan akun (isi dengan pensil)</h3>
+  <table>
+    <tr><th>Nama guru</th><th>Nama pengguna</th><th>Kelas yang diajar</th></tr>
+    <tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr>
+  </table>
+  <p style="font-size:9.5pt;color:#5b6b70">Jangan menulis kata sandi di buku yang mudah dilihat siswa.</p>
+</section>
+
+<!-- ================= KARTU RINGKAS ================= -->
+<section class="bab">
+  <div class="ringkas">
+    <h2>Kartu Ringkas LMS IPAS</h2>
+    <p class="sub">Tempel di dekat laptop server</p>
+    <div class="kol">
+      <div>
+        <h3>▶ Menyalakan</h3>
+        <ol>
+          <li>Colok laptop ke listrik.</li>
+          <li>Klik dua kali ikon <b>LMS IPAS</b> di Desktop.</li>
+          <li>Tunggu browser terbuka → <b>masuk</b>.</li>
+          <li><b>Jendela hitam JANGAN DITUTUP.</b></li>
+        </ol>
+        <h3>📚 Mengajar</h3>
+        <ol>
+          <li>Pilih <b>Kelas</b> → materi → <b>▶ Sajikan</b>.</li>
+          <li>Klik <b>Layar penuh</b> (tombol F).</li>
+          <li>Pindah layar: <b>→ / ←</b> atau geser.</li>
+          <li>Remote: <b>📱 Remote HP</b> → pindai QR.</li>
+          <li>Kuis: layar Penilaian → <b>Tayangkan</b>.</li>
+        </ol>
+        <h3>📱 HP / smartboard</h3>
+        <ol>
+          <li>Wi-Fi/hotspot <b>yang sama</b>.</li>
+          <li>Data seluler HP <b>mati</b>.</li>
+          <li>Beranda → <b>Buka di HP</b> → pindai QR terbaru.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>🛠 Kalau ada masalah</h3>
+        <ol>
+          <li>Tekan <b>Ctrl + F5</b>.</li>
+          <li>Tutup jendela hitam → klik ikon LMS lagi.</li>
+          <li><b>Restart</b> laptop.</li>
+          <li>HP tidak bisa membuka → cek Wi-Fi sama, data seluler mati, alamat terbaru. Masih gagal → pakai <b>hotspot HP</b>.</li>
+          <li>Admin lupa sandi → <code>C:\LMS-IPAS\reset-sandi-admin.bat</code>.</li>
+          <li>Masih gagal → <b>foto layar</b>, kirim ke pengelola.</li>
+        </ol>
+        <h3>💾 Seminggu sekali</h3>
+        <p>Admin → <b>Backup &amp; Restore</b> → <b>Buat backup</b> → salin ke flashdisk.</p>
+        <h3>📞 Kontak pengelola</h3>
+        <p><span class="isian" style="min-width:60mm">&nbsp;</span></p>
+        <p style="margin-top:4mm"><b>Akun awal:</b> admin / admin123 · guru / guru123<br><small>(wajib diganti saat pertama masuk)</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -63,7 +63,7 @@ app.use((err, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
   const addrs = net.lanAddresses();
-  console.log('\n  LMS IPAS SDN Cipinang II — server berjalan (versi ' + VERSI + ')');
+  console.log('\n  LMS IPAS ' + db.setting('nama_sekolah') + ' — server berjalan (versi ' + VERSI + ')');
   console.log('  Di laptop ini   : http://localhost:' + PORT);
   for (const a of addrs) console.log(`  Dari HP/perangkat: http://${a.address}:${PORT}   (${a.name})`);
   console.log('\n  Biarkan jendela ini terbuka selama LMS dipakai. Tekan Ctrl+C untuk berhenti.\n');

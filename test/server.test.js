@@ -170,6 +170,13 @@ test('unduh PDF soal dan LKPD (terpisah dari cetak)', { skip: !require('../src/p
   assert.match(opsi, /value="pdf"/);
 });
 
+test('Buku Panduan Guru (PDF) tersedia dan ditautkan dari Panduan Singkat', async () => {
+  const r = await k.req('/static/panduan-guru.pdf');
+  assert.equal(r.status, 200);
+  assert.equal(Buffer.from(await r.arrayBuffer()).subarray(0, 5).toString(), '%PDF-');
+  assert.match(await (await k.req('/panduan')).text(), /panduan-guru\.pdf/);
+});
+
 test('unggah media gambar', async () => {
   const fd = new FormData();
   fd.append('berkas', new Blob(['<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>'], { type: 'image/svg+xml' }), 'uji.svg');
