@@ -19,8 +19,8 @@ foreach ($f in 'server.js', 'package.json', 'mulai-server.bat', 'izinkan-akses-j
   Copy-Item (Join-Path $root $f) $paket
 }
 foreach ($d in 'src', 'public', 'seed') { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $paket $d) }
-# Buku panduan guru juga diletakkan langsung di folder paket agar mudah ditemukan
-if (Test-Path (Join-Path $root 'public\panduan-guru.pdf')) { Copy-Item (Join-Path $root 'public\panduan-guru.pdf') (Join-Path $paket 'Buku Panduan Guru LMS IPAS.pdf') }
+# Buku panduan guru TIDAK ikut di paket: dikirim terpisah (dist\Buku Panduan Guru LMS IPAS.docx).
+# Versi PDF-nya tetap ada di dalam LMS (public\panduan-guru.pdf, menu Panduan Singkat).
 # node_modules tanpa alat uji (playwright-core)
 Copy-Item -Recurse (Join-Path $root 'node_modules') (Join-Path $paket 'node_modules')
 foreach ($x in 'node_modules\playwright-core', 'node_modules\.bin\playwright*') {
@@ -124,7 +124,8 @@ MENGHAPUS (UNINSTALL)
 
 INTERNET hanya dibutuhkan untuk fitur "Buat soal dengan AI".
 Panduan bergambar untuk guru (cara pakai, pencegahan, kalau ada masalah, FAQ):
-  Buku Panduan Guru LMS IPAS.pdf  (juga ada di LMS: menu Panduan Singkat)
+  "Buku Panduan Guru LMS IPAS" yang dikirim bersama berkas ini,
+  atau buka di LMS: menu Panduan Singkat > Buku Panduan Guru (PDF).
 "@ | Set-Content -Encoding UTF8 (Join-Path $paket 'BACA-DULU.txt')
 
 Write-Host '4/5 Memadatkan paket (zip)...'
@@ -154,4 +155,6 @@ Write-Host ''
 Write-Host "Selesai:"
 Write-Host "  $zipBagi ($mbZip MB)  <- kirim yang ini (paling aman)"
 Write-Host "  $exe ($mb MB)"
+$buku = Join-Path $dist 'Buku Panduan Guru LMS IPAS.docx'
+if (Test-Path $buku) { Write-Host "  $buku  <- buku panduan (kirim terpisah)" }
 Write-Host 'Kirim lewat Google Drive / WhatsApp dokumen / flashdisk.'

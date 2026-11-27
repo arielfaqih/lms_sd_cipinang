@@ -174,17 +174,25 @@
 <section class="bab">
   <h2>2. Memasang LMS (sekali saja)</h2>
   <p>Cukup dilakukan <b>satu kali</b> di laptop server, oleh guru atau operator yang ditunjuk. Waktu: sekitar 5 menit. <b>Tidak perlu internet.</b></p>
-  <div class="kotak ingat"><b>Yang disiapkan</b>Laptop Windows 10/11 (RAM minimal 4 GB) dan berkas <code>LMS-IPAS.zip</code> (dari flashdisk, Google Drive, atau WhatsApp).</div>
+  <div class="kotak ingat"><b>Yang disiapkan</b>Laptop Windows 10/11 (RAM minimal 4 GB) dan berkas dari pengelola: <code>LMS-IPAS-Setup.exe</code> dan <code>LMS-IPAS.zip</code> (lewat flashdisk, Google Drive, atau WhatsApp). Cukup pakai <b>salah satu</b>: coba Cara A dulu; bila diblokir Windows, pakai Cara B.</div>
+  <h3>Cara A: pakai LMS-IPAS-Setup.exe</h3>
   <ol class="langkah">
-    <li>Simpan <code>LMS-IPAS.zip</code> di laptop, misalnya di folder <b>Downloads</b>.</li>
-    <li><b>Klik kanan</b> berkas itu → pilih <span class="tombol">Extract All…</span> → klik <span class="tombol">Extract</span>.</li>
-    <li>Buka folder hasil ekstrak, masuk ke folder <b>LMS-IPAS</b>, lalu <b>klik dua kali</b> berkas <b>PASANG-LMS.bat</b>.</li>
+    <li>Simpan <code>LMS-IPAS-Setup.exe</code> di laptop (misalnya di <b>Downloads</b>), lalu <b>klik dua kali</b>.</li>
     <li>Jika muncul layar biru <b>"Windows protected your PC"</b>: klik <b>More info</b>, lalu <span class="tombol">Run anyway</span>. Ini wajar untuk aplikasi sekolah yang tidak dijual di toko aplikasi.</li>
-    <li>Muncul jendela hitam bertuliskan <b>PASANG LMS IPAS</b>. Tekan tombol <span class="kbd">Enter</span> untuk memasang ke <code>C:\LMS-IPAS</code>.</li>
+    <li>Jika muncul <b>"Smart App Control blocked"</b> atau <b>"An Application Control policy has blocked this file"</b>, berarti Windows menolak berkas .exe. Tidak apa-apa: <b>pakai Cara B</b> di bawah.</li>
+    <li>Muncul jendela <b>Pasang LMS IPAS</b>. Biarkan lokasi <code>C:\LMS-IPAS</code> dan ketiga centang apa adanya, lalu klik <span class="tombol hijau">Pasang</span>.</li>
     <li>Windows bertanya <b>"Do you want to allow this app to make changes?"</b> → klik <span class="tombol">Yes</span>. Ini supaya HP dan smartboard boleh membuka LMS.</li>
-    <li>Setelah muncul tulisan <b>"LMS IPAS berhasil dipasang"</b>, tekan <span class="kbd">Enter</span> sekali lagi. LMS menyala dan browser terbuka sendiri.</li>
+    <li>Muncul <b>"LMS IPAS berhasil dipasang"</b>. LMS menyala dan browser terbuka sendiri. Klik <span class="tombol">Selesai</span>.</li>
   </ol>
-  <div class="kotak tips"><b>Setelah selesai</b>Muncul ikon <b>LMS IPAS</b> di Desktop. Folder hasil ekstrak boleh dihapus. Simpan <code>LMS-IPAS.zip</code> di flashdisk sebagai cadangan.</div>
+  <h3>Cara B: pakai LMS-IPAS.zip (bila Cara A diblokir)</h3>
+  <ol class="langkah">
+    <li><b>Klik kanan</b> <code>LMS-IPAS.zip</code> → pilih <span class="tombol">Extract All…</span> → klik <span class="tombol">Extract</span>.</li>
+    <li>Buka folder hasil ekstrak, masuk ke folder <b>LMS-IPAS</b>, lalu <b>klik dua kali</b> berkas <b>PASANG-LMS.bat</b>. (Jika muncul layar biru, klik <b>More info</b> → <span class="tombol">Run anyway</span>.)</li>
+    <li>Muncul jendela hitam bertuliskan <b>PASANG LMS IPAS</b>. Tekan <span class="kbd">Enter</span> untuk memasang ke <code>C:\LMS-IPAS</code>.</li>
+    <li>Windows bertanya <b>"Do you want to allow this app to make changes?"</b> → klik <span class="tombol">Yes</span>.</li>
+    <li>Setelah muncul <b>"LMS IPAS berhasil dipasang"</b>, tekan <span class="kbd">Enter</span> sekali lagi. LMS menyala dan browser terbuka sendiri.</li>
+  </ol>
+  <div class="kotak tips"><b>Setelah selesai (Cara A maupun B)</b>Muncul ikon <b>LMS IPAS</b> di Desktop. Simpan berkas pemasang di flashdisk sebagai cadangan. Folder hasil ekstrak (Cara B) boleh dihapus.</div>
 
   <h3>Masuk pertama kali</h3>
   <div class="dua">
@@ -418,7 +426,7 @@
     <tr><th>Yang terlihat</th><th>Artinya</th><th>Yang harus dilakukan</th></tr>
     <tr class="grup"><td colspan="3">Menyalakan LMS</td></tr>
     <tr><td>Muncul layar biru <b>"Windows protected your PC"</b></td><td>Windows berhati-hati dengan aplikasi baru.</td><td>Klik <b>More info</b> → <b>Run anyway</b>. Hanya perlu sekali.</td></tr>
-    <tr><td><b>"An Application Control policy has blocked this file"</b> atau "Smart App Control blocked"</td><td>Windows 11 memblokir berkas <b>.exe</b>.</td><td>Pakai cara pasang dari <b>LMS-IPAS.zip</b> dan <b>PASANG-LMS.bat</b> (Bagian 2). Cara ini tidak diblokir.</td></tr>
+    <tr><td><b>"An Application Control policy has blocked this file"</b> atau "Smart App Control blocked"</td><td>Windows 11 memblokir berkas <b>.exe</b>.</td><td>Pakai <b>Cara B</b> (Bagian 2): <b>LMS-IPAS.zip</b> dan <b>PASANG-LMS.bat</b>. Cara ini tidak diblokir.</td></tr>
     <tr><td>Jendela hitam: <b>"LMS IPAS SUDAH BERJALAN di jendela lain"</b></td><td>LMS sudah menyala sebelumnya.</td><td>Tidak apa-apa. Pakai browser yang terbuka. Jendela baru menutup sendiri.</td></tr>
     <tr><td>Jendela hitam: <b>"Port 3000 sedang dipakai aplikasi lain"</b></td><td>Ada aplikasi lain yang memakai "pintu" LMS.</td><td>Tutup aplikasi lain yang sedang berjalan, atau <b>restart laptop</b>, lalu nyalakan LMS lagi.</td></tr>
     <tr><td>Jendela hitam menampilkan tulisan <b>Error</b> lalu <b>"Server berhenti"</b></td><td>LMS gagal menyala.</td><td><b>Foto</b> seluruh isi jendela hitam, kirim ke pengelola. Sementara itu coba <b>restart</b> laptop lalu nyalakan LMS lagi.</td></tr>
@@ -481,8 +489,8 @@
   <h3>Memperbarui ke versi baru</h3>
   <ol class="langkah">
     <li>Tutup jendela hitam LMS.</li>
-    <li>Ekstrak <code>LMS-IPAS.zip</code> versi baru, lalu klik dua kali <b>PASANG-LMS.bat</b>.</li>
-    <li>Tekan <span class="kbd">Enter</span> (folder tetap <code>C:\LMS-IPAS</code>). <b>Akun, materi, soal, dan media tetap aman.</b></li>
+    <li>Pasang versi baru dengan cara yang sama seperti Bagian 2 (<b>Cara A</b> atau <b>Cara B</b>), ke folder yang sama <code>C:\LMS-IPAS</code>.</li>
+    <li><b>Akun, materi, soal, dan media tetap aman.</b> Hanya aplikasinya yang diganti.</li>
   </ol>
   <h3>Menghapus (uninstall)</h3>
   <ol class="langkah">
