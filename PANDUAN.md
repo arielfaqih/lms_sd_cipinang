@@ -23,17 +23,24 @@ LMS ini berjalan di **satu laptop sekolah sebagai server lokal**. Laptop lain, H
 
 ## 2. Pemasangan pertama (Admin/operator, sekali saja)
 
-### Cara termudah: installer `LMS-IPAS-Setup.exe` (untuk sekolah lain)
+### Cara termudah untuk sekolah lain: paket `LMS-IPAS.zip`
 
 Satu berkas berisi LMS lengkap **beserta Node.js**, jadi laptop sekolah tidak perlu memasang apa pun dan tidak perlu internet.
 
-1. Klik dua kali `LMS-IPAS-Setup.exe`. Jika muncul *Windows protected your PC*, klik **More info** → **Run anyway** (installer buatan sendiri belum bertanda tangan digital).
-2. Biarkan folder `C:\LMS-IPAS` (jangan pilih folder OneDrive/Desktop), centang semua pilihan, lalu klik **Pasang**. Klik **Yes** saat Windows meminta izin Administrator (untuk membuka firewall).
-3. LMS langsung berjalan. Berikutnya cukup klik dua kali pintasan **LMS IPAS** di Desktop.
+1. Klik kanan `LMS-IPAS.zip` → **Extract All** → **Extract**.
+2. Buka folder hasil ekstrak, masuk ke `LMS-IPAS`, lalu klik dua kali **`PASANG-LMS.bat`**. Jika muncul *Windows protected your PC*, klik **More info** → **Run anyway**.
+3. Di jendela hitam, tekan **Enter** untuk memasang ke `C:\LMS-IPAS`. Klik **Yes** saat Windows meminta izin Administrator (untuk membuka firewall).
+4. Tekan **Enter** sekali lagi untuk menjalankan LMS. Berikutnya cukup klik dua kali pintasan **LMS IPAS** di Desktop. Folder hasil ekstrak boleh dihapus.
 
-Memperbarui ke versi baru: jalankan installer versi baru ke folder yang sama. Data sekolah (akun, materi, soal, media) **tidak terhapus**. Tutup jendela hitam server lebih dulu.
+Paket ZIP dipilih sebagai cara utama karena **Smart App Control** di Windows 11 memblokir program `.exe` yang belum bertanda tangan digital, tanpa tombol *Run anyway*. `PASANG-LMS.bat` memakai Node.js yang bertanda tangan resmi, jadi tetap bisa dijalankan.
 
-**Membuat ulang installer** (di laptop pengembang yang memiliki Node.js 22.13+): jalankan `pwsh -File tools\buat-installer.ps1`. Hasilnya `dist\LMS-IPAS-Setup.exe`. Data di folder `data\` tidak ikut dikemas. Admin juga bisa memasang tanpa jendela: `LMS-IPAS-Setup.exe /diam "D:\LMS-IPAS"`.
+**Installer berjendela `LMS-IPAS-Setup.exe`** juga tersedia dan hasilnya sama. Pakai bila laptop tujuan tidak memblokirnya: klik dua kali → biarkan `C:\LMS-IPAS` → **Pasang**.
+
+**Memperbarui ke versi baru:** pasang paket versi baru ke folder yang sama. Data sekolah (akun, materi, soal, media) **tidak terhapus**. Tutup jendela hitam server lebih dulu.
+
+**Menghapus (uninstall):** **Settings → Apps → Installed apps → LMS IPAS → Uninstall**, atau Start Menu → **Hapus LMS IPAS**. Di jendela penghapus, ketik **Y** untuk menghapus. Data sekolah **disimpan** kecuali Anda mengetik `HAPUS DATA`. Data yang disimpan otomatis dipakai lagi bila LMS dipasang ke folder yang sama.
+
+**Membuat ulang paket** (di laptop pengembang yang memiliki Node.js 22.13+): jalankan `pwsh -File tools\buat-installer.ps1`. Hasilnya `dist\LMS-IPAS.zip` dan `dist\LMS-IPAS-Setup.exe`. Data di folder `data\` tidak ikut dikemas. Pemasangan tanpa pertanyaan untuk admin: `PASANG-LMS.bat --diam "D:\LMS-IPAS"`.
 
 ### Cara manual (dari folder proyek)
 

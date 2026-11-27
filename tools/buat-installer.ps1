@@ -1,4 +1,6 @@
-# Membuat installer Windows satu berkas: dist\LMS-IPAS-Setup.exe
+# Membuat paket pemasangan Windows untuk sekolah lain:
+#   dist\LMS-IPAS.zip        -> Extract All, lalu klik dua kali PASANG-LMS.bat (selalu lolos Smart App Control)
+#   dist\LMS-IPAS-Setup.exe  -> installer berjendela (bisa diblokir Smart App Control karena belum bertanda tangan digital)
 # Isi: aplikasi LMS + Node.js portabel (runtime\node.exe). Data sekolah (folder data\) TIDAK ikut.
 # Jalankan dari folder proyek:  pwsh -File tools\buat-installer.ps1
 # Butuh: Node.js 22.13+ terpasang (node.exe-nya ikut dikemas) dan .NET Framework 4 (bawaan Windows 10/11).
@@ -67,6 +69,28 @@ for ($i = 0; $i -lt $ukuran.Count; $i++) {
 }
 foreach ($d in $gambar) { $bw.Write($d) }
 $bw.Flush(); [System.IO.File]::WriteAllBytes((Join-Path $paket 'lms.ico'), $ico.ToArray())
+$logo = Join-Path $dist 'logo.png'
+[System.IO.File]::WriteAllBytes($logo, $gambar[0])
+
+# Kompilasi installer C# dengan csc.exe bawaan .NET Framework 4
+$fw = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
+if (-not (Test-Path (Join-Path $fw 'csc.exe'))) { $fw = Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319' }
+$csc = Join-Path $fw 'csc.exe'
+function Kompilasi([string]$keluar, [string[]]$resource) {
+  if (Test-Path $keluar) { Remove-Item -Force $keluar }
+  $argumen = @('/nologo', '/target:winexe', '/optimize+', '/codepage:65001', "/out:$keluar", "/win32icon:$(Join-Path $paket 'lms.ico')",
+    "/r:$(Join-Path $fw 'System.IO.Compression.dll')", "/r:$(Join-Path $fw 'System.IO.Compression.FileSystem.dll')", '/r:System.Windows.Forms.dll', '/r:System.Drawing.dll')
+  foreach ($r in $resource) { $argumen += "/resource:$r" }
+  $argumen += (Join-Path $PSScriptRoot 'installer\Pemasang.cs')
+  & $csc @argumen
+  if ($LASTEXITCODE -ne 0) { throw "Kompilasi $keluar gagal." }
+}
+# Penghapus (uninstall) dijalankan oleh runtime\node.exe yang bertanda tangan resmi (lolos Smart App Control)
+Copy-Item (Join-Path $PSScriptRoot 'hapus-lms.js') $paket
+# Pemasang untuk paket ZIP (jalur yang selalu lolos Smart App Control)
+Copy-Item (Join-Path $PSScriptRoot 'pasang-lms.js') $paket
+$bat = "@echo off`r`nchcp 65001 >nul`r`ntitle Pasang LMS IPAS`r`n`"%~dp0runtime\node.exe`" `"%~dp0pasang-lms.js`" %*`r`n"
+[System.IO.File]::WriteAllText((Join-Path $paket 'PASANG-LMS.bat'), $bat, (New-Object System.Text.ASCIIEncoding))
 
 $versi = (Get-Content (Join-Path $root 'package.json') -Raw | ConvertFrom-Json).version
 @"
@@ -88,6 +112,10 @@ MEMBUKA DARI HP / LAPTOP LAIN / SMARTBOARD (tanpa internet)
   3. Jika tidak bisa dibuka: klik dua kali izinkan-akses-jaringan.bat, lalu klik Yes.
      Wi-Fi kampus/kantor sering memblokir antarperangkat; pakai hotspot HP.
 
+MENGHAPUS (UNINSTALL)
+  Settings > Apps > Installed apps > LMS IPAS > Uninstall  (atau Start Menu > Hapus LMS IPAS).
+  Data sekolah disimpan, kecuali Anda mengetik HAPUS DATA.
+
 INTERNET hanya dibutuhkan untuk fitur "Buat soal dengan AI".
 Panduan lengkap: PANDUAN.md
 "@ | Set-Content -Encoding UTF8 (Join-Path $paket 'BACA-DULU.txt')
@@ -99,17 +127,24 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::CreateFromDirectory($paket, $zip, [System.IO.Compression.CompressionLevel]::Optimal, $false)
 
 Write-Host '5/5 Mengompilasi installer...'
-$fw = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
-if (-not (Test-Path (Join-Path $fw 'csc.exe'))) { $fw = Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319' }
-$csc = Join-Path $fw 'csc.exe'
 $exe = Join-Path $dist 'LMS-IPAS-Setup.exe'
-if (Test-Path $exe) { Remove-Item -Force $exe }
-& $csc /nologo /target:winexe /optimize+ /codepage:65001 "/out:$exe" "/win32icon:$(Join-Path $paket 'lms.ico')" "/resource:$zip,paket.zip" `
-  "/r:$(Join-Path $fw 'System.IO.Compression.dll')" "/r:$(Join-Path $fw 'System.IO.Compression.FileSystem.dll')" /r:System.Windows.Forms.dll /r:System.Drawing.dll `
-  (Join-Path $PSScriptRoot 'installer\Pemasang.cs')
-if ($LASTEXITCODE -ne 0) { throw 'Kompilasi installer gagal.' }
-Remove-Item -Force $zip
+Kompilasi $exe @("$zip,paket.zip", "$logo,logo.png")
+Remove-Item -Force $zip, $logo
+Write-Host '    + paket ZIP...'
+$zipBagi = Join-Path $dist 'LMS-IPAS.zip'
+if (Test-Path $zipBagi) { Remove-Item -Force $zipBagi }
+$arsip = [System.IO.Compression.ZipFile]::Open($zipBagi, [System.IO.Compression.ZipArchiveMode]::Create)
+try {
+  Get-ChildItem $paket -Recurse -File | ForEach-Object {
+    $rel = 'LMS-IPAS/' + $_.FullName.Substring($paket.Length + 1).Replace('\', '/')
+    [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($arsip, $_.FullName, $rel, [System.IO.Compression.CompressionLevel]::Optimal)
+  }
+} finally { $arsip.Dispose() }
+
 $mb = [math]::Round((Get-Item $exe).Length / 1MB, 1)
+$mbZip = [math]::Round((Get-Item $zipBagi).Length / 1MB, 1)
 Write-Host ''
-Write-Host "Selesai: $exe ($mb MB)"
-Write-Host 'Kirim berkas ini ke guru (Google Drive / WhatsApp dokumen / flashdisk).'
+Write-Host "Selesai:"
+Write-Host "  $zipBagi ($mbZip MB)  <- kirim yang ini (paling aman)"
+Write-Host "  $exe ($mb MB)"
+Write-Host 'Kirim lewat Google Drive / WhatsApp dokumen / flashdisk.'
