@@ -68,6 +68,25 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   for (const a of addrs) console.log(`  Dari HP/perangkat: http://${a.address}:${PORT}   (${a.name})`);
   console.log('\n  Biarkan jendela ini terbuka selama LMS dipakai. Tekan Ctrl+C untuk berhenti.\n');
 });
+// Port sudah dipakai: biasanya LMS sudah berjalan di jendela lain (misalnya pintasan diklik dua kali).
+// Tampilkan pesan yang jelas, bukan galat teknis. Kode keluar 10 = LMS sudah berjalan (dibaca mulai-server.bat).
+server.on('error', async (e) => {
+  if (e.code !== 'EADDRINUSE') throw e;
+  let lms = false;
+  try {
+    const r = await fetch(`http://127.0.0.1:${PORT}/masuk`, { signal: AbortSignal.timeout(3000) });
+    lms = /LMS IPAS/.test(await r.text());
+  } catch (x) { lms = false; }
+  if (lms) {
+    console.log('\n  LMS IPAS SUDAH BERJALAN di jendela lain (port ' + PORT + ').');
+    console.log('  Tidak perlu dinyalakan dua kali. Buka di browser: http://localhost:' + PORT);
+    console.log('  Jendela ini boleh ditutup. Jendela server yang pertama JANGAN ditutup.\n');
+    process.exit(10);
+  }
+  console.log('\n  Port ' + PORT + ' sedang dipakai aplikasi lain, jadi LMS belum bisa dinyalakan.');
+  console.log('  Tutup aplikasi tersebut (atau mulai ulang laptop), lalu jalankan LMS lagi.\n');
+  process.exit(1);
+});
 server.requestTimeout = 0; // unggah video besar boleh lama
 app.locals.PORT = PORT;
 

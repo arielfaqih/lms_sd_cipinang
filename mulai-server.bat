@@ -26,6 +26,11 @@ if errorlevel 1 (
 )
 start "" cmd /c "timeout /t 3 >nul & start http://localhost:3000"
 "%NODE%" server.js
+rem Kode 10 = LMS sudah berjalan di jendela lain: cukup buka browser, jendela ini menutup sendiri.
+if "%errorlevel%"=="10" (
+  timeout /t 10
+  exit /b 0
+)
 echo.
 echo   Server berhenti.
 pause
