@@ -268,7 +268,7 @@ r.get('/pengaturan', async (req, res) => {
         ${langkah(false, 'Selesai', 'PPT yang sudah diunggah sebelumnya akan dikonversi otomatis.')}
       </ol>
       ${ps.status === 'proses' ? html`<div class="flash warn" data-autorefresh="15"><div class="spinner sm"></div> ${ps.pesan}<br><small>Halaman ini memperbarui diri setiap 15 detik. Mulai ${new Date(ps.mulai).toLocaleTimeString('id-ID')}.</small></div>` : ''}
-      ${ps.status === 'gagal' ? html`<div class="flash err"><b>!</b><span>${ps.pesan}</span></div>` : ''}
+      ${ps.status === 'gagal' ? html`<div class="flash err"><b class="flash-ic">!</b><span>${ps.pesan}</span></div>` : ''}
       <form method="post" action="/admin/pengaturan/pasang-libreoffice" class="row">
         <button class="btn primary" ${online && bisaWinget && ps.status !== 'proses' ? '' : 'disabled'}>${icon('upload')}Pasang LibreOffice otomatis</button>
         <a class="btn" href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank" rel="noopener">Unduh manual</a>

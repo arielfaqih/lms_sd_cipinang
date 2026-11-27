@@ -143,8 +143,8 @@ progress{width:100%;height:.8rem;accent-color:var(--pri)}
 
 /* ---------- pesan ---------- */
 .flash{display:flex;gap:.6rem;align-items:flex-start;padding:.85rem 1.05rem;border-radius:13px;margin-bottom:1.1rem;font-weight:500;border:1px solid}
-.flash>.ic,.flash>b:first-child{flex:0 0 auto;margin-top:.15rem}
-.flash>b:first-child{display:inline-grid;place-items:center;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--danger);color:#fff;font-size:.8rem}
+.flash>.ic,.flash>.flash-ic{flex:0 0 auto;margin-top:.15rem}
+.flash>.flash-ic{display:inline-grid;place-items:center;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--danger);color:#fff;font-size:.8rem}
 .flash.ok{background:var(--ok-soft);border-color:#b2dfc0;color:#0f5a2a}
 .flash.err{background:var(--danger-soft);border-color:#f0bdb7;color:#8b1a12}
 .flash.warn{background:var(--acc-soft);border-color:#f2d491;color:#6e4b00;display:block}

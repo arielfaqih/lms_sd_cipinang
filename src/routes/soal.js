@@ -239,9 +239,9 @@ r.get('/soal/buat', async (req, res) => {
   <div class="page-head"><div><p class="crumb"><a href="/soal">Bank Soal</a> ›</p><h1>${icon('spark')} Buat soal dengan AI</h1>
     <p class="ph-desc">AI menyusun draf soal <b>hanya dari teks materi subbab</b> yang dipilih. Semua hasil masuk sebagai draf dan wajib ditinjau guru.</p></div></div>
   <div class="net-note ${online ? 'on' : 'off'}" style="margin-bottom:1rem"><span class="net-dot"></span>
-    <div>${online ? html`<b>Laptop server tersambung ke internet.</b> ${st.adaKunci ? `Sisa ${st.sisa} dari ${st.batas} permintaan AI hari ini.` : ''}` : html`<b>Butuh internet.</b> Fitur ini hanya bisa dipakai saat laptop server tersambung ke internet.`}</div>
+    <div>${online ? html`<b>Laptop server tersambung ke internet.</b> ${st.adaKunci ? `Sisa ${st.sisa} dari ${st.batas} permintaan AI hari ini.` : ''}` : html`<b>Butuh internet.</b> Sambungkan laptop server ke Wi-Fi yang ada internetnya atau ke hotspot HP, lalu klik <b>Periksa ulang</b>. Selama offline, Anda tetap bisa <a href="/soal/baru">menulis soal manual</a>.`}</div>
     <a class="btn small" href="/soal/buat?cek=1${req.query.subbab ? '&subbab=' + toInt(req.query.subbab) : ''}">Periksa ulang</a></div>
-  ${alasan ? html`<div class="flash warn">${alasan}</div>` : ''}
+  ${alasan && online ? html`<div class="flash warn">${alasan}</div>` : ''}
   <form method="post" action="/soal/buat" class="card stack" data-loading="AI sedang menyusun soal… biasanya 10–40 detik.">
     <label>Subbab${pilihanSubbab(toInt(req.query.subbab), { required: true })}</label>
     <div class="grid3">
@@ -250,7 +250,7 @@ r.get('/soal/buat', async (req, res) => {
       <label>Tingkat kesulitan<select name="kesulitan">${Object.entries(KESULITAN).map(([k, v]) => html`<option value="${k}" ${k === 'sedang' ? 'selected' : ''}>${v}</option>`)}</select></label>
     </div>
     <button class="btn primary big" ${alasan ? 'disabled' : ''}>${icon('spark')}Buat soal</button>
-    ${alasan ? html`<p class="muted small">Tombol nonaktif sampai masalah di atas selesai.</p>` : ''}
+    ${alasan ? html`<p class="muted small">Tombol aktif setelah ${online ? 'masalah di atas selesai' : 'laptop server tersambung ke internet'}.</p>` : ''}
   </form>`;
   res.send(page({ title: 'Buat soal AI', user: req.user, body, active: 'soal', galat: req.query.galat }));
 });
