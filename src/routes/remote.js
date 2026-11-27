@@ -21,10 +21,11 @@ setInterval(() => {
   for (const [k, s] of SESI) if (s.aktif < batas && !s.layar.size && !s.hp.size) SESI.delete(k);
 }, 10 * 60 * 1000).unref();
 
+// Semua alamat remote yang mungkin; yang pertama paling tepat (lihat net.alamatTerbaik)
 function alamatRemote(req, kode) {
   const port = req.app.locals.PORT;
-  const lan = net.lanAddresses()[0];
-  return `http://${lan ? lan.address : 'localhost'}:${port}/remote/${kode}`;
+  const daftar = net.alamatTerbaik(req.hostname).map((a) => `http://${a.address}:${port}/remote/${kode}`);
+  return daftar.length ? daftar : [`http://localhost:${port}/remote/${kode}`];
 }
 
 // Layar membuat (atau memakai ulang) sesi remote
@@ -34,9 +35,9 @@ r.post('/api/remote/buat', async (req, res) => {
     do { kode = String(Math.floor(1000 + Math.random() * 9000)); } while (SESI.has(kode));
     SESI.set(kode, { kode, userId: req.user.id, layar: new Set(), hp: new Set(), state: null, aktif: Date.now() });
   }
-  const url = alamatRemote(req, kode);
+  const [url, ...lain] = alamatRemote(req, kode);
   const qr = await QRCode.toString(url, { type: 'svg', margin: 1, width: 220 });
-  res.json({ kode, url, qr });
+  res.json({ kode, url, lain, qr, tanpaJaringan: !net.lanAddresses().length });
 });
 
 // Aliran peristiwa untuk layar atau HP

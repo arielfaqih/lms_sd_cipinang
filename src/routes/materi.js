@@ -572,12 +572,13 @@ r.get('/sajikan/:id', (req, res) => {
         <div class="remote-qr" id="remoteQr"></div>
         <div>
           <ol class="steps-mini">
-            <li>Sambungkan HP ke <b>Wi-Fi sekolah</b> yang sama.</li>
+            <li>Sambungkan HP ke <b>Wi-Fi atau hotspot yang sama</b> dengan laptop ini. Matikan data seluler.</li>
             <li>Pindai kode QR, lalu masuk dengan akun guru.</li>
             <li>Atau buka alamat di bawah dan masukkan kode:</li>
           </ol>
           <div class="remote-kode" id="remoteKode">····</div>
-          <p class="muted small" id="remoteUrl"></p>
+          <p class="remote-url" id="remoteUrl"></p>
+          <p class="flash warn" id="remoteWarn" hidden>Laptop ini belum tersambung ke Wi-Fi atau hotspot, jadi HP belum bisa terhubung.</p>
           <p class="remote-status" id="remoteStatus">Menunggu HP terhubung…</p>
           <p class="muted small">Di HP tampil tombol ◀ ▶, daftar layar, dan <b>kunci jawaban yang hanya terlihat oleh guru</b>.</p>
         </div>
@@ -585,7 +586,7 @@ r.get('/sajikan/:id', (req, res) => {
       <p style="text-align:right;margin:0"><button type="button" class="btn" data-act="remote-close">Tutup</button></p>
     </dialog>
   </div>
-  <script src="/static/js/presenter.js?v=6"></script>`;
+  <script src="/static/js/presenter.js?v=7"></script>`;
   res.send(page({ title: s.judul, user: req.user, body, bodyClass: 'is-presenter' }));
 });
 

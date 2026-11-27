@@ -795,11 +795,11 @@ body.is-remote .wrap{max-width:560px;padding:.8rem .8rem 3rem}
 /* Kartu daftar: tujuan (bernomor), contoh (bintang), rangkuman (centang), refleksi */
 .slide.j-tujuan .sl-text>ul,.slide.j-rangkuman .sl-text>ul,.slide.j-contoh .sl-text>ul,.slide.j-refleksi .sl-text>ul{counter-reset:kartu;padding-left:0;list-style:none}
 .slide.j-tujuan .sl-text>ul>li,.slide.j-rangkuman .sl-text>ul>li,.slide.j-contoh .sl-text>ul>li,.slide.j-refleksi .sl-text>ul>li{
-  counter-increment:kartu;display:flex;gap:.75rem;align-items:flex-start;list-style:none;margin:0 0 .65rem;background:#fff;
-  border:2px solid color-mix(in srgb,var(--jc) 30%,#fff);border-left-width:2px;border-radius:18px;padding:.6rem 1rem;
+  counter-increment:kartu;display:block;position:relative;list-style:none;margin:0 0 .65rem;background:#fff;
+  border:2px solid color-mix(in srgb,var(--jc) 30%,#fff);border-left-width:2px;border-radius:18px;padding:.6rem 1rem .6rem calc(1.5em + 1.35rem);
   box-shadow:0 4px 0 color-mix(in srgb,var(--jc) 18%,#fff)}
 .slide.j-tujuan .sl-text>ul>li::before,.slide.j-rangkuman .sl-text>ul>li::before,.slide.j-contoh .sl-text>ul>li::before,.slide.j-refleksi .sl-text>ul>li::before{
-  flex:0 0 auto;display:grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;font-weight:800;font-size:.85em;margin-top:.12em;background:var(--jc);color:#fff}
+  position:absolute;left:.85rem;top:.72rem;display:grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;font-weight:800;font-size:.85em;background:var(--jc);color:#fff}
 .slide.j-tujuan .sl-text>ul>li::before{content:counter(kartu)}
 .slide.j-rangkuman .sl-text>ul>li::before{content:"✓"}
 .slide.j-contoh .sl-text>ul>li::before{content:"★";background:#fde68a;color:#b45309}
@@ -952,3 +952,10 @@ body.is-remote .wrap{max-width:560px;padding:.8rem .8rem 3rem}
 @media (max-width:900px){.kls-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:600px){.kls-grid{gap:.5rem}.kls{padding:.6rem .7rem;gap:.55rem}.kls-no{flex-basis:2.2rem;height:2.2rem;font-size:1.1rem}.kls-txt b{font-size:.95rem}
   .mtr-grid{grid-template-columns:1fr 1fr}.mtr{padding:.5rem .6rem}.mtr b{font-size:.85rem}}
+
+/* Dialog remote: alamat utama besar, alamat cadangan kecil */
+.remote-url{margin:.3rem 0;font-size:.95rem;word-break:break-all}
+.remote-url b{display:block;font-size:1.05rem;color:var(--ink)}
+.remote-lain{display:block;color:var(--muted);font-size:.82rem;margin-top:.2rem}
+/* Kartu contoh: istilah tetap dalam satu kalimat */
+.slide .sl-text>ul>li .istilah{display:inline;white-space:normal}

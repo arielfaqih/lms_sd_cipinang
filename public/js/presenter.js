@@ -186,7 +186,17 @@
     buatSesi().then(function (j) {
       document.getElementById('remoteQr').innerHTML = j.qr;
       document.getElementById('remoteKode').textContent = j.kode;
-      document.getElementById('remoteUrl').textContent = j.url;
+      var u = document.getElementById('remoteUrl');
+      u.textContent = '';
+      var b = document.createElement('b'); b.textContent = j.url; u.appendChild(b);
+      if (j.lain && j.lain.length) {
+        var s = document.createElement('span');
+        s.className = 'remote-lain';
+        s.textContent = 'Jika tidak terbuka, coba: ' + j.lain.join(' atau ');
+        u.appendChild(s);
+      }
+      var w = document.getElementById('remoteWarn');
+      if (w) w.hidden = !j.tanpaJaringan;
       if (dlg.showModal && !dlg.open) dlg.showModal();
     }).catch(function () { alert('Gagal membuat sesi remote. Periksa sambungan ke server.'); });
   }

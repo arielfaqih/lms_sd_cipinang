@@ -12,7 +12,7 @@ const r = express.Router();
 
 async function alamatBlok(req) {
   const port = req.app.locals.PORT;
-  const addrs = net.lanAddresses();
+  const addrs = net.alamatTerbaik(req.hostname);
   if (!addrs.length) return html`<p class="muted">Laptop ini belum terhubung ke Wi-Fi/LAN. Hubungkan ke router atau nyalakan hotspot laptop, lalu muat ulang halaman ini.</p>`;
   const items = [];
   for (const a of addrs.slice(0, 3)) {
