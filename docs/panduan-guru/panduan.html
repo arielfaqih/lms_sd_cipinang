@@ -130,7 +130,6 @@
     <div><b>✦</b> Kartu Ringkas (untuk ditempel)</div>
   </div>
   <div class="bawah">
-    <p>Nama sekolah: <span class="isian">&nbsp;</span></p>
     <p>Kontak yang bisa dihubungi bila ada masalah (pengelola/operator): <span class="isian">&nbsp;</span></p>
     <p style="margin-top:3mm">LMS IPAS versi 1.0 · Materi sesuai Capaian Pembelajaran IPAS Kurikulum Merdeka (Fase B dan C).</p>
   </div>
@@ -176,14 +175,22 @@
   <p>Cukup dilakukan <b>satu kali</b> di laptop server, oleh guru atau operator yang ditunjuk. Waktu: sekitar 5 menit. <b>Tidak perlu internet.</b></p>
   <div class="kotak ingat"><b>Yang disiapkan</b>Laptop Windows 10/11 (RAM minimal 4 GB) dan berkas dari pengelola: <code>LMS-IPAS-Setup.exe</code> dan <code>LMS-IPAS.zip</code> (lewat flashdisk, Google Drive, atau WhatsApp). Cukup pakai <b>salah satu</b>: coba Cara A dulu; bila diblokir Windows, pakai Cara B.</div>
   <h3>Cara A: pakai LMS-IPAS-Setup.exe</h3>
+  <div class="kotak tips"><b>Jangan panik bila muncul peringatan</b>Saat mengunduh dan membuka berkas ini, Windows akan menampilkan <b>peringatan berwarna biru</b> atau tulisan <b>"isn't commonly downloaded"</b>. Ini <b>wajar dan aman</b>: Windows selalu berhati-hati dengan aplikasi baru yang tidak dijual di toko aplikasi, seperti aplikasi buatan sekolah ini. LMS IPAS tidak mengirim data ke internet. Peringatan ini <b>hanya muncul sekali</b> saat memasang.</div>
   <ol class="langkah">
-    <li>Simpan <code>LMS-IPAS-Setup.exe</code> di laptop (misalnya di <b>Downloads</b>), lalu <b>klik dua kali</b>.</li>
-    <li>Jika muncul layar biru <b>"Windows protected your PC"</b>: klik <b>More info</b>, lalu <span class="tombol">Run anyway</span>. Ini wajar untuk aplikasi sekolah yang tidak dijual di toko aplikasi.</li>
-    <li>Jika muncul <b>"Smart App Control blocked"</b> atau <b>"An Application Control policy has blocked this file"</b>, berarti Windows menolak berkas .exe. Tidak apa-apa: <b>pakai Cara B</b> di bawah.</li>
+    <li>Unduh <code>LMS-IPAS-Setup.exe</code> (atau salin dari flashdisk). Jika browser menulis <b>"isn't commonly downloaded"</b>: klik <b>⋯</b> (titik tiga) → <span class="tombol">Keep</span> → <b>Show more</b> → <span class="tombol">Keep anyway</span>.</li>
+    <li><b>Klik dua kali</b> <code>LMS-IPAS-Setup.exe</code>.</li>
+    <li>Muncul layar biru <b>"Windows protected your PC"</b>. <b>Jangan klik "Don't run".</b> Klik tulisan kecil <b>More info</b> (gambar ①), lalu muncul tombol <span class="tombol">Run anyway</span>, klik tombol itu (gambar ②).</li>
+    <li>Jika muncul <b>"Smart App Control blocked"</b> atau <b>"An Application Control policy has blocked this file"</b> (tanpa tombol Run anyway), berarti Windows menolak berkas .exe. Tidak apa-apa: <b>pakai Cara B</b> di bawah.</li>
     <li>Muncul jendela <b>Pasang LMS IPAS</b>. Biarkan lokasi <code>C:\LMS-IPAS</code> dan ketiga centang apa adanya, lalu klik <span class="tombol hijau">Pasang</span>.</li>
     <li>Windows bertanya <b>"Do you want to allow this app to make changes?"</b> → klik <span class="tombol">Yes</span>. Ini supaya HP dan smartboard boleh membuka LMS.</li>
     <li>Muncul <b>"LMS IPAS berhasil dipasang"</b>. LMS menyala dan browser terbuka sendiri. Klik <span class="tombol">Selesai</span>.</li>
   </ol>
+  <div class="dua">
+    <figure><img src="gambar/00-smartscreen-1.jpg"><figcaption><b>① Klik "More info"</b> (tulisan kecil di kiri atas). Jangan klik "Don't run".</figcaption></figure>
+    <figure><img src="gambar/00-smartscreen-2.jpg"><figcaption><b>② Klik "Run anyway"</b>. Pemasangan dimulai.</figcaption></figure>
+  </div>
+  <figure class="kecil"><img src="gambar/00-unduh-peringatan.jpg"><figcaption>Peringatan saat mengunduh di Edge: klik ⋯ → Keep → Show more → Keep anyway.</figcaption></figure>
+
   <h3>Cara B: pakai LMS-IPAS.zip (bila Cara A diblokir)</h3>
   <ol class="langkah">
     <li><b>Klik kanan</b> <code>LMS-IPAS.zip</code> → pilih <span class="tombol">Extract All…</span> → klik <span class="tombol">Extract</span>.</li>
@@ -425,7 +432,8 @@
   <table>
     <tr><th>Yang terlihat</th><th>Artinya</th><th>Yang harus dilakukan</th></tr>
     <tr class="grup"><td colspan="3">Menyalakan LMS</td></tr>
-    <tr><td>Muncul layar biru <b>"Windows protected your PC"</b></td><td>Windows berhati-hati dengan aplikasi baru.</td><td>Klik <b>More info</b> → <b>Run anyway</b>. Hanya perlu sekali.</td></tr>
+    <tr><td>Saat mengunduh: <b>"isn't commonly downloaded"</b></td><td>Browser berhati-hati dengan berkas baru.</td><td>Klik <b>⋯</b> → <b>Keep</b> → <b>Show more</b> → <b>Keep anyway</b>.</td></tr>
+    <tr><td>Muncul layar biru <b>"Windows protected your PC"</b></td><td>Windows berhati-hati dengan aplikasi baru.</td><td>Jangan klik "Don't run". Klik tulisan kecil <b>More info</b> → tombol <b>Run anyway</b>. Hanya perlu sekali. Lihat gambar di Bagian 2.</td></tr>
     <tr><td><b>"An Application Control policy has blocked this file"</b> atau "Smart App Control blocked"</td><td>Windows 11 memblokir berkas <b>.exe</b>.</td><td>Pakai <b>Cara B</b> (Bagian 2): <b>LMS-IPAS.zip</b> dan <b>PASANG-LMS.bat</b>. Cara ini tidak diblokir.</td></tr>
     <tr><td>Jendela hitam: <b>"LMS IPAS SUDAH BERJALAN di jendela lain"</b></td><td>LMS sudah menyala sebelumnya.</td><td>Tidak apa-apa. Pakai browser yang terbuka. Jendela baru menutup sendiri.</td></tr>
     <tr><td>Jendela hitam: <b>"Port 3000 sedang dipakai aplikasi lain"</b></td><td>Ada aplikasi lain yang memakai "pintu" LMS.</td><td>Tutup aplikasi lain yang sedang berjalan, atau <b>restart laptop</b>, lalu nyalakan LMS lagi.</td></tr>
